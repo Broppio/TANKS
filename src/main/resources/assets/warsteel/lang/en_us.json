@@ -58,5 +58,9 @@
   "tooltip.warsteel.ammo.mass": "Projectile mass: %s kg",
   "tooltip.warsteel.ammo.used_by": "Fits: %s",
   "item.warsteel.88mm_sprgr_flak": "8.8 cm Flak 36 Sprgr. Patr. L/4.5 Kz (FLAK)",
-  "entity.warsteel.flak-88": "8.8 cm Flak 36"
+  "entity.warsteel.flak-88": "8.8 cm Flak 36",
+  "key.warsteel.arc_mode": "Flak 88: ARC artillery mode / leave shell camera",
+  "key.warsteel.arc_charge_up": "Flak 88: more propellant charge",
+  "key.warsteel.arc_charge_down": "Flak 88: less propellant charge",
+  "key.categories.warsteel": "WarSteel"
 }

@@ -167,6 +167,7 @@ public final class TankDamage {
       final java.util.Set<Integer> fireRolled = new java.util.HashSet<>();
       /** Current distance along the shot, in blocks; stamps module hit times for the replay. */
       float clock;
+      int shellCalibre;
       final Obb[] modules;
       final Obb[] plates;
       /** The vehicle's hull and turret hit boxes: nothing inside travels beyond them. */
@@ -349,6 +350,7 @@ public final class TankDamage {
       @Nullable Entity attacker
    ) {
       Sim s = new Sim(tank, level, armour, entryPlate, source, attacker);
+      s.shellCalibre = shell.getCalibre();
       Vec3 entry = hit.add(dir.scale(0.08));
       double wall = wallDistance(s, entry, dir);
       String cls = shell.getShellClass();
@@ -383,12 +385,14 @@ public final class TankDamage {
                // Fuze did not arm (plate too thin): the shell over-penetrates as solid shot.
                core(s, entry, dir, wall, coreDamage(shell));
                s.report.add("unfuzed", Component.literal("fuze not armed").withStyle(ChatFormatting.GRAY));
+               exitHole(s, armour, entry, dir, wall, excess);
             }
             break;
          }
          case "APCR":
          case "APDS": {
             core(s, entry, dir, wall, coreDamage(shell) * 0.8F);
+            exitHole(s, armour, entry, dir, wall, excess);
             int n = clamp((int)(calibre / 12.0 * (0.4 + ratio)), 3, 10);
             spall(s, entry, dir, n, 13.0, 16.0F + calibre * 0.12F, 0.0F);
             break;
@@ -396,6 +400,7 @@ public final class TankDamage {
          default: {
             // AP solid shot
             core(s, entry, dir, wall, coreDamage(shell));
+            exitHole(s, armour, entry, dir, wall, excess);
             int n = clamp((int)(calibre / 7.0 * (0.5 + ratio)), 4, 20);
             spall(s, entry, dir, n, 24.0, 22.0F + calibre * 0.18F, 0.0F);
          }
@@ -431,6 +436,58 @@ public final class TankDamage {
          damage(s, h.module(), d);
          d *= 0.8F;
       }
+   }
+
+   /**
+    * A solid shot that crossed the fighting compartment meets the far armour. If what is left of
+    * its penetration beats that plate's effective thickness it goes out the other side, leaving
+    * an exit hole there.
+    */
+   private static void exitHole(Sim s, @Nullable ArmorData armour, Vec3 from, Vec3 dir, double wall, double excess) {
+      if (armour == null || s.plates.length == 0) {
+         return;
+      }
+
+      int far = -1;
+      double[] span = null;
+
+      for (int i = 0; i < s.plates.length; i++) {
+         if (i == s.entryPlate) {
+            continue;
+         }
+
+         double[] t = s.plates[i].intersect(from, dir);
+         if (t != null && t[0] > 0.12 && (span == null || t[0] < span[0])) {
+            far = i;
+            span = t;
+         }
+      }
+
+      // Left through a gap in the armour model, or never reached a plate.
+      if (far < 0 || span[0] > wall + 0.3) {
+         return;
+      }
+
+      ArmorPlate plate = armour.getPlates().get(far);
+      org.joml.Vector3d ln = s.tank.getRotationFromString(plate.getTransform()).transform(new org.joml.Vector3d(plate.getLocalNormal()));
+      Vec3 normal = new Vec3(ln.x, ln.y, ln.z);
+      normal = normal.lengthSqr() < 1.0E-9 ? dir : normal.normalize();
+      if (normal.dot(dir) < 0.0) {
+         normal = normal.scale(-1.0);
+      }
+
+      double cos = Math.max(0.087, Math.min(1.0, normal.dot(dir)));
+      double farEffective = plate.getThickness() / cos;
+      // The shot has lost some energy crossing the compartment and whatever it hit inside.
+      double left = excess * 0.85;
+      if (left < farEffective) {
+         return;
+      }
+
+      Vec3 out = from.add(dir.scale(Math.max(span[0], span[1])));
+      s.report.rays.add(new ShotRay(from.add(dir.scale(span[0])), out.add(dir.scale(1.5)), 0, (float)span[0]));
+      s.report.add("exit", Component.literal("went through (" + plate.getName() + ")").withStyle(ChatFormatting.GRAY));
+      HitDecals.add(s.tank, plate.getTransform(), out, normal, dir, HitDecals.EXIT, Math.max(7, s.shellCalibre));
    }
 
    /** A cone of armour fragments thrown off the inner face of the plate. */

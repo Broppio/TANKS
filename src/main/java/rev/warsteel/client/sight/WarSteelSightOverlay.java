@@ -59,6 +59,11 @@ public final class WarSteelSightOverlay extends CommonOverlay {
    }
 
    public void render(@NotNull RenderContext $this$render) {
+      if (rev.rev.warsteel.client.artillery.ShellCamera.active()) {
+         // The camera is following a shell, not looking through the sight.
+         return;
+      }
+
       Entity seat = $this$render.getPlayer().getVehicle();
       VehicleEntity var10000 = seat instanceof VehicleEntity ? (VehicleEntity)seat : null;
       if ((seat instanceof VehicleEntity ? (VehicleEntity)seat : null) != null) {

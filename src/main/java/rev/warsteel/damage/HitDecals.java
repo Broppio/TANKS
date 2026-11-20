@@ -20,6 +20,8 @@ public final class HitDecals {
    public static final byte NON_PENETRATION = 1;
    public static final byte RICOCHET = 2;
    public static final byte SCORCH = 3;
+   /** Where a shell that went right through left the far side: torn outward petals. */
+   public static final byte EXIT = 4;
 
    /** frame 0 = Vehicle, 1 = Turret; p = position, n = outward normal, t = along-shot tangent (all in that frame). */
    public record Decal(byte frame, float px, float py, float pz, float nx, float ny, float nz, float tx, float ty, float tz, byte kind, float size, float aspect) {
@@ -50,10 +52,16 @@ public final class HitDecals {
 
       t.normalize();
       double cos = Math.min(1.0, Math.abs(d.dot(n)));
-      float size = (float)Math.max(0.24, calibre * (kind == SCORCH ? 0.009 : 0.0042));
+      // The dark hole in the texture spans ~45% of the quad, so a hole comes out about 1.3x calibre.
+      float size = (float)Math.max(0.2, calibre * switch (kind) {
+         case SCORCH -> 0.009;
+         case EXIT -> 0.0036;
+         default -> 0.003;
+      });
       float aspect = switch (kind) {
          case RICOCHET -> 3.2F;
          case SCORCH -> 1.0F;
+         case EXIT -> (float)Math.min(1.8, 1.0 / Math.max(0.55, cos));
          default -> (float)Math.min(2.4, 1.0 / Math.max(0.42, cos));
       };
       Decal decal = new Decal(

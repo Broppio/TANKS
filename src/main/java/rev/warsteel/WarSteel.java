@@ -27,6 +27,21 @@ public class WarSteel {
             rev.rev.warsteel.network.ShotReplayPayload.CODEC,
             // The handler class is only resolved when a packet arrives, i.e. on a client.
             (payload, context) -> context.enqueueWork(() -> rev.rev.warsteel.client.replay.ClientReplayHandler.handle(payload))
+         )
+         .playToServer(
+            rev.rev.warsteel.network.ArtilleryPayloads.ArcControl.TYPE,
+            rev.rev.warsteel.network.ArtilleryPayloads.ArcControl.CODEC,
+            (payload, context) -> context.enqueueWork(() -> rev.rev.warsteel.combat.ArtilleryMode.handleControl(payload, context))
+         )
+         .playToClient(
+            rev.rev.warsteel.network.ArtilleryPayloads.ShellLaunched.TYPE,
+            rev.rev.warsteel.network.ArtilleryPayloads.ShellLaunched.CODEC,
+            (payload, context) -> context.enqueueWork(() -> rev.rev.warsteel.client.artillery.ShellCamera.launched(payload))
+         )
+         .playToClient(
+            rev.rev.warsteel.network.ArtilleryPayloads.ShellLanded.TYPE,
+            rev.rev.warsteel.network.ArtilleryPayloads.ShellLanded.CODEC,
+            (payload, context) -> context.enqueueWork(() -> rev.rev.warsteel.client.artillery.ShellCamera.landed(payload))
          );
    }
 
@@ -39,6 +54,7 @@ public class WarSteel {
       NeoForge.EVENT_BUS.register(RicochetHandler.INSTANCE);
       NeoForge.EVENT_BUS.register(MuzzleParticleHandler.INSTANCE);
       NeoForge.EVENT_BUS.register(rev.rev.warsteel.combat.FlakFuze.INSTANCE);
+      NeoForge.EVENT_BUS.register(rev.rev.warsteel.combat.ArtilleryMode.INSTANCE);
       NeoForge.EVENT_BUS.register(rev.rev.warsteel.damage.WarSteelCommands.INSTANCE);
       bus.addListener(WarSteel::registerPayloads);
       LOGGER.info("WarSteel: registered ricochet and muzzle particle handlers");

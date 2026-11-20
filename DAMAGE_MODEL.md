@@ -143,6 +143,19 @@ the predictor setting the fuze to the target's range, or when its longest fuze s
 (`FuzeTicks`, about 2.3 km) runs out. Aircraft caught in a burst take fragment damage scaled by
 their size and distance: one burst 3 m from an AH-6 takes it to a sliver of health.
 
+### ARC (artillery) mode
+
+Press **B** while crewing the gun to switch between direct fire and ARC mode. In ARC mode:
+- shells leave with a reduced propellant charge (Charge 1-4 or Full; change it with **[** and **]**),
+  so they can be lobbed high onto targets out of sight;
+- the predicted trajectory is drawn in the world with a ring at the impact point, and the HUD shows
+  elevation, range and time of flight (marked ≈ when the impact is beyond the loaded world);
+- after each shot the camera follows the shell, holds on the impact for three seconds, then returns
+  to the gun. Press **B** to come back early. The gun stays laid while you watch.
+
+Terrain beyond your render distance isn't loaded, so shells landing that far away fly over empty
+space on camera.
+
 The gun uses the same armour and module model as the tanks. It has no real armour, and its crew
 (gunner, layer, loader) stand in the open, so HE landing nearby wounds or kills them like infantry.
 It's knocked out when the whole crew is down.
@@ -150,7 +163,10 @@ It's knocked out when the whole crew is down.
 ## Hit marks and wrecks
 
 Every hit leaves a mark on the armour where it struck: a hole for a penetration, a bright gouge
-for a non-penetration, a scrape for a ricochet, and a soot splash for HE. Marks are sized by
+for a non-penetration, a scrape for a ricochet, and a soot splash for HE. A solid shot (AP, APCR,
+or APHE whose fuze didn't arm) that still has enough penetration left to beat the far plate goes
+out the other side and leaves a torn exit hole there too. On models built from cubes the marks
+are laid onto the model's own surface. Marks are sized by
 calibre, stretched by the angle of impact, and turn with the turret. They stay (up to 40 per
 tank) until the tank is repaired with Superb Warfare's repair tool, where each pass patches the
 oldest mark and repairs the worst-damaged component, or until `/warsteel reset`.

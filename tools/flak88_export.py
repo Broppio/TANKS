@@ -61,12 +61,28 @@ for o in list(bpy.context.view_layer.objects):
     meshes.setdefault(part, []).append((o, mat))
 
 
+def to_model_dir(n):
+    """Direction (normal) Blender world -> model file space (same axes as to_model)."""
+    return [-n.y, n.z, -n.x]
+
+
+def mc_space(p):
+    """SBM mirrors x when it bakes a poly mesh: file (x, y, z) -> render (-x, y, z)."""
+    return [-p[0], p[1], p[2]]
+
+
+def cross(a, b):
+    return [a[1] * b[2] - a[2] * b[1], a[2] * b[0] - a[0] * b[2], a[0] * b[1] - a[1] * b[0]]
+
+
 def poly_mesh(parts):
-    positions, uvs, polys, pindex = [], [], [], {}
+    positions, uvs, normals, polys, pindex, nindex = [], [], [], [], {}, {}
     for o, mat in parts:
         me = o.data
+        me.calc_normals_split()
         uvl = me.uv_layers.active.data
         col, row = TILE[mat]
+        rot = o.matrix_world.to_3x3()
         for p in me.polygons:
             corners = []
             for li in p.loop_indices:
@@ -75,17 +91,30 @@ def poly_mesh(parts):
                 if pk not in pindex:
                     pindex[pk] = len(positions)
                     positions.append(to_model(o.matrix_world @ me.vertices[vi].co))
+                n = to_model_dir((rot @ me.loops[li].normal).normalized())
+                nk = tuple(round(c, 3) for c in n)
+                if nk not in nindex:
+                    nindex[nk] = len(normals)
+                    normals.append(list(nk))
                 u, v = uvl[li].uv
                 u = min(max(u, 0.0), 1.0)
                 v = min(max(v, 0.0), 1.0)
+                # SBM stores v bottom-up (it flips v itself), like Blender: tile row 0 is the top.
                 au = (u + col) / 2.0
-                av = 1.0 - (v + (1 - row)) / 2.0   # top-down, like Blockbench exports
+                av = (v + (1 - row)) / 2.0
                 uvs.append([round(au, 5), round(av, 5)])
-                corners.append([pindex[pk], 0, len(uvs) - 1])
+                corners.append([pindex[pk], nindex[nk], len(uvs) - 1])
+            # Wind each triangle counter-clockwise in render space, as seen from its normal side
+            # (SBM's x mirror would otherwise turn every face inside out under back-face culling).
+            a, b, c = (mc_space(positions[k[0]]) for k in corners[:3])
+            fn = mc_space(to_model_dir((rot @ p.normal).normalized()))
+            e = cross([b[i] - a[i] for i in range(3)], [c[i] - a[i] for i in range(3)])
+            if sum(e[i] * fn[i] for i in range(3)) < 0:
+                corners = [corners[0], corners[2], corners[1]] + corners[3:]
             if len(corners) == 3:
                 corners.append(corners[2])
             polys.append(corners)
-    return {'normalized_uvs': True, 'positions': positions, 'normals': [[0, 1, 0]], 'uvs': uvs, 'polys': polys}
+    return {'normalized_uvs': True, 'positions': positions, 'normals': normals, 'uvs': uvs, 'polys': polys}
 
 
 tr_y = TRUNNION_Z * SCALE

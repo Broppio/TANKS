@@ -138,6 +138,9 @@ public abstract class WarSteelTank extends VehicleEntity {
       }
    }
 
+   /** Client: each hit mark's position on the rendered model (see WarSteelTankRenderer). */
+   public final java.util.Map<HitDecals.Decal, float[]> decalSnap = new java.util.HashMap<>();
+
    /** Client: the hit marks to draw. */
    public java.util.List<HitDecals.Decal> decals() {
       return this.state.clientDecals(this.getEntityData().get(DECALS));
