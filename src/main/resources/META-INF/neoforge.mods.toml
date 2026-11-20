@@ -1,0 +1,45 @@
+modLoader = "javafml"
+loaderVersion = "[1,)"
+license = "GPL-3.0"
+
+[[mods]]
+modId = "warsteel"
+version = "0.0.3-8.9.2"
+displayName = "WarSteel 3985"
+authors = "Lilrevo"
+logoFile = "WarSteel 3945.png"
+description = '''World War 2 addon based on SuperbWarfare'''
+
+[[mixins]]
+config = "warsteel.mixins.json"
+
+[[dependencies.warsteel]]
+modId = "neoforge"
+type = "required"
+versionRange = "[21.1.203,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.warsteel]]
+modId = "minecraft"
+type = "required"
+versionRange = "[1.21.1,1.22)"
+ordering = "NONE"
+side = "BOTH"
+
+# Built against Superb Warfare 0.8.9.2-hotfix for NeoForge 1.21.1.
+[[dependencies.warsteel]]
+modId = "superbwarfare"
+type = "required"
+versionRange = "[0.8.9.2,0.9)"
+ordering = "AFTER"
+side = "BOTH"
+
+# WarSteel's code calls the Kotlin standard library, which Kotlin for Forge provides.
+# Superb Warfare requires it too.
+[[dependencies.warsteel]]
+modId = "kotlinforforge"
+type = "required"
+versionRange = "[5.0,)"
+ordering = "NONE"
+side = "BOTH"

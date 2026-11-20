@@ -1,0 +1,11 @@
+{
+  "Skins": [
+    {
+      "Id": "vanilla",
+      "Name": "Grey",
+      "Description": "Component#skin.warsteel.tiger-h1.grey",
+      "Texture": "warsteel:textures/entity/tiger-h1.png",
+      "Priority": 1
+    }
+  ]
+}

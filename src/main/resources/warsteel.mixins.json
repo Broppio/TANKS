@@ -1,0 +1,13 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "rev.rev.warsteel.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [],
+  "client": [
+    "WarSteelPolyMeshShadingMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

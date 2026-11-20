@@ -1,0 +1,8 @@
+{
+  "Models": [
+    {
+      "Model": "warsteel:models/bedrock/vehicle/t-26-1931.geo.json",
+      "Texture": "warsteel:textures/entity/t-26-1931.png"
+    }
+  ]
+}

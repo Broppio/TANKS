@@ -1,0 +1,45 @@
+{
+  "Name": "shell.warsteel.smallcal_127",
+  "Class": "SmallCal",
+  "Calibre": 13,
+  "Velocity": 20.0,
+  "Damage": 40.0,
+  "Mass": 0.05,
+  "Penetration": {
+    "Muzzle": 18.0,
+    "DropoffPerBlock": 0.6,
+    "Minimum": 2.0
+  },
+  "Ricochet": {
+    "Enabled": true,
+    "MinAngle": 55.0,
+    "AlwaysAngle": 72.0,
+    "OvermatchRatio": 1.4,
+    "SpeedRetained": 0.4,
+    "ScatterDegrees": 14.0
+  },
+  "Explosion": {
+    "Damage": 0.0,
+    "Radius": 0.0
+  },
+  "Tracer": {
+    "Model": "warsteel:models/bedrock/projectile/shell_tracer.geo.json",
+    "Texture": "warsteel:textures/entity/shell_tracer.png",
+    "Glow": true,
+    "Scale": [
+      0.5,
+      0.5,
+      0.6
+    ],
+    "Colour": "FFF2A8"
+  },
+  "Sounds": {
+    "Ricochet": [
+      "warsteel:ricochet1",
+      "warsteel:ricochet2",
+      "warsteel:ricochet3"
+    ],
+    "Penetrate": "warsteel:shell_penetrate",
+    "NonPenetrate": "warsteel:shell_nonpenetrate"
+  }
+}

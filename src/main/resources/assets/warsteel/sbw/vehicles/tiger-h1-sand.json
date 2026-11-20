@@ -1,0 +1,8 @@
+{
+  "Models": [
+    {
+      "Model": "warsteel:models/bedrock/vehicle/tiger-h1-sand.geo.json",
+      "Texture": "warsteel:textures/entity/tiger-h1-sand.png"
+    }
+  ]
+}

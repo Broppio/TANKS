@@ -1,0 +1,280 @@
+{
+  "_comment": "Internal modules for the War Thunder style damage model. Position/Size (half-extents) are in blocks in the Transform frame. Crew with a Seat pass part of the damage to the player in that seat. The tank is knocked out when an ammo rack detonates or fewer than MinCrew crew remain. Use /warsteel xray to see plates (orange) and modules in game. Tiger H1: 5 crew; driver and radio operator either side of the gearbox in the front hull; Maybach engine and fuel tanks at the rear; ammunition in the sponsons over the tracks and in floor bins.",
+  "Vehicle": "warsteel:tiger-h1-grey",
+  "MinCrew": 2,
+  "MainGunSeat": 0,
+  "RepairSeconds": 25,
+  "CrewReplaceSeconds": 60,
+  "CrewSwapSeconds": 5,
+  "FireSeconds": 14,
+  "FallbackDamageMultiplier": 0.25,
+  "AmmoExplosionRadius": 6,
+  "Modules": [
+    {
+      "Name": "Driver",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        0.6,
+        1.45,
+        1.55
+      ],
+      "Size": [
+        0.28,
+        0.42,
+        0.28
+      ],
+      "Role": "DRIVER"
+    },
+    {
+      "Name": "Radio",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        -0.6,
+        1.45,
+        1.55
+      ],
+      "Size": [
+        0.28,
+        0.42,
+        0.28
+      ],
+      "Role": "RADIO"
+    },
+    {
+      "Name": "Transmission",
+      "Type": "TRANSMISSION",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        1.0,
+        1.75
+      ],
+      "Size": [
+        0.6,
+        0.28,
+        0.35
+      ]
+    },
+    {
+      "Name": "Engine",
+      "Type": "ENGINE",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        1.35,
+        -3.15
+      ],
+      "Size": [
+        0.7,
+        0.5,
+        0.6
+      ]
+    },
+    {
+      "Name": "FuelLeft",
+      "Type": "FUEL_TANK",
+      "Transform": "Vehicle",
+      "Position": [
+        1.05,
+        1.35,
+        -3.1
+      ],
+      "Size": [
+        0.3,
+        0.45,
+        0.5
+      ]
+    },
+    {
+      "Name": "FuelRight",
+      "Type": "FUEL_TANK",
+      "Transform": "Vehicle",
+      "Position": [
+        -1.05,
+        1.35,
+        -3.1
+      ],
+      "Size": [
+        0.3,
+        0.45,
+        0.5
+      ]
+    },
+    {
+      "Name": "AmmoSponsonLeft",
+      "Type": "AMMO_RACK",
+      "Transform": "Vehicle",
+      "Position": [
+        1.4,
+        1.75,
+        -0.7
+      ],
+      "Size": [
+        0.3,
+        0.28,
+        1.05
+      ]
+    },
+    {
+      "Name": "AmmoSponsonRight",
+      "Type": "AMMO_RACK",
+      "Transform": "Vehicle",
+      "Position": [
+        -1.4,
+        1.75,
+        -0.7
+      ],
+      "Size": [
+        0.3,
+        0.28,
+        1.05
+      ]
+    },
+    {
+      "Name": "AmmoFloor",
+      "Type": "AMMO_RACK",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        0.85,
+        -0.7
+      ],
+      "Size": [
+        0.75,
+        0.12,
+        0.7
+      ]
+    },
+    {
+      "Name": "Gunner",
+      "Type": "CREW",
+      "Transform": "Turret",
+      "Position": [
+        0.5,
+        -0.6,
+        0.0
+      ],
+      "Size": [
+        0.28,
+        0.42,
+        0.28
+      ],
+      "Role": "GUNNER",
+      "Seat": 0
+    },
+    {
+      "Name": "Commander",
+      "Type": "CREW",
+      "Transform": "Turret",
+      "Position": [
+        0.55,
+        -0.5,
+        -0.85
+      ],
+      "Size": [
+        0.28,
+        0.42,
+        0.28
+      ],
+      "Role": "COMMANDER",
+      "Seat": 1
+    },
+    {
+      "Name": "Loader",
+      "Type": "CREW",
+      "Transform": "Turret",
+      "Position": [
+        -0.6,
+        -0.6,
+        -0.3
+      ],
+      "Size": [
+        0.28,
+        0.42,
+        0.28
+      ],
+      "Role": "LOADER"
+    },
+    {
+      "Name": "Breech",
+      "Type": "BREECH",
+      "Transform": "Turret",
+      "Position": [
+        0,
+        -0.5,
+        0.05
+      ],
+      "Size": [
+        0.25,
+        0.22,
+        0.5
+      ]
+    },
+    {
+      "Name": "TurretDrive",
+      "Type": "TURRET_DRIVE",
+      "Transform": "Turret",
+      "Position": [
+        0.85,
+        -0.9,
+        0.25
+      ],
+      "Size": [
+        0.15,
+        0.1,
+        0.2
+      ]
+    },
+    {
+      "Name": "Barrel",
+      "Type": "BARREL",
+      "Transform": "Turret",
+      "Position": [
+        0,
+        -0.55,
+        2.45
+      ],
+      "Size": [
+        0.1,
+        0.1,
+        1.7
+      ]
+    },
+    {
+      "Name": "TrackLeft",
+      "Type": "TRACK",
+      "Transform": "Vehicle",
+      "Position": [
+        1.525,
+        0.6,
+        -0.748
+      ],
+      "Size": [
+        0.288,
+        0.55,
+        3.209
+      ],
+      "Side": "LEFT",
+      "Armour": 25
+    },
+    {
+      "Name": "TrackRight",
+      "Type": "TRACK",
+      "Transform": "Vehicle",
+      "Position": [
+        -1.529,
+        0.6,
+        -0.748
+      ],
+      "Size": [
+        0.291,
+        0.55,
+        3.209
+      ],
+      "Side": "RIGHT",
+      "Armour": 25
+    }
+  ]
+}

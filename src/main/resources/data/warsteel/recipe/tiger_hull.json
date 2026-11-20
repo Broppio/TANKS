@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "s": {
+      "tag": "c:ingots/steel"
+    },
+    "b": {
+      "tag": "c:storage_blocks/steel"
+    },
+    "a": {
+      "item": "superbwarfare:armor_plate"
+    },
+    "c": {
+      "item": "superbwarfare:cemented_carbide_ingot"
+    }
+  },
+  "pattern": [
+    "sbs",
+    "aca",
+    "sbs"
+  ],
+  "result": {
+    "id": "warsteel:tiger_hull"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,18 @@
+{
+  "Skins": [
+    {
+      "Id": "vanilla",
+      "Name": "Olive",
+      "Description": "Component#skin.warsteel.t-26-1931.olive",
+      "Texture": "warsteel:textures/entity/t-26-1931.png",
+      "Priority": 1
+    },
+    {
+      "Id": "desert",
+      "Name": "Desert",
+      "Description": "Component#skin.warsteel.t-26-1931.desert",
+      "Texture": "warsteel:textures/entity/t-26-1931_desert.png",
+      "Priority": 2
+    }
+  ]
+}

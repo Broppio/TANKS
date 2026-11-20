@@ -1,0 +1,49 @@
+{
+  "_comment": "Tiger I - TZF 9d binocular telescope. On the real instrument the arc scales are a RANGE DRUM readout, not drop marks: the gunner dials a range, the reticle shifts, and he then simply puts the chevron on the target. Superb Warfare has no range drum, so the arcs here show MEASURED range with a travelling pointer, and the short ladder under the chevron is what actually lays the gun. Copying the arcs as drop marks would look right and aim wrong.",
+  "_optics": "Mask / CommanderMask / Furniture are OPTIONAL. The aperture and every reticle line are drawn from geometry, so no art is required. If you add a PNG later, name it here and it is layered over the drawn mask; a path that does not resolve is skipped rather than painting the missing-texture magenta.",
+  "UsedBy": [
+    "warsteel:tiger-h1"
+  ],
+  "Template": "tiger_arc",
+  "Designation": "TZF 9d",
+  "ReticleColor": "0x101010",
+  "ApertureScale": 0.72,
+  "ArcRadius": 0.74,
+  "ArcStartDeg": 208.0,
+  "ArcEndDeg": 332.0,
+  "_ladders": "Velocity must match the matching ammo Velocity in data/warsteel/sbw/vehicles/tiger-h1.json, or the loaded round is never emphasised and every scale draws faint.",
+  "Ladders": [
+    {
+      "Label": "PzGr 39",
+      "Velocity": 24.0,
+      "Side": "ARC_TOP",
+      "Stops": [
+        400,
+        800,
+        1200,
+        1600,
+        2000,
+        2400
+      ],
+      "MajorEvery": 1
+    },
+    {
+      "Label": "SprGr 43",
+      "Velocity": 22.0,
+      "Side": "ARC_BOTTOM",
+      "Stops": [
+        400,
+        800,
+        1200,
+        1600,
+        2000,
+        2400
+      ],
+      "MajorEvery": 1
+    }
+  ],
+  "TargetMarker": true,
+  "ViewportWidth": 0.8,
+  "ViewportAspect": 3.3,
+  "ViewportCorner": 0.22
+}

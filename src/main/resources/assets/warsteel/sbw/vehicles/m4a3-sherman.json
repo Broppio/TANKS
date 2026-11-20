@@ -1,0 +1,8 @@
+{
+  "Models": [
+    {
+      "Model": "warsteel:models/bedrock/vehicle/m4a3-sherman.geo.json",
+      "Texture": "warsteel:textures/entity/m4a3-sherman.png"
+    }
+  ]
+}

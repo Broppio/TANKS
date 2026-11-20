@@ -1,0 +1,217 @@
+{
+  "_comment": "Internal modules for the War Thunder style damage model. Position/Size (half-extents) are in blocks in the Transform frame. Crew with a Seat pass part of the damage to the player in that seat. The tank is knocked out when an ammo rack detonates or fewer than MinCrew crew remain. Use /warsteel xray to see plates (orange) and modules in game. T-26: 3 crew (driver in the hull front, commander-gunner and loader in the turret); engine rear, transmission front; ammunition racked on the hull sides.",
+  "Vehicle": "warsteel:t-26-1931",
+  "MinCrew": 2,
+  "MainGunSeat": 0,
+  "RepairSeconds": 25,
+  "CrewReplaceSeconds": 60,
+  "CrewSwapSeconds": 5,
+  "FireSeconds": 14,
+  "FallbackDamageMultiplier": 0.25,
+  "AmmoExplosionRadius": 6,
+  "Modules": [
+    {
+      "Name": "Driver",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        -0.45,
+        0.95,
+        1.6
+      ],
+      "Size": [
+        0.28,
+        0.42,
+        0.28
+      ],
+      "Role": "DRIVER"
+    },
+    {
+      "Name": "Transmission",
+      "Type": "TRANSMISSION",
+      "Transform": "Vehicle",
+      "Position": [
+        0.35,
+        0.65,
+        1.95
+      ],
+      "Size": [
+        0.55,
+        0.3,
+        0.3
+      ]
+    },
+    {
+      "Name": "Engine",
+      "Type": "ENGINE",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        0.95,
+        -2.1
+      ],
+      "Size": [
+        0.7,
+        0.45,
+        0.62
+      ]
+    },
+    {
+      "Name": "Fuel",
+      "Type": "FUEL_TANK",
+      "Transform": "Vehicle",
+      "Position": [
+        0.9,
+        1.0,
+        -1.15
+      ],
+      "Size": [
+        0.3,
+        0.4,
+        0.4
+      ]
+    },
+    {
+      "Name": "AmmoLeft",
+      "Type": "AMMO_RACK",
+      "Transform": "Vehicle",
+      "Position": [
+        0.85,
+        0.75,
+        0.35
+      ],
+      "Size": [
+        0.25,
+        0.3,
+        0.55
+      ]
+    },
+    {
+      "Name": "AmmoRight",
+      "Type": "AMMO_RACK",
+      "Transform": "Vehicle",
+      "Position": [
+        -0.85,
+        0.75,
+        0.35
+      ],
+      "Size": [
+        0.25,
+        0.3,
+        0.55
+      ]
+    },
+    {
+      "Name": "Gunner",
+      "Type": "CREW",
+      "Transform": "Turret",
+      "Position": [
+        0.27,
+        0.35,
+        0.35
+      ],
+      "Size": [
+        0.28,
+        0.42,
+        0.28
+      ],
+      "Role": "GUNNER",
+      "Seat": 0
+    },
+    {
+      "Name": "Loader",
+      "Type": "CREW",
+      "Transform": "Turret",
+      "Position": [
+        -0.28,
+        0.35,
+        0.35
+      ],
+      "Size": [
+        0.28,
+        0.42,
+        0.28
+      ],
+      "Role": "LOADER"
+    },
+    {
+      "Name": "Breech",
+      "Type": "BREECH",
+      "Transform": "Turret",
+      "Position": [
+        0,
+        0.45,
+        0.55
+      ],
+      "Size": [
+        0.12,
+        0.12,
+        0.35
+      ]
+    },
+    {
+      "Name": "TurretDrive",
+      "Type": "TURRET_DRIVE",
+      "Transform": "Turret",
+      "Position": [
+        0.4,
+        0.1,
+        0.7
+      ],
+      "Size": [
+        0.1,
+        0.08,
+        0.12
+      ]
+    },
+    {
+      "Name": "Barrel",
+      "Type": "BARREL",
+      "Transform": "Turret",
+      "Position": [
+        0,
+        0.45,
+        2.0
+      ],
+      "Size": [
+        0.06,
+        0.06,
+        0.7
+      ]
+    },
+    {
+      "Name": "TrackLeft",
+      "Type": "TRACK",
+      "Transform": "Vehicle",
+      "Position": [
+        1.205,
+        0.65,
+        -0.186
+      ],
+      "Size": [
+        0.157,
+        0.6,
+        2.73
+      ],
+      "Side": "LEFT",
+      "Armour": 15
+    },
+    {
+      "Name": "TrackRight",
+      "Type": "TRACK",
+      "Transform": "Vehicle",
+      "Position": [
+        -1.205,
+        0.65,
+        -0.186
+      ],
+      "Size": [
+        0.157,
+        0.6,
+        2.73
+      ],
+      "Side": "RIGHT",
+      "Armour": 15
+    }
+  ]
+}

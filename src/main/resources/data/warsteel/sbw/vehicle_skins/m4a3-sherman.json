@@ -1,0 +1,11 @@
+{
+  "Skins": [
+    {
+      "Id": "vanilla",
+      "Name": "Olive Drab",
+      "Description": "Component#skin.warsteel.m4a3-sherman.od",
+      "Texture": "warsteel:textures/entity/m4a3-sherman.png",
+      "Priority": 1
+    }
+  ]
+}

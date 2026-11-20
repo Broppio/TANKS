@@ -1,0 +1,46 @@
+{
+  "Name": "shell.warsteel.hesh_105",
+  "Class": "HESH",
+  "Calibre": 105,
+  "Velocity": 15.0,
+  "Damage": 300.0,
+  "Mass": 15.0,
+  "Penetration": {
+    "Muzzle": 200.0,
+    "DropoffPerBlock": 0.0,
+    "Minimum": 200.0
+  },
+  "Ricochet": {
+    "Enabled": false,
+    "MinAngle": 85.0,
+    "AlwaysAngle": 89.0,
+    "OvermatchRatio": 99.0,
+    "SpeedRetained": 0.55,
+    "ScatterDegrees": 6.0
+  },
+  "Explosion": {
+    "Damage": 180.0,
+    "Radius": 6.0
+  },
+  "Tracer": {
+    "Model": "warsteel:models/bedrock/projectile/shell_tracer.geo.json",
+    "Texture": "warsteel:textures/entity/shell_tracer.png",
+    "Glow": true,
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Colour": "C7F5FF"
+  },
+  "Sounds": {
+    "Ricochet": [
+      "warsteel:ricochet1",
+      "warsteel:ricochet2",
+      "warsteel:ricochet3"
+    ],
+    "Penetrate": "warsteel:shell_penetrate",
+    "NonPenetrate": "warsteel:shell_nonpenetrate"
+  },
+  "Filler": 2000.0
+}

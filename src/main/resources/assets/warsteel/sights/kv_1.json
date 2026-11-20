@@ -1,0 +1,43 @@
+{
+  "_comment": "KV-1 - TMFD-7 telescopic sight. Full crosshair dividing the glass into quadrants, lateral deflection band above the horizontal, one range ladder per ammunition type either side of the vertical. The tank silhouette and designation cartouche sit BELOW the aperture on the real card, outside the glass, which is what FurnitureAnchor BELOW_APERTURE places.",
+  "_optics": "Mask / CommanderMask / Furniture are OPTIONAL. The aperture and every reticle line are drawn from geometry, so no art is required. If you add a PNG later, name it here and it is layered over the drawn mask; a path that does not resolve is skipped rather than painting the missing-texture magenta.",
+  "UsedBy": [
+    "warsteel:kv-1"
+  ],
+  "Template": "kv_quadrant",
+  "Designation": "ТМФД-7",
+  "ReticleColor": "0x101010",
+  "ApertureScale": 0.72,
+  "Ladders": [
+    {
+      "Label": "СГ",
+      "Velocity": 20.0,
+      "Side": "LEFT",
+      "Stops": [
+        400,
+        800,
+        1200,
+        1600,
+        2000
+      ],
+      "MajorEvery": 1
+    },
+    {
+      "Label": "АГ",
+      "Velocity": 19.0,
+      "Side": "RIGHT",
+      "Stops": [
+        400,
+        800,
+        1200,
+        1600,
+        2000
+      ],
+      "MajorEvery": 1
+    }
+  ],
+  "TargetMarker": true,
+  "ViewportWidth": 0.78,
+  "ViewportAspect": 3.5,
+  "ViewportCorner": 0.22
+}

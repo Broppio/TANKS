@@ -1,0 +1,54 @@
+{
+  "_comment": "152 mm BR-540 APHE (M-10T). Penetration is War Thunder's value at 10 m, 0 degrees; DropoffPerBlock is fitted to its 100/500/1000 m values (1 block = 1 m). Filler is grams of TNT equivalent.",
+  "_binding": "UsedBy ties this profile to a vehicle. The shell entity's AP/HE type picks between that vehicle's profiles; Damage only breaks ties.",
+  "UsedBy": [
+    "warsteel:kv-2"
+  ],
+  "Name": "shell.warsteel.ap_152",
+  "Class": "APHE",
+  "Calibre": 152,
+  "Velocity": 20.0,
+  "Damage": 1540.0,
+  "Mass": 51.07,
+  "Penetration": {
+    "Muzzle": 110.0,
+    "DropoffPerBlock": 0.018,
+    "Minimum": 80.0
+  },
+  "Filler": 1550.0,
+  "FuzeDelay": 1.2,
+  "FuzeSensitivity": 15.0,
+  "Ricochet": {
+    "Enabled": true,
+    "MinAngle": 60.0,
+    "AlwaysAngle": 78.0,
+    "OvermatchRatio": 2.0,
+    "SpeedRetained": 0.55,
+    "ScatterDegrees": 6.0
+  },
+  "DefeatedByArmour": true,
+  "Explosion": {
+    "Damage": 50.0,
+    "Radius": 1.4
+  },
+  "Tracer": {
+    "Model": "warsteel:models/bedrock/projectile/shell_tracer.geo.json",
+    "Texture": "warsteel:textures/entity/shell_tracer.png",
+    "Glow": true,
+    "Scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "Colour": "FFD34D"
+  },
+  "Sounds": {
+    "Ricochet": [
+      "warsteel:ricochet1",
+      "warsteel:ricochet2",
+      "warsteel:ricochet3"
+    ],
+    "Penetrate": "warsteel:shell_penetrate",
+    "NonPenetrate": "warsteel:shell_nonpenetrate"
+  }
+}

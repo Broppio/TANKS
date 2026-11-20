@@ -1,0 +1,13 @@
+# Gradle / IDE
+.gradle/
+build/
+out/
+*.iml
+.idea/
+# Dev runtime (worlds, logs, test data packs)
+run/
+# Third-party mod jars used only for compiling (download them yourself, see README)
+libs/
+# Local build outputs
+*.zip
+*-drive.jar

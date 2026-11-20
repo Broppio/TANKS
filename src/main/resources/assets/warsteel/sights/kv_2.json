@@ -1,0 +1,45 @@
+{
+  "_comment": "KV-2 - same TMFD-7 pattern as the KV-1, different gun entirely. The 152 mm M-10 is the slowest weapon in the roster, so its ladder covers a fraction of the range for the same screen travel: 1000 m sits where the KV-1's 2400 m would. That contrast is the point - it is what a howitzer in a turret should feel like to aim.",
+  "_optics": "Mask / CommanderMask / Furniture are OPTIONAL. The aperture and every reticle line are drawn from geometry, so no art is required. If you add a PNG later, name it here and it is layered over the drawn mask; a path that does not resolve is skipped rather than painting the missing-texture magenta.",
+  "UsedBy": [
+    "warsteel:kv-2"
+  ],
+  "Template": "kv_quadrant",
+  "Designation": "ТМФД-7",
+  "ReticleColor": "0x101010",
+  "ApertureScale": 0.72,
+  "Ladders": [
+    {
+      "Label": "БР",
+      "Velocity": 12.0,
+      "Side": "LEFT",
+      "Stops": [
+        100,
+        200,
+        400,
+        600,
+        800,
+        1000
+      ],
+      "MajorEvery": 1
+    },
+    {
+      "Label": "ОФ",
+      "Velocity": 12.0,
+      "Side": "RIGHT",
+      "Stops": [
+        100,
+        200,
+        400,
+        600,
+        800,
+        1000
+      ],
+      "MajorEvery": 1
+    }
+  ],
+  "TargetMarker": true,
+  "ViewportWidth": 0.78,
+  "ViewportAspect": 3.5,
+  "ViewportCorner": 0.22
+}

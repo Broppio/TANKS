@@ -1,0 +1,402 @@
+{
+  "ID": "warsteel:m4a3-sherman",
+  "MaxHealth": 420,
+  "MaxEnergy": 20000000,
+  "OBB": [
+    {
+      "Size": [
+        1.38,
+        0.915,
+        3.025
+      ],
+      "Position": [
+        -0.043,
+        1.236,
+        -0.237
+      ]
+    },
+    {
+      "Part": "WheelLeft",
+      "Size": [
+        0.227,
+        0.62,
+        2.933
+      ],
+      "Position": [
+        1.071,
+        0.629,
+        -0.094
+      ]
+    },
+    {
+      "Part": "WheelRight",
+      "Size": [
+        0.227,
+        0.62,
+        2.933
+      ],
+      "Position": [
+        -1.164,
+        0.629,
+        -0.094
+      ]
+    },
+    {
+      "Part": "Turret",
+      "Size": [
+        1.01,
+        0.525,
+        1.075
+      ],
+      "Position": [
+        0.0,
+        -0.118,
+        -0.115
+      ],
+      "Transform": "Turret",
+      "Rotation": "Turret"
+    }
+  ],
+  "Seats": [
+    {
+      "HidePassenger": true,
+      "CameraPos": {
+        "Transform": "Barrel",
+        "ZoomPosition": [
+          0.2015,
+          0.5172,
+          -0.2103
+        ],
+        "Direction": "Barrel"
+      },
+      "Transform": "Turret",
+      "Position": [
+        0.45,
+        0.1,
+        -0.3
+      ],
+      "Weapons": [
+        "Cannon",
+        "MachineGun"
+      ],
+      "CanRotateHead": false,
+      "MinPitch": -10,
+      "MaxPitch": 25,
+      "Sensitivity": [
+        0.55,
+        0.75,
+        0.92
+      ]
+    },
+    {
+      "BanHand": true,
+      "Transform": "Vehicle",
+      "Position": [
+        1.05,
+        1.45,
+        -2.5
+      ],
+      "MinYaw": -95,
+      "MaxYaw": 95,
+      "HidePassenger": true,
+      "Weapons": [
+        "CommanderPeriscope"
+      ],
+      "CanRotateHead": false,
+      "MinPitch": -15,
+      "MaxPitch": 40
+    },
+    {
+      "BanHand": true,
+      "Transform": "Vehicle",
+      "Position": [
+        -1.05,
+        1.45,
+        -2.5
+      ],
+      "MinYaw": -95,
+      "MaxYaw": 95
+    }
+  ],
+  "Weapons": {
+    "Cannon": {
+      "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/ap_shell.png",
+      "DefaultFireMode": "Semi",
+      "AvailableFireModes": "Semi",
+      "Projectile": "superbwarfare:cannon_shell",
+      "DefaultZoom": 3,
+      "Magazine": 1,
+      "EmptyReloadTime": 100,
+      "Velocity": 19,
+      "Damage": 364,
+      "ExplosionDamage": 63,
+      "ExplosionRadius": 1.3,
+      "RecoilTime": 22,
+      "RecoilForce": 1.2,
+      "ShootShake": [
+        7,
+        9,
+        55
+      ],
+      "Spread": 0.018,
+      "ShootAnimationTime": 10,
+      "Crosshair": "@Empty",
+      "CrosshairColor": "00000000",
+      "Name": "weapon.warsteel.cannon_75",
+      "AmmoType": [
+        "superbwarfare:large_shell_ap",
+        {
+          "Ammo": "superbwarfare:large_shell_he",
+          "Override": {
+            "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/he_shell.png",
+            "Velocity": 18,
+            "Damage": 280,
+            "ExplosionDamage": 154,
+            "ExplosionRadius": 8,
+            "Name": "weapon.warsteel.cannon_75_he",
+            "ShellType": "HE"
+          }
+        }
+      ],
+      "SoundInfo": {
+        "Fire1P": "warsteel:sherman_1p_fire",
+        "Fire3P": "warsteel:sherman_3p_fire",
+        "Fire3PFar": "warsteel:sherman_3p_fire",
+        "Fire3PVeryFar": "warsteel:sherman_3p_fire",
+        "VehicleReload": "warsteel:default_reload",
+        "Change": "superbwarfare:into_cannon",
+        "CancellableSounds": [
+          "warsteel:default_reload"
+        ]
+      },
+      "SoundRadius": 40,
+      "ShootPos": {
+        "Transform": "Barrel",
+        "Positions": [
+          [
+            -0.2673,
+            0.0234,
+            2.2585
+          ]
+        ],
+        "Directions": [
+          "Barrel"
+        ]
+      }
+    },
+    "MachineGun": {
+      "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/gun_12_7mm.png",
+      "DefaultFireMode": "Auto",
+      "AvailableFireModes": "Auto",
+      "Spread": 0.3,
+      "CrosshairColor": "00000000",
+      "Projectile": "superbwarfare:projectile",
+      "DefaultZoom": 3,
+      "RPM": 500,
+      "Damage": 22,
+      "BypassesArmor": 0.2,
+      "Velocity": 20,
+      "RecoilTime": 16,
+      "RecoilForce": 0.05,
+      "HeatPerShoot": 5,
+      "NaturalCooldown": 1,
+      "ShootAnimationTime": 1,
+      "AmmoType": "@HeavyAmmo",
+      "ShootPos": {
+        "Transform": "Barrel",
+        "Positions": [
+          [
+            -0.6235,
+            0.1172,
+            0.3835
+          ]
+        ],
+        "Directions": [
+          "Barrel"
+        ]
+      },
+      "Crosshair": "@Empty",
+      "Name": "weapon.superbwarfare.50_cal_gun",
+      "SoundInfo": {
+        "Fire1P": "superbwarfare:m_2_hb_fire_1p",
+        "Fire3P": "superbwarfare:m_2_hb_fire_3p",
+        "Fire3PFar": "superbwarfare:m_2_hb_far",
+        "Fire3PVeryFar": "superbwarfare:m_2_hb_veryfar",
+        "Change": "superbwarfare:into_cannon"
+      },
+      "SoundRadius": 16
+    },
+    "CommanderPeriscope": {
+      "_comment": "Inert observation device. Superb Warfare gates vehicle zoom on the seat having a weapon, so the commander's seat needs one to be able to look through anything. No ammo, no projectile, no damage - it cannot fire, it only unlocks the optic.",
+      "DefaultZoom": 4,
+      "Magazine": 0,
+      "Damage": 0.0,
+      "Crosshair": "@Empty",
+      "CrosshairColor": "0x101010",
+      "Name": "weapon.warsteel.commander_periscope"
+    }
+  },
+  "HUDColor": "00000000",
+  "EngineType": "Track",
+  "EngineInfo": {
+    "Buoyancy": 0,
+    "EnergyCostRate": 180,
+    "WheelRotSpeed": 1.45,
+    "WheelDifferential": 0.7,
+    "TrackRotSpeed": 0.38,
+    "TrackDifferential": 0.6,
+    "MaxForwardSpeedRate": 0.2083,
+    "MaxBackwardSpeedRate": 0.1152,
+    "Increment": 0.055,
+    "Decrement": 0.055,
+    "SteeringSpeed": 0.05,
+    "EngineSoundVolume": 0.8
+  },
+  "TurretPos": [
+    -0.0397,
+    2.5419,
+    -0.1016
+  ],
+  "BarrelPos": [
+    0.2757,
+    -0.2278,
+    0.6306
+  ],
+  "TurretTurnSpeed": [
+    1.8,
+    1.8
+  ],
+  "TurretPitchRange": [
+    -10,
+    25
+  ],
+  "HasDecoy": false,
+  "UpStep": 1.8,
+  "RotateOffsetHeight": 3.0,
+  "Mass": 31,
+  "DamageModifiers": [
+    "minecraft:lava - -20",
+    "minecraft:lava * 10",
+    "@minecraft:tnt * 4",
+    "@minecraft:tnt_minecart * 4",
+    "minecraft:arrow 0",
+    "minecraft:trident 0",
+    "minecraft:mob_attack 0",
+    "minecraft:mob_attack_no_aggro 0",
+    "minecraft:mob_projectile 0",
+    "minecraft:player_attack 0",
+    "@#superbwarfare:aerial_bomb * 3",
+    "#superbwarfare:projectile 0",
+    "All - 20",
+    "All * 0.2",
+    "superbwarfare:vehicle_strike * 2.5",
+    "minecraft:explosion * 2",
+    "superbwarfare:custom_explosion * 0.65",
+    "superbwarfare:projectile_explosion * 0.65",
+    "superbwarfare:mine * 0.5",
+    "superbwarfare:lunge_mine * 0.5",
+    "superbwarfare:projectile_hit * 1.3",
+    "superbwarfare:grapeshot_hit * 0.1",
+    "#superbwarfare:projectile_absolute * 0.15",
+    "@superbwarfare:igla_9k38_missile * 0.3",
+    "@superbwarfare:small_cannon_shell * 0.25",
+    "@superbwarfare:c4 * 4",
+    "@#superbwarfare:at_rocket * 1.1",
+    "@superbwarfare:gun_grenade * 1.25",
+    "@superbwarfare:mortar_shell * 1.25",
+    "@superbwarfare:tm_62 * 2.5"
+  ],
+  "DestroyInfo": {
+    "ParticleType": "Large",
+    "ExplosionDamage": 150,
+    "ExplosionRadius": 11
+  },
+  "ThirdPersonCameraPos": [
+    0.0,
+    -0.963,
+    1.857
+  ],
+  "VehicleIcon": "warsteel:textures/vehicle_icon/m4a3-sherman_icon.png",
+  "ContainerIcon": "superbwarfare:textures/gui/vehicle/type/land.png",
+  "Type": "Tank",
+  "CollisionLevel": {
+    "Level": 4,
+    "PowerLimits": [
+      [
+        0,
+        0,
+        true
+      ],
+      [
+        0,
+        0,
+        true
+      ],
+      [
+        0.1,
+        0.05,
+        false
+      ],
+      [
+        1,
+        0.3,
+        false
+      ]
+    ]
+  },
+  "EngineSound": "warsteel:sherman_engine",
+  "HudType": "@Land",
+  "InertiaRotateRate": 1.3,
+  "TerrainCompat": [
+    [
+      1.4,
+      0,
+      2.9
+    ],
+    [
+      -1.4,
+      0,
+      2.9
+    ],
+    [
+      1.4,
+      0,
+      1.5
+    ],
+    [
+      -1.4,
+      0,
+      1.5
+    ],
+    [
+      1.4,
+      0,
+      0
+    ],
+    [
+      -1.4,
+      0,
+      0
+    ],
+    [
+      1.4,
+      0,
+      -1.5
+    ],
+    [
+      -1.4,
+      0,
+      -1.5
+    ],
+    [
+      1.4,
+      0,
+      -2.9
+    ],
+    [
+      -1.4,
+      0,
+      -2.9
+    ]
+  ]
+}

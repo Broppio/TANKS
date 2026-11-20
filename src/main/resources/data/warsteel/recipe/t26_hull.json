@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "i": {
+      "tag": "c:ingots/iron"
+    },
+    "s": {
+      "tag": "c:ingots/steel"
+    },
+    "a": {
+      "item": "superbwarfare:armor_plate"
+    }
+  },
+  "pattern": [
+    "iii",
+    "sas",
+    "iii"
+  ],
+  "result": {
+    "id": "warsteel:t26_hull"
+  },
+  "show_notification": true
+}

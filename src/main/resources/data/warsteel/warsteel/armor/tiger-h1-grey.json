@@ -1,0 +1,262 @@
+{
+  "_comment": "Armour plates on the faces of the hit boxes. Thickness is the real plate thickness in mm; Normal (optional) is the plate's outward direction in the Transform frame, used for the angle of incidence on sloped plates. Size is HALF-extents in blocks. Final ricochet chance = GeneralRicochetChance * RicochetChance * angle factor; overmatch forces a penetration.",
+  "Vehicle": "warsteel:tiger-h1-grey",
+  "GeneralRicochetChance": 1.0,
+  "Plates": [
+    {
+      "Name": "Mantlet",
+      "Transform": "Turret",
+      "Thickness": 120,
+      "RicochetChance": 0.6,
+      "Size": [
+        0.5,
+        0.33,
+        0.06
+      ],
+      "Position": [
+        0,
+        -0.55,
+        0.573
+      ]
+    },
+    {
+      "Name": "UpperFront",
+      "Transform": "Vehicle",
+      "Thickness": 100,
+      "RicochetChance": 1.0,
+      "Size": [
+        1.8,
+        0.325,
+        0.06
+      ],
+      "Position": [
+        0,
+        1.775,
+        2.2
+      ],
+      "Normal": [
+        0.0,
+        0.1736,
+        0.9848
+      ]
+    },
+    {
+      "Name": "LowerFront",
+      "Transform": "Vehicle",
+      "Thickness": 100,
+      "RicochetChance": 0.8,
+      "Size": [
+        1.8,
+        0.37,
+        0.06
+      ],
+      "Position": [
+        0,
+        1.08,
+        2.2
+      ],
+      "Normal": [
+        0.0,
+        -0.4067,
+        0.9135
+      ]
+    },
+    {
+      "Name": "Rear",
+      "Transform": "Vehicle",
+      "Thickness": 80,
+      "RicochetChance": 0.9,
+      "Size": [
+        1.8,
+        0.695,
+        0.06
+      ],
+      "Position": [
+        0,
+        1.405,
+        -3.89
+      ],
+      "Normal": [
+        0.0,
+        0.1564,
+        -0.9877
+      ]
+    },
+    {
+      "Name": "UpperSideLeft",
+      "Transform": "Vehicle",
+      "Thickness": 80,
+      "RicochetChance": 0.9,
+      "Size": [
+        0.06,
+        0.325,
+        3.045
+      ],
+      "Position": [
+        1.8,
+        1.775,
+        -0.845
+      ]
+    },
+    {
+      "Name": "LowerSideLeft",
+      "Transform": "Vehicle",
+      "Thickness": 60,
+      "RicochetChance": 0.9,
+      "Size": [
+        0.06,
+        0.37,
+        3.045
+      ],
+      "Position": [
+        1.8,
+        1.08,
+        -0.845
+      ]
+    },
+    {
+      "Name": "UpperSideRight",
+      "Transform": "Vehicle",
+      "Thickness": 80,
+      "RicochetChance": 0.9,
+      "Size": [
+        0.06,
+        0.325,
+        3.045
+      ],
+      "Position": [
+        -1.8,
+        1.775,
+        -0.845
+      ]
+    },
+    {
+      "Name": "LowerSideRight",
+      "Transform": "Vehicle",
+      "Thickness": 60,
+      "RicochetChance": 0.9,
+      "Size": [
+        0.06,
+        0.37,
+        3.045
+      ],
+      "Position": [
+        -1.8,
+        1.08,
+        -0.845
+      ]
+    },
+    {
+      "Name": "Roof",
+      "Transform": "Vehicle",
+      "Thickness": 25,
+      "RicochetChance": 1.0,
+      "Size": [
+        1.8,
+        0.06,
+        3.045
+      ],
+      "Position": [
+        0,
+        2.1,
+        -0.845
+      ]
+    },
+    {
+      "Name": "Floor",
+      "Transform": "Vehicle",
+      "Thickness": 25,
+      "RicochetChance": 1.0,
+      "Size": [
+        1.8,
+        0.06,
+        3.045
+      ],
+      "Position": [
+        0,
+        0.71,
+        -0.845
+      ]
+    },
+    {
+      "Name": "TurretFront",
+      "Transform": "Turret",
+      "Thickness": 100,
+      "RicochetChance": 0.9,
+      "Size": [
+        1.443,
+        0.431,
+        0.06
+      ],
+      "Position": [
+        0,
+        -0.565,
+        0.573
+      ]
+    },
+    {
+      "Name": "TurretRear",
+      "Transform": "Turret",
+      "Thickness": 80,
+      "RicochetChance": 0.9,
+      "Size": [
+        1.443,
+        0.431,
+        0.06
+      ],
+      "Position": [
+        0,
+        -0.565,
+        -1.543
+      ]
+    },
+    {
+      "Name": "TurretSideLeft",
+      "Transform": "Turret",
+      "Thickness": 80,
+      "RicochetChance": 0.9,
+      "Size": [
+        0.06,
+        0.431,
+        1.058
+      ],
+      "Position": [
+        1.443,
+        -0.565,
+        -0.485
+      ]
+    },
+    {
+      "Name": "TurretSideRight",
+      "Transform": "Turret",
+      "Thickness": 80,
+      "RicochetChance": 0.9,
+      "Size": [
+        0.06,
+        0.431,
+        1.058
+      ],
+      "Position": [
+        -1.443,
+        -0.565,
+        -0.485
+      ]
+    },
+    {
+      "Name": "TurretRoof",
+      "Transform": "Turret",
+      "Thickness": 25,
+      "RicochetChance": 1.0,
+      "Size": [
+        1.443,
+        0.06,
+        1.058
+      ],
+      "Position": [
+        0,
+        -0.134,
+        -0.485
+      ]
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "s": {
+      "tag": "c:ingots/steel"
+    },
+    "a": {
+      "item": "superbwarfare:armor_plate"
+    },
+    "b": {
+      "tag": "c:storage_blocks/steel"
+    }
+  },
+  "pattern": [
+    " s ",
+    "aba",
+    "sss"
+  ],
+  "result": {
+    "id": "warsteel:kv1_turret"
+  },
+  "show_notification": true
+}

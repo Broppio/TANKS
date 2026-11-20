@@ -1,0 +1,230 @@
+{
+  "_comment": "Armour plates on the faces of the hit boxes. Thickness is the real plate thickness in mm; Normal (optional) is the plate's outward direction in the Transform frame, used for the angle of incidence on sloped plates. Size is HALF-extents in blocks. Final ricochet chance = GeneralRicochetChance * RicochetChance * angle factor; overmatch forces a penetration.",
+  "Vehicle": "warsteel:kv-2",
+  "GeneralRicochetChance": 1.0,
+  "Plates": [
+    {
+      "Name": "UpperFront",
+      "Transform": "Vehicle",
+      "Thickness": 75,
+      "RicochetChance": 1.0,
+      "Size": [
+        1.8,
+        0.3,
+        0.06
+      ],
+      "Position": [
+        0,
+        1.45,
+        3.9
+      ],
+      "Normal": [
+        0.0,
+        0.5,
+        0.866
+      ]
+    },
+    {
+      "Name": "LowerFront",
+      "Transform": "Vehicle",
+      "Thickness": 75,
+      "RicochetChance": 0.8,
+      "Size": [
+        1.8,
+        0.3,
+        0.06
+      ],
+      "Position": [
+        0,
+        0.85,
+        3.9
+      ],
+      "Normal": [
+        0.0,
+        -0.4226,
+        0.9063
+      ]
+    },
+    {
+      "Name": "Rear",
+      "Transform": "Vehicle",
+      "Thickness": 60,
+      "RicochetChance": 0.9,
+      "Size": [
+        1.8,
+        0.6,
+        0.06
+      ],
+      "Position": [
+        0,
+        1.15,
+        -3.9
+      ],
+      "Normal": [
+        0.0,
+        0.2588,
+        -0.9659
+      ]
+    },
+    {
+      "Name": "SideLeft",
+      "Transform": "Vehicle",
+      "Thickness": 75,
+      "RicochetChance": 0.9,
+      "Size": [
+        0.06,
+        0.6,
+        3.9
+      ],
+      "Position": [
+        1.8,
+        1.15,
+        0
+      ]
+    },
+    {
+      "Name": "SideRight",
+      "Transform": "Vehicle",
+      "Thickness": 75,
+      "RicochetChance": 0.9,
+      "Size": [
+        0.06,
+        0.6,
+        3.9
+      ],
+      "Position": [
+        -1.8,
+        1.15,
+        0
+      ]
+    },
+    {
+      "Name": "Roof",
+      "Transform": "Vehicle",
+      "Thickness": 30,
+      "RicochetChance": 1.0,
+      "Size": [
+        1.8,
+        0.06,
+        3.9
+      ],
+      "Position": [
+        0,
+        1.75,
+        0
+      ]
+    },
+    {
+      "Name": "Floor",
+      "Transform": "Vehicle",
+      "Thickness": 30,
+      "RicochetChance": 1.0,
+      "Size": [
+        1.8,
+        0.06,
+        3.9
+      ],
+      "Position": [
+        0,
+        0.55,
+        0
+      ]
+    },
+    {
+      "Name": "Mantlet",
+      "Transform": "Turret",
+      "Thickness": 90,
+      "RicochetChance": 0.7,
+      "Size": [
+        0.42,
+        0.32,
+        0.06
+      ],
+      "Position": [
+        0,
+        0.2,
+        2.2
+      ]
+    },
+    {
+      "Name": "TurretFront",
+      "Transform": "Turret",
+      "Thickness": 75,
+      "RicochetChance": 0.9,
+      "Size": [
+        1.1,
+        1.0,
+        0.06
+      ],
+      "Position": [
+        0,
+        0.2,
+        2.2
+      ]
+    },
+    {
+      "Name": "TurretRear",
+      "Transform": "Turret",
+      "Thickness": 75,
+      "RicochetChance": 0.9,
+      "Size": [
+        1.1,
+        1.0,
+        0.06
+      ],
+      "Position": [
+        0,
+        0.2,
+        -0.2
+      ]
+    },
+    {
+      "Name": "TurretSideLeft",
+      "Transform": "Turret",
+      "Thickness": 75,
+      "RicochetChance": 0.9,
+      "Size": [
+        0.06,
+        1.0,
+        1.2
+      ],
+      "Position": [
+        1.1,
+        0.2,
+        1.0
+      ]
+    },
+    {
+      "Name": "TurretSideRight",
+      "Transform": "Turret",
+      "Thickness": 75,
+      "RicochetChance": 0.9,
+      "Size": [
+        0.06,
+        1.0,
+        1.2
+      ],
+      "Position": [
+        -1.1,
+        0.2,
+        1.0
+      ]
+    },
+    {
+      "Name": "TurretRoof",
+      "Transform": "Turret",
+      "Thickness": 40,
+      "RicochetChance": 1.0,
+      "Size": [
+        1.1,
+        0.06,
+        1.2
+      ],
+      "Position": [
+        0,
+        1.2,
+        1.0
+      ]
+    }
+  ]
+}

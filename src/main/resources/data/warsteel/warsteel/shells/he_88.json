@@ -1,0 +1,54 @@
+{
+  "_comment": "88 mm Sprgr. HE. Penetration is War Thunder's value at 10 m, 0 degrees; DropoffPerBlock is fitted to its 100/500/1000 m values (1 block = 1 m). Filler is grams of TNT equivalent.",
+  "_binding": "UsedBy ties this profile to a vehicle. The shell entity's AP/HE type picks between that vehicle's profiles; Damage only breaks ties.",
+  "UsedBy": [
+    "warsteel:tiger-h1",
+    "warsteel:tiger-h1-grey",
+    "warsteel:tiger-h1-sand"
+  ],
+  "Name": "shell.warsteel.he_88",
+  "Class": "HE",
+  "Calibre": 88,
+  "Velocity": 10.0,
+  "Damage": 1400.0,
+  "Mass": 9.0,
+  "Penetration": {
+    "Muzzle": 13.0,
+    "DropoffPerBlock": 0.0,
+    "Minimum": 13.0
+  },
+  "Filler": 920.0,
+  "Ricochet": {
+    "Enabled": true,
+    "MinAngle": 80.0,
+    "AlwaysAngle": 88.0,
+    "OvermatchRatio": 2.0,
+    "SpeedRetained": 0.4,
+    "ScatterDegrees": 8.0
+  },
+  "DefeatedByArmour": true,
+  "Explosion": {
+    "Damage": 170.0,
+    "Radius": 4.0
+  },
+  "Tracer": {
+    "Model": "warsteel:models/bedrock/projectile/shell_tracer.geo.json",
+    "Texture": "warsteel:textures/entity/shell_tracer.png",
+    "Glow": true,
+    "Scale": [
+      1.1,
+      1.1,
+      1.15
+    ],
+    "Colour": "FFB347"
+  },
+  "Sounds": {
+    "Ricochet": [
+      "warsteel:ricochet1",
+      "warsteel:ricochet2",
+      "warsteel:ricochet3"
+    ],
+    "Penetrate": "warsteel:shell_penetrate",
+    "NonPenetrate": "warsteel:shell_nonpenetrate"
+  }
+}

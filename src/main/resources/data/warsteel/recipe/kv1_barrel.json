@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "t": {
+      "item": "superbwarfare:steel_barrel"
+    },
+    "c": {
+      "item": "superbwarfare:cemented_carbide_ingot"
+    },
+    "b": {
+      "item": "superbwarfare:cannon_core"
+    }
+  },
+  "pattern": [
+    "ttt",
+    "cbc"
+  ],
+  "result": {
+    "id": "warsteel:kv1_barrel"
+  },
+  "show_notification": true
+}

@@ -1,0 +1,46 @@
+plugins {
+    id 'java-library'
+    id 'net.neoforged.moddev' version '2.0.148'
+}
+
+version = mod_version
+group = 'rev.rev.warsteel'
+base { archivesName = 'warsteel' }
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(21)
+
+repositories {
+    mavenCentral()
+}
+
+neoForge {
+    version = project.neo_version
+    runs {
+        client {
+            client()
+            // Dev convenience: -PquickPlay=<world> loads straight into a singleplayer world.
+            if (project.hasProperty('quickPlay')) {
+                programArguments.addAll('--quickPlaySingleplayer', project.property('quickPlay').toString())
+                programArguments.addAll('--width', '1280', '--height', '720')
+            }
+        }
+        server { server(); programArgument '--nogui' }
+    }
+    mods {
+        "${mod_id}" { sourceSet(sourceSets.main) }
+    }
+}
+
+dependencies {
+    // Superb Warfare 0.8.9.2-hotfix (NeoForge 1.21.1) and the libraries it bundles.
+    // At runtime these come from Superb Warfare itself, so they are compile-only here.
+    compileOnly files('libs/superbwarfare-0.8.9.2-hotfix-mc1.21.1-e0c2b27f.jar')
+    compileOnly fileTree(dir: 'libs', include: ['simplebedrockmodel-*.jar', 'geckolib-*.jar', 'mae-*.jar'])
+    compileOnly 'org.jetbrains.kotlin:kotlin-stdlib:2.2.0'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+tasks.named('compileJava') { options.compilerArgs += ['-Xmaxerrs', '2000'] }
