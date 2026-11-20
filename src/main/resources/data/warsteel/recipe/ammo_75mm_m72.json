@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " S ",
+    "CGC",
+    " P "
+  ],
+  "key": {
+    "C": {
+      "item": "superbwarfare:copper_plate"
+    },
+    "G": {
+      "item": "minecraft:gunpowder"
+    },
+    "P": {
+      "item": "superbwarfare:primer"
+    },
+    "S": {
+      "tag": "c:ingots/steel"
+    }
+  },
+  "result": {
+    "id": "warsteel:75mm_m72",
+    "count": 4
+  }
+}

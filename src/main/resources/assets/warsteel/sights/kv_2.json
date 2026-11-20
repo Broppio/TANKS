@@ -10,8 +10,8 @@
   "ApertureScale": 0.72,
   "Ladders": [
     {
-      "Label": "БР",
-      "Velocity": 12.0,
+      "Label": "BR-540",
+      "Velocity": 21.6,
       "Side": "LEFT",
       "Stops": [
         100,
@@ -24,8 +24,8 @@
       "MajorEvery": 1
     },
     {
-      "Label": "ОФ",
-      "Velocity": 12.0,
+      "Label": "OF-530",
+      "Velocity": 21.8,
       "Side": "RIGHT",
       "Stops": [
         100,

@@ -19,6 +19,17 @@ public class WarSteel {
    private static final Logger LOGGER = LogUtils.getLogger();
    public static final Logger LOG_OBBS = org.slf4j.LoggerFactory.getLogger("warsteel/obbs");
 
+   private static void registerPayloads(net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent event) {
+      event.registrar("1")
+         .optional()
+         .playToClient(
+            rev.rev.warsteel.network.ShotReplayPayload.TYPE,
+            rev.rev.warsteel.network.ShotReplayPayload.CODEC,
+            // The handler class is only resolved when a packet arrives, i.e. on a client.
+            (payload, context) -> context.enqueueWork(() -> rev.rev.warsteel.client.replay.ClientReplayHandler.handle(payload))
+         );
+   }
+
    public WarSteel(IEventBus bus) {
       ModEntities.REGISTRY.register(bus);
       ModTabs.TABS.register(bus);
@@ -28,6 +39,7 @@ public class WarSteel {
       NeoForge.EVENT_BUS.register(RicochetHandler.INSTANCE);
       NeoForge.EVENT_BUS.register(MuzzleParticleHandler.INSTANCE);
       NeoForge.EVENT_BUS.register(rev.rev.warsteel.damage.WarSteelCommands.INSTANCE);
+      bus.addListener(WarSteel::registerPayloads);
       LOGGER.info("WarSteel: registered ricochet and muzzle particle handlers");
    }
 }

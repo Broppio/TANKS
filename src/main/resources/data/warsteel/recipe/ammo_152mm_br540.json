@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SXS",
+    "CTC",
+    "CPC"
+  ],
+  "key": {
+    "C": {
+      "item": "superbwarfare:copper_plate"
+    },
+    "P": {
+      "item": "superbwarfare:primer"
+    },
+    "S": {
+      "tag": "c:ingots/steel"
+    },
+    "T": {
+      "item": "minecraft:tnt"
+    },
+    "X": {
+      "item": "superbwarfare:high_energy_explosives"
+    }
+  },
+  "result": {
+    "id": "warsteel:152mm_br540",
+    "count": 1
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SXS",
+    "CGC",
+    " P "
+  ],
+  "key": {
+    "C": {
+      "item": "superbwarfare:copper_plate"
+    },
+    "G": {
+      "item": "minecraft:gunpowder"
+    },
+    "P": {
+      "item": "superbwarfare:primer"
+    },
+    "S": {
+      "tag": "c:ingots/steel"
+    },
+    "X": {
+      "item": "superbwarfare:high_energy_explosives"
+    }
+  },
+  "result": {
+    "id": "warsteel:75mm_m61",
+    "count": 4
+  }
+}

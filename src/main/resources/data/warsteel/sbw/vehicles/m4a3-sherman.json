@@ -127,10 +127,10 @@
       "DefaultZoom": 3,
       "Magazine": 1,
       "EmptyReloadTime": 100,
-      "Velocity": 19,
+      "Velocity": 30.9,
       "Damage": 364,
-      "ExplosionDamage": 63,
-      "ExplosionRadius": 1.3,
+      "ExplosionDamage": 44.4,
+      "ExplosionRadius": 0.65,
       "RecoilTime": 22,
       "RecoilForce": 1.2,
       "ShootShake": [
@@ -142,18 +142,29 @@
       "ShootAnimationTime": 10,
       "Crosshair": "@Empty",
       "CrosshairColor": "00000000",
-      "Name": "weapon.warsteel.cannon_75",
+      "Name": "item.warsteel.75mm_m61",
       "AmmoType": [
-        "superbwarfare:large_shell_ap",
+        "warsteel:75mm_m61",
         {
-          "Ammo": "superbwarfare:large_shell_he",
+          "Ammo": "warsteel:75mm_m72",
+          "Override": {
+            "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/ap_shell.png",
+            "Velocity": 30.95,
+            "Damage": 340,
+            "ExplosionDamage": 0,
+            "ExplosionRadius": 0,
+            "Name": "item.warsteel.75mm_m72"
+          }
+        },
+        {
+          "Ammo": "warsteel:75mm_m48",
           "Override": {
             "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/he_shell.png",
-            "Velocity": 18,
+            "Velocity": 23.15,
             "Damage": 280,
-            "ExplosionDamage": 154,
-            "ExplosionRadius": 8,
-            "Name": "weapon.warsteel.cannon_75_he",
+            "ExplosionDamage": 72.8,
+            "ExplosionRadius": 1.41,
+            "Name": "item.warsteel.75mm_m48",
             "ShellType": "HE"
           }
         }

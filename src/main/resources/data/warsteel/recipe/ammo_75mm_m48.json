@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "IXI",
+    "CGC",
+    " P "
+  ],
+  "key": {
+    "C": {
+      "item": "superbwarfare:copper_plate"
+    },
+    "G": {
+      "item": "minecraft:gunpowder"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "P": {
+      "item": "superbwarfare:primer"
+    },
+    "X": {
+      "item": "superbwarfare:high_energy_explosives"
+    }
+  },
+  "result": {
+    "id": "warsteel:75mm_m48",
+    "count": 4
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SXS",
+    "KGK",
+    " P "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gunpowder"
+    },
+    "K": {
+      "item": "minecraft:copper_ingot"
+    },
+    "P": {
+      "item": "superbwarfare:primer"
+    },
+    "S": {
+      "tag": "c:ingots/steel"
+    },
+    "X": {
+      "item": "superbwarfare:high_energy_explosives"
+    }
+  },
+  "result": {
+    "id": "warsteel:45mm_br240",
+    "count": 8
+  }
+}

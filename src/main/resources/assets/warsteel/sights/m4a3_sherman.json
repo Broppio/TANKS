@@ -11,7 +11,7 @@
   "Ladders": [
     {
       "Label": "M61",
-      "Velocity": 19.0,
+      "Velocity": 30.9,
       "Side": "LEFT",
       "Stops": [
         400,
@@ -24,7 +24,7 @@
     },
     {
       "Label": "M48",
-      "Velocity": 18.0,
+      "Velocity": 23.15,
       "Side": "RIGHT",
       "Stops": [
         400,

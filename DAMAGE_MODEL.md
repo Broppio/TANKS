@@ -60,6 +60,71 @@ out. Superb Warfare then wrecks it as usual.
 reaches the hull at `FallbackDamageMultiplier` of normal, so nothing is immortal. Cannon shells
 from Superb Warfare's own tanks get a generic profile and go through the full model.
 
+## Ammunition
+
+Each tank fires its own historical rounds. They're craftable items: load them into the tank's
+inventory like Superb Warfare shells and switch rounds with the weapon-change key. Hover over a
+round to see its stats.
+
+| Tank | Gun | Rounds |
+|---|---|---|
+| T-26 | 45 mm 20-K | BR-240 (APHE, 62 mm), O-240 (HE) |
+| M4A3 (75) Sherman | 75 mm M3 | M61 (APCBC-HE, 104 mm), M72 (AP shot, 91 mm), M48 (HE) |
+| KV-1 | 76 mm F-34 | BR-350A (APHEBC, 84 mm), OF-350 (HE) |
+| KV-2 | 152 mm M-10T | BR-540 (APHE, 110 mm), OF-530 (HE, 6.9 kg TNT) |
+| Tiger H1 | 8.8 cm KwK 36 | PzGr 39 (APCBC-HE, 162 mm), PzGr 40 (APCR, 171 mm), Sprgr. L/4.5 (HE) |
+
+Penetration figures are War Thunder's at 10 m. Muzzle velocities are historical (the gun sights'
+range ladders are matched to them).
+
+Recipes use one shape per round: the top row is the projectile, the middle row the case and
+propellant, and the bottom row the base with a `primer`.
+
+| Projectile (top row) | |
+|---|---|
+| AP | steel ingot |
+| APHE | steel, high-energy explosive, steel |
+| APCR | steel, tungsten rod, steel |
+| HE | iron, high-energy explosive, iron |
+
+| Calibre | Case (middle, bottom) | Yield |
+|---|---|---|
+| 45 mm | copper ingots and gunpowder / primer | 8 |
+| 75 mm | copper plates and gunpowder / primer | 4 |
+| 76 mm | as 75 mm, plus copper plates either side of the primer | 4 |
+| 88 mm | as 75 mm, plus steel either side of the primer | 3 |
+| 152 mm | copper plates and TNT / copper, primer, copper | 1 |
+
+All ammunition data is generated from one table in `tools/gen_ammo.py` (items, shell profiles,
+the tanks' ammo lists, recipes, textures, names and sights). Edit the table and rerun it.
+
+## High-explosive shells
+
+WarSteel's HE (and APHE) shells don't use Superb Warfare's fixed explosion. Their effect is
+worked out from the TNT-equivalent charge:
+
+- **Blast** falls with scaled distance Z = R / W^(1/3) (W in kg). It's lethal to a person within
+  Z ≈ 2 and harmless beyond Z ≈ 6. A 76 mm OF-350 (0.71 kg) kills within about 1.8 m; a 152 mm
+  OF-530 (6.9 kg) within about 3.8 m.
+- **Fragments**: about 900·√W fragments fly out evenly. Each person in line of sight is hit by
+  their share (by area and distance), so HE wounds at random out to tens of metres while being
+  reliably lethal only close in. Walls and terrain block fragments.
+- **Craters** are small and sized to the charge, only when Superb Warfare's explosion block
+  damage setting is on.
+- **Tanks caught in the blast** take module damage (tracks, barrel). HE that penetrates bursts
+  inside; only a small, muffled share of its blast escapes.
+
+## Shot replay
+
+When your shell hits a WarSteel tank, a small x-ray replay plays in the bottom-right corner, like
+War Thunder's hit camera:
+- the shell flies in, and the struck plate is shown in red;
+- the core, spall and fragments spread through the hull;
+- modules turn orange (damaged) or black (destroyed) as they're reached;
+- the outcome and the list of what broke appear below.
+
+Ricochets and non-penetrations show the shell glancing off.
+
 ## Data files
 
 All data lives in `data/<namespace>/warsteel/`, so a data pack can override any of it.
@@ -85,6 +150,6 @@ origin on the turret pivot and turns with the turret. One block is one metre.
 - `/warsteel status`: module report for the nearest tank.
 - `/warsteel damage <module> <amount>`: damage one module.
 - `/warsteel reset`: restore the nearest tank.
-- `/warsteel fire <shell>`: fire a real cannon shell with a given profile from where you're
-  looking (also works from command blocks with `execute positioned ... facing ...`).
+- `/warsteel fire <shell>`: fire a real cannon shell with a given profile (e.g.
+  `warsteel:88mm_pzgr39`) from where you're looking (also works from command blocks with `execute positioned ... facing ...`).
 - `/warsteel obbs`: print the nearest tank's hitboxes in its own frames, for writing plate data.

@@ -55,8 +55,21 @@ public final class TankDamage {
    // Hit report
    // ------------------------------------------------------------------------------------------
 
+   /** One traced line for the shot replay: 0 = shell core, 1 = spall, 2 = burst fragment. */
+   public record ShotRay(Vec3 from, Vec3 to, int kind, float t0) {
+   }
+
    public static final class Report {
       private final List<MutableComponent> events = new ArrayList<>();
+      /** Everything traced during this hit, for the shot replay (world coordinates). */
+      public final List<ShotRay> rays = new ArrayList<>();
+      /** Module index -> distance along the shot (blocks) at which it was first damaged. */
+      public final java.util.Map<Integer, Float> hitTime = new java.util.HashMap<>();
+      /** Where an explosive shell burst inside, or null. */
+      @Nullable
+      public Vec3 burstPoint;
+      /** Module index -> whether it was out before this hit (to show what this shot broke). */
+      public final java.util.Set<Integer> outBefore = new java.util.HashSet<>();
       private final List<String> keys = new ArrayList<>();
       boolean knockedOut;
       boolean detonated;
@@ -71,6 +84,11 @@ public final class TankDamage {
 
       public boolean knockedOut() {
          return this.knockedOut;
+      }
+
+      /** The individual event lines (for the replay panel). */
+      public List<MutableComponent> eventLines() {
+         return this.events;
       }
 
       public boolean detonated() {
@@ -147,8 +165,12 @@ public final class TankDamage {
       final java.util.Map<Integer, Float> ammoHits = new java.util.HashMap<>();
       /** Modules that already rolled for fire during this hit. */
       final java.util.Set<Integer> fireRolled = new java.util.HashSet<>();
+      /** Current distance along the shot, in blocks; stamps module hit times for the replay. */
+      float clock;
       final Obb[] modules;
       final Obb[] plates;
+      /** The vehicle's hull and turret hit boxes: nothing inside travels beyond them. */
+      final List<Obb> envelope = new ArrayList<>();
       final int entryPlate;
 
       Sim(WarSteelTank tank, ServerLevel level, @Nullable ArmorData armour, int entryPlate, DamageSource source, @Nullable Entity attacker) {
@@ -165,6 +187,16 @@ public final class TankDamage {
 
          for (ModuleDef d : defs) {
             this.modules[d.index()] = Obb.of(tank, d.transform(), d.position(), d.size());
+            if (this.st.destroyed(d.index())) {
+               this.report.outBefore.add(d.index());
+            }
+         }
+
+         for (com.atsuishio.superbwarfare.tools.OBB o : tank.getOBBs()) {
+            String part = o.part == null ? "BODY" : o.part.name();
+            if (!part.startsWith("WHEEL")) {
+               this.envelope.add(new Obb(new Vec3(o.center.x, o.center.y, o.center.z), o.rotation(), o.extents().x, o.extents().y, o.extents().z));
+            }
          }
 
          if (armour != null) {
@@ -247,9 +279,14 @@ public final class TankDamage {
 
    /** An explosive round bursting outside the armour: only external modules nearby suffer. */
    public static Report outsideBlast(WarSteelTank tank, ServerLevel level, Vec3 at, ShellData shell, DamageSource source, @Nullable Entity attacker) {
+      return blastFromOutside(tank, level, at, shell.getFiller(), source, attacker);
+   }
+
+   /** A charge of {@code fillerGrams} TNT going off outside this tank's armour. */
+   public static Report blastFromOutside(WarSteelTank tank, ServerLevel level, Vec3 at, double fillerGrams, DamageSource source, @Nullable Entity attacker) {
       Sim s = new Sim(tank, level, null, -1, source, attacker);
       // Outside the armour the blast vents into open air: much smaller lethal radius.
-      double filler = Math.max(shell.getFiller(), 20.0);
+      double filler = Math.max(fillerGrams, 20.0);
       double r = Math.max(0.5, 0.15 * Math.cbrt(filler));
       float peak = blastPeak(filler) * 0.5F;
 
@@ -293,25 +330,26 @@ public final class TankDamage {
       switch (cls) {
          case "HE": {
             // Overmatched: bursts just behind the plate.
-            Vec3 at = entry.add(dir.scale(Math.min(0.25, wall * 0.5)));
-            burst(s, at, shell.getFiller());
+            double d0 = Math.min(0.25, wall * 0.5);
+            s.report.rays.add(new ShotRay(entry, entry.add(dir.scale(d0)), 0, 0.0F));
+            burst(s, entry.add(dir.scale(d0)), shell.getFiller(), (float)d0);
             break;
          }
          case "HESH": {
             int n = clamp((int)(shell.getFiller() / 40.0), 12, 60);
-            spall(s, entry, dir, n, 60.0, 34.0F);
+            spall(s, entry, dir, n, 60.0, 34.0F, 0.0F);
             break;
          }
          case "APHE":
          case "APCBC":
          case "APHEBC": {
             int spallCount = clamp((int)(calibre / 9.0 * (0.5 + ratio)), 3, 14);
-            spall(s, entry, dir, spallCount, 22.0, 20.0F + calibre * 0.15F);
+            spall(s, entry, dir, spallCount, 22.0, 20.0F + calibre * 0.15F, 0.0F);
             boolean armed = effective >= shell.getFuzeSensitivity() && shell.getFiller() > 0.0;
             if (armed) {
                double travel = Math.min(shell.getFuzeDelay(), wall - 0.15);
                core(s, entry, dir, Math.max(0.0, travel), coreDamage(shell));
-               burst(s, entry.add(dir.scale(Math.max(0.05, travel))), shell.getFiller());
+               burst(s, entry.add(dir.scale(Math.max(0.05, travel))), shell.getFiller(), (float)Math.max(0.05, travel));
             } else {
                // Fuze did not arm (plate too thin): the shell over-penetrates as solid shot.
                core(s, entry, dir, wall, coreDamage(shell));
@@ -323,14 +361,14 @@ public final class TankDamage {
          case "APDS": {
             core(s, entry, dir, wall, coreDamage(shell) * 0.8F);
             int n = clamp((int)(calibre / 12.0 * (0.4 + ratio)), 3, 10);
-            spall(s, entry, dir, n, 13.0, 16.0F + calibre * 0.12F);
+            spall(s, entry, dir, n, 13.0, 16.0F + calibre * 0.12F, 0.0F);
             break;
          }
          default: {
             // AP solid shot
             core(s, entry, dir, wall, coreDamage(shell));
             int n = clamp((int)(calibre / 7.0 * (0.5 + ratio)), 4, 20);
-            spall(s, entry, dir, n, 24.0, 22.0F + calibre * 0.18F);
+            spall(s, entry, dir, n, 24.0, 22.0F + calibre * 0.18F, 0.0F);
          }
       }
 
@@ -357,23 +395,27 @@ public final class TankDamage {
    /** The shell body itself: everything it passes through takes heavy damage. */
    private static void core(Sim s, Vec3 from, Vec3 dir, double length, float damage) {
       float d = damage;
+      s.report.rays.add(new ShotRay(from, from.add(dir.scale(length)), 0, 0.0F));
 
       for (RayHit h : trace(s, from, dir, length)) {
+         s.clock = (float)h.t();
          damage(s, h.module(), d);
          d *= 0.8F;
       }
    }
 
    /** A cone of armour fragments thrown off the inner face of the plate. */
-   private static void spall(Sim s, Vec3 from, Vec3 dir, int count, double halfAngle, float damage) {
+   private static void spall(Sim s, Vec3 from, Vec3 dir, int count, double halfAngle, float damage, float t0) {
       for (int i = 0; i < count; i++) {
          Vec3 d = coneDir(dir, halfAngle, s.rnd);
-         fragment(s, from, d, damage * (0.75F + s.rnd.nextFloat() * 0.5F));
+         fragment(s, from, d, damage * (0.75F + s.rnd.nextFloat() * 0.5F), t0, 1);
       }
    }
 
    /** An explosive burst inside the hull: overpressure plus a sphere of fragments. */
-   private static void burst(Sim s, Vec3 at, double fillerGrams) {
+   private static void burst(Sim s, Vec3 at, double fillerGrams, float t0) {
+      s.report.burstPoint = at;
+      s.clock = t0;
       double filler = Math.max(fillerGrams, 10.0);
       double r = blastRadius(filler);
       float peak = blastPeak(filler);
@@ -388,15 +430,16 @@ public final class TankDamage {
       int n = clamp((int)(filler / 2.5), 12, 150);
 
       for (int i = 0; i < n; i++) {
-         fragment(s, at, sphereDir(s.rnd), 26.0F + s.rnd.nextFloat() * 14.0F);
+         fragment(s, at, sphereDir(s.rnd), 26.0F + s.rnd.nextFloat() * 14.0F, t0, 2);
       }
 
       s.level.sendParticles(ParticleTypes.EXPLOSION, at.x, at.y, at.z, 1, 0.0, 0.0, 0.0, 0.0);
    }
 
    /** One fragment: damages the first module it meets fully and a second one at half. */
-   private static void fragment(Sim s, Vec3 from, Vec3 dir, float damage) {
+   private static void fragment(Sim s, Vec3 from, Vec3 dir, float damage, float t0, int kind) {
       double wall = wallDistance(s, from, dir);
+      double stop = wall;
       float d = damage;
       int hits = 0;
 
@@ -406,14 +449,18 @@ public final class TankDamage {
             continue;
          }
 
+         s.clock = t0 + (float)h.t();
          damage(s, h.module(), d);
          hits++;
+         stop = h.t() + 0.15;
          if (def.type() == ModuleType.CREW || hits >= 2) {
             break;
          }
 
          d *= 0.5F;
       }
+
+      s.report.rays.add(new ShotRay(from, from.add(dir.scale(Math.min(stop, wall))), kind, t0));
    }
 
    // ------------------------------------------------------------------------------------------
@@ -432,6 +479,7 @@ public final class TankDamage {
          return;
       }
 
+      s.report.hitTime.putIfAbsent(i, s.clock);
       float after = Math.max(0.0F, before - amount);
       st.setHealth(i, after);
       st.quietTicks = 0;
@@ -780,6 +828,25 @@ public final class TankDamage {
          double[] t = s.plates[i].intersect(from, dir);
          if (t != null && t[0] > 0.12 && t[0] < best) {
             best = t[0];
+         }
+      }
+
+      // Never beyond the hull/turret volume (gaps between plates, the turret ring...).
+      if (!s.envelope.isEmpty()) {
+         for (double d = 0.1; d < best; d += 0.1) {
+            Vec3 p = from.add(dir.scale(d));
+            boolean inside = false;
+
+            for (Obb box : s.envelope) {
+               if (box.distanceSqr(p) < 0.0025) {
+                  inside = true;
+                  break;
+               }
+            }
+
+            if (!inside) {
+               return d;
+            }
          }
       }
 

@@ -174,10 +174,10 @@
       "DefaultZoom": 3,
       "Magazine": 1,
       "EmptyReloadTime": 200,
-      "Velocity": 20,
-      "Damage": 700,
-      "ExplosionDamage": 60,
-      "ExplosionRadius": 1.4,
+      "Velocity": 38.65,
+      "Damage": 1120,
+      "ExplosionDamage": 48.7,
+      "ExplosionRadius": 0.76,
       "RecoilTime": 25,
       "RecoilForce": 2,
       "ShootShake": [
@@ -189,18 +189,29 @@
       "ShootAnimationTime": 10,
       "Crosshair": "@VehicleUsTank",
       "CrosshairColor": "00000000",
-      "Name": "weapon.superbwarfare.cannon_ap",
+      "Name": "item.warsteel.88mm_pzgr39",
       "AmmoType": [
-        "superbwarfare:large_shell_ap",
+        "warsteel:88mm_pzgr39",
         {
-          "Ammo": "superbwarfare:large_shell_he",
+          "Ammo": "warsteel:88mm_pzgr40",
+          "Override": {
+            "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/ap_shell.png",
+            "Velocity": 46.5,
+            "Damage": 1000,
+            "ExplosionDamage": 0,
+            "ExplosionRadius": 0,
+            "Name": "item.warsteel.88mm_pzgr40"
+          }
+        },
+        {
+          "Ammo": "warsteel:88mm_sprgr",
           "Override": {
             "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/he_shell.png",
-            "Velocity": 19,
-            "Damage": 350,
-            "ExplosionDamage": 120,
-            "ExplosionRadius": 10,
-            "Name": "weapon.superbwarfare.cannon_he",
+            "Velocity": 41.0,
+            "Damage": 1400,
+            "ExplosionDamage": 73.2,
+            "ExplosionRadius": 1.42,
+            "Name": "item.warsteel.88mm_sprgr",
             "ShellType": "HE"
           }
         }

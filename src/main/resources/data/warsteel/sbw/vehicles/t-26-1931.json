@@ -127,10 +127,10 @@
       "DefaultZoom": 3,
       "Magazine": 1,
       "EmptyReloadTime": 35,
-      "Velocity": 22,
+      "Velocity": 38.0,
       "Damage": 168,
-      "ExplosionDamage": 25,
-      "ExplosionRadius": 0.8,
+      "ExplosionDamage": 38.4,
+      "ExplosionRadius": 0.6,
       "RecoilTime": 18,
       "RecoilForce": 0.8,
       "ShootShake": [
@@ -142,18 +142,18 @@
       "ShootAnimationTime": 10,
       "Crosshair": "@Empty",
       "CrosshairColor": "00000000",
-      "Name": "weapon.warsteel.cannon_45",
+      "Name": "item.warsteel.45mm_br240",
       "AmmoType": [
-        "superbwarfare:large_shell_ap",
+        "warsteel:45mm_br240",
         {
-          "Ammo": "superbwarfare:large_shell_he",
+          "Ammo": "warsteel:45mm_o240",
           "Override": {
             "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/he_shell.png",
-            "Velocity": 21,
+            "Velocity": 17.15,
             "Damage": 133,
-            "ExplosionDamage": 77,
-            "ExplosionRadius": 4,
-            "Name": "weapon.warsteel.cannon_45_he",
+            "ExplosionDamage": 49.4,
+            "ExplosionRadius": 0.78,
+            "Name": "item.warsteel.45mm_o240",
             "ShellType": "HE"
           }
         }

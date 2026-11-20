@@ -45,6 +45,7 @@ public class ModTabs {
             output.accept(new ItemStack(ModItem.T26_TURRET.get()));
             output.accept(new ItemStack(ModItem.T26_BARREL.get()));
             output.accept(new ItemStack(ModItem.T26_TRACK.get()));
+            ModItem.AMMO.values().forEach(ammo -> output.accept(new ItemStack(ammo.get())));
             Item spray = BuiltInRegistries.ITEM.get(ResourceLocation.fromNamespaceAndPath("superbwarfare", "skin_spray"));
             if (spray != Items.AIR) {
                output.accept(new ItemStack(spray));

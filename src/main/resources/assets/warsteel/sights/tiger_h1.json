@@ -15,7 +15,7 @@
   "Ladders": [
     {
       "Label": "PzGr 39",
-      "Velocity": 24.0,
+      "Velocity": 38.65,
       "Side": "ARC_TOP",
       "Stops": [
         400,
@@ -28,8 +28,8 @@
       "MajorEvery": 1
     },
     {
-      "Label": "SprGr 43",
-      "Velocity": 22.0,
+      "Label": "Sprgr. L/4.5",
+      "Velocity": 41.0,
       "Side": "ARC_BOTTOM",
       "Stops": [
         400,

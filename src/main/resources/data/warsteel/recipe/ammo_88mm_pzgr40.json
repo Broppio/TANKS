@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SWS",
+    "CGC",
+    "SPS"
+  ],
+  "key": {
+    "C": {
+      "item": "superbwarfare:copper_plate"
+    },
+    "G": {
+      "item": "minecraft:gunpowder"
+    },
+    "P": {
+      "item": "superbwarfare:primer"
+    },
+    "S": {
+      "tag": "c:ingots/steel"
+    },
+    "W": {
+      "item": "superbwarfare:tungsten_rod"
+    }
+  },
+  "result": {
+    "id": "warsteel:88mm_pzgr40",
+    "count": 3
+  }
+}

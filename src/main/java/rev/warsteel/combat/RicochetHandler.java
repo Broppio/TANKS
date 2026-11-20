@@ -77,9 +77,35 @@ public final class RicochetHandler {
       event.addListener(rev.rev.warsteel.damage.DamageModelRegistry.INSTANCE);
    }
 
+   /** The WarSteel profile for a shell fired from a WarSteel gun (or /warsteel fire), else null. */
+   @Nullable
+   private ShellData profileOf(CannonShellEntity shell, @Nullable Entity owner) {
+      ShellData data = rev.rev.warsteel.damage.WarSteelCommands.forcedProfile(shell);
+      return data != null ? data : ShellRegistry.INSTANCE.resolve(this.firingVehicleId(owner), shell.getDamage(), shell.canPassThroughFluid());
+   }
+
+   /** WarSteel HE and APHE rounds hitting the ground or a wall burst with the realistic charge. */
+   @SubscribeEvent
+   public final void onProjectileHitBlock(@NotNull com.atsuishio.superbwarfare.api.event.ProjectileHitEvent.HitBlock event) {
+      if (!(event.getProjectile() instanceof CannonShellEntity shell) || !(shell.level() instanceof ServerLevel level)) {
+         return;
+      }
+
+      ShellData data = this.profileOf(shell, event.getOwner());
+      if (data == null || data.getFiller() <= 0.0) {
+         return; // solid shot keeps Superb Warfare's block-penetration behaviour
+      }
+
+      event.setCanceled(true);
+      Vec3 dir = shell.getDeltaMovement().lengthSqr() > 1.0E-6 ? shell.getDeltaMovement().normalize() : Vec3.ZERO;
+      HeExplosion.detonate(level, event.getHitVec().subtract(dir.scale(0.15)), data.getFiller(), shell, event.getOwner(), null, 1.0, true);
+      shell.discard();
+   }
+
    @SubscribeEvent
    public final void onProjectileHitEntity(@NotNull HitEntity event) {
       if (!(event.getTarget() instanceof VehicleEntity target)) {
+         this.onShellHitsSoftTarget(event);
          return;
       }
 
@@ -149,9 +175,9 @@ public final class RicochetHandler {
                event.setCanceled(true);
                TankDamage.markHandled(shell);
                TankDamage.Report r = TankDamage.outsideBlast(tank, level, hitVec, data, source, owner);
-               shell.causeExplode(hitVec);
+               HeExplosion.detonate(level, hitVec.subtract(dir.scale(0.1)), data.getFiller(), shell, owner, tank, 1.0, true);
                shell.discard();
-               this.report(event, Component.literal("HIT ").withStyle(ChatFormatting.YELLOW).append(Component.literal(ext.label()).withStyle(ChatFormatting.GRAY)), r);
+               this.report(event, Component.literal("HIT ").withStyle(ChatFormatting.YELLOW).append(Component.literal(ext.label()).withStyle(ChatFormatting.GRAY)), r, new ReplayCtx(tank, armour, -1, hitVec, dir, null));
                return;
             }
 
@@ -163,7 +189,7 @@ public final class RicochetHandler {
                TankDamage.markHandled(shell);
                shell.discard();
                this.nonPenetrationEffects(level, hitVec, dir, data.getCalibre());
-               this.report(event, Component.literal("ABSORBED ").withStyle(ChatFormatting.YELLOW).append(prefix), r);
+               this.report(event, Component.literal("ABSORBED ").withStyle(ChatFormatting.YELLOW).append(prefix), r, new ReplayCtx(tank, armour, -1, hitVec, dir, null));
                return;
             }
 
@@ -181,7 +207,7 @@ public final class RicochetHandler {
             event.setCanceled(true);
             TankDamage.markHandled(shell);
             if (data.isContactFuzed()) {
-               shell.causeExplode(hitVec);
+               HeExplosion.detonate(level, hitVec.subtract(dir.scale(0.1)), data.getFiller(), shell, owner, null, 1.0, true);
             }
 
             shell.discard();
@@ -215,7 +241,7 @@ public final class RicochetHandler {
             Vec3 out = this.deflect(shell, level, hitVec, dir, normal, velocity.length(), data, data.getRicochet().getSpeedRetained());
             bounceImmunity.put(shell.getId(), new Pair<>(target.getId(), now + 6L));
             this.ricochetEffects(level, hitVec, out, data.getCalibre());
-            this.report(event, Component.literal("RICOCHET ").withStyle(ChatFormatting.AQUA).append(Component.literal(detail).withStyle(ChatFormatting.GRAY)), null);
+            this.report(event, Component.literal("RICOCHET ").withStyle(ChatFormatting.AQUA).append(Component.literal(detail).withStyle(ChatFormatting.GRAY)), null, new ReplayCtx(tank, armour, plateIndex, hitVec, dir, out));
             break;
          }
          case NON_PENETRATION: {
@@ -226,16 +252,16 @@ public final class RicochetHandler {
 
             if (data.isContactFuzed()) {
                TankDamage.Report r = tank != null ? TankDamage.outsideBlast(tank, level, hitVec, data, source, owner) : null;
-               shell.causeExplode(hitVec);
+               HeExplosion.detonate(level, hitVec.subtract(dir.scale(0.1)), data.getFiller(), shell, owner, target, 1.0, true);
                shell.discard();
-               this.report(event, Component.literal("HIT ").withStyle(ChatFormatting.YELLOW).append(prefix).append(Component.literal(detail).withStyle(ChatFormatting.GRAY)), r);
+               this.report(event, Component.literal("HIT ").withStyle(ChatFormatting.YELLOW).append(prefix).append(Component.literal(detail).withStyle(ChatFormatting.GRAY)), r, new ReplayCtx(tank, armour, plateIndex, hitVec, dir, null));
             } else {
                shell.setDamage(0.0F);
                shell.setExplosionDamage(0.0F);
                Vec3 out = this.deflect(shell, level, hitVec, dir, normal, velocity.length(), data, 0.28);
                bounceImmunity.put(shell.getId(), new Pair<>(target.getId(), now + 6L));
                this.nonPenetrationEffects(level, hitVec, dir, data.getCalibre());
-               this.report(event, Component.literal("NO PENETRATION ").withStyle(ChatFormatting.YELLOW).append(prefix).append(Component.literal(detail).withStyle(ChatFormatting.GRAY)), null);
+               this.report(event, Component.literal("NO PENETRATION ").withStyle(ChatFormatting.YELLOW).append(prefix).append(Component.literal(detail).withStyle(ChatFormatting.GRAY)), null, new ReplayCtx(tank, armour, plateIndex, hitVec, dir, out));
             }
             break;
          }
@@ -243,7 +269,7 @@ public final class RicochetHandler {
             this.penetrationEffects(level, hitVec, dir, data.getCalibre());
             if (tank == null) {
                // Armour data but no module model: legacy behaviour, SBW applies its damage.
-               this.report(event, Component.literal("PENETRATION ").withStyle(ChatFormatting.GREEN).append(Component.literal(detail).withStyle(ChatFormatting.GRAY)), null);
+               this.report(event, Component.literal("PENETRATION ").withStyle(ChatFormatting.GREEN).append(Component.literal(detail).withStyle(ChatFormatting.GRAY)), null, null);
                break;
             }
 
@@ -251,32 +277,64 @@ public final class RicochetHandler {
             TankDamage.markHandled(shell);
             TankDamage.Report r = TankDamage.penetrate(tank, level, armour, plateIndex, data, hitVec, dir, effective, pen - effective, source, owner);
             if (data.isContactFuzed()) {
-               shell.causeExplode(hitVec);
+               // Burst inside the hull: most of the blast is contained; only a muffled share
+               // escapes through the hole and hatches.
+               HeExplosion.detonate(level, hitVec, data.getFiller(), shell, owner, tank, 0.25, false);
             }
 
             shell.discard();
             this.report(
-               event, Component.literal("PENETRATION ").withStyle(ChatFormatting.GREEN).append(prefix).append(Component.literal(detail).withStyle(ChatFormatting.GRAY)), r
+               event, Component.literal("PENETRATION ").withStyle(ChatFormatting.GREEN).append(prefix).append(Component.literal(detail).withStyle(ChatFormatting.GRAY)), r,
+               new ReplayCtx(tank, armour, plateIndex, hitVec, dir, null)
             );
          }
       }
    }
 
-   /** Hit feedback for the shooter (action bar) and, when something broke, the victim's crew. */
-   private void report(HitEntity event, MutableComponent headline, @Nullable TankDamage.Report r) {
+   /** A WarSteel explosive round striking a person or animal: impact, then the burst. */
+   private void onShellHitsSoftTarget(HitEntity event) {
+      if (!(event.getProjectile() instanceof CannonShellEntity shell) || !(shell.level() instanceof ServerLevel level)) {
+         return;
+      }
+
+      ShellData data = this.profileOf(shell, event.getOwner());
+      if (data == null || !data.isContactFuzed() && !data.getShellClass().equals("APHE")) {
+         return; // solid shot: Superb Warfare's own pass-through behaviour
+      }
+
+      event.setCanceled(true);
+      Entity target = event.getTarget();
+      target.invulnerableTime = 0;
+      target.hurt(ModDamageTypes.causeProjectileHitDamage(level.registryAccess(), shell, event.getOwner()), (float)Math.max(20.0, data.getMass() * 4.0));
+      HeExplosion.detonate(level, event.getHitVec(), data.getFiller(), shell, event.getOwner(), null, 1.0, true);
+      shell.discard();
+   }
+
+   /** What the shot replay needs to know about a hit; tank null = no replay. */
+   private record ReplayCtx(@Nullable WarSteelTank tank, ArmorData armour, int plate, Vec3 hit, Vec3 dir, @Nullable Vec3 out) {
+   }
+
+   /** Hit feedback for the shooter (action bar and shot replay) and, when something broke, the victim's crew. */
+   private void report(HitEntity event, MutableComponent headline, @Nullable TankDamage.Report r, @Nullable ReplayCtx replay) {
       MutableComponent line = headline;
       if (r != null && !r.isEmpty()) {
          line = line.append(Component.literal("  ")).append(r.summary());
       }
 
       if (rev.rev.warsteel.damage.WarSteelCommands.isTestShell(event.getProjectile())) {
-         RicochetHandlerKt.access$getLOG$p().info("test hit on {}: {}", event.getTarget().getType().getDescriptionId(), line.getString());
+         org.joml.Vector4d lh = new org.joml.Matrix4d(((VehicleEntity)event.getTarget()).getTransformFromString("Vehicle")).invert()
+            .transform(new org.joml.Vector4d(event.getHitVec().x, event.getHitVec().y, event.getHitVec().z, 1.0));
+         RicochetHandlerKt.access$getLOG$p().info("test hit on {} at local ({}, {}, {}) shell at {}: {}", event.getTarget().getType().getDescriptionId(),
+            String.format("%.2f", lh.x), String.format("%.2f", lh.y), String.format("%.2f", lh.z), event.getProjectile().position(), line.getString());
       } else {
          RicochetHandlerKt.access$getLOG$p().debug("armour hit: {}", line.getString());
       }
       if (event.getOwner() instanceof ServerPlayer shooter) {
          MinecraftUtil.sendPacketTo(shooter, new ClientIndicatorMessage(r != null && r.knockedOut() ? 2 : 3, 10));
          shooter.displayClientMessage(line, true);
+         if (replay != null && replay.tank() != null) {
+            rev.rev.warsteel.network.ShotReplays.send(shooter, replay.tank(), replay.armour(), replay.plate(), replay.hit(), replay.dir(), replay.out(), headline, r);
+         }
       }
 
       if (r != null && !r.isEmpty() && event.getTarget() instanceof WarSteelTank tank) {

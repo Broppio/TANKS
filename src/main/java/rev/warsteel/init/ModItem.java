@@ -1,6 +1,11 @@
 package rev.rev.warsteel.init;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import net.minecraft.world.item.Item;
+import rev.rev.warsteel.item.AmmoItem;
+import rev.rev.warsteel.item.AmmoSpec;
+import rev.rev.warsteel.item.AmmoSpecs;
 import net.neoforged.neoforge.registries.DeferredItem;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
@@ -27,4 +32,13 @@ public class ModItem {
    public static final DeferredItem<Item> TIGER_TURRET = ITEMS.registerSimpleItem("tiger_turret");
    public static final DeferredItem<Item> TIGER_BARREL = ITEMS.registerSimpleItem("tiger_barrel");
    public static final DeferredItem<Item> TIGER_TRACK = ITEMS.registerSimpleItem("tiger_track");
+
+   /** Historical tank rounds, keyed by id (see tools/gen_ammo.py). */
+   public static final Map<String, DeferredItem<AmmoItem>> AMMO = new LinkedHashMap<>();
+
+   static {
+      for (AmmoSpec spec : AmmoSpecs.ALL) {
+         AMMO.put(spec.id(), ITEMS.register(spec.id(), () -> new AmmoItem(spec)));
+      }
+   }
 }

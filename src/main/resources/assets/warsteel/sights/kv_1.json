@@ -10,8 +10,8 @@
   "ApertureScale": 0.72,
   "Ladders": [
     {
-      "Label": "СГ",
-      "Velocity": 20.0,
+      "Label": "BR-350A",
+      "Velocity": 33.1,
       "Side": "LEFT",
       "Stops": [
         400,
@@ -23,8 +23,8 @@
       "MajorEvery": 1
     },
     {
-      "Label": "АГ",
-      "Velocity": 19.0,
+      "Label": "OF-350",
+      "Velocity": 34.0,
       "Side": "RIGHT",
       "Stops": [
         400,

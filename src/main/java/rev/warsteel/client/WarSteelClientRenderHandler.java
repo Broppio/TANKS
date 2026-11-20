@@ -35,6 +35,7 @@ public final class WarSteelClientRenderHandler {
    @SubscribeEvent
    public static void registerDamageHud(RegisterGuiLayersEvent event) {
       event.registerAboveAll(rev.rev.warsteel.client.hud.DamageModelHud.ID, rev.rev.warsteel.client.hud.DamageModelHud.INSTANCE);
+      event.registerAboveAll(rev.rev.warsteel.client.replay.ShotReplayHud.ID, rev.rev.warsteel.client.replay.ShotReplayHud.INSTANCE);
    }
 
    @SubscribeEvent
