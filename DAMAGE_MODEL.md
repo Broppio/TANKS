@@ -162,6 +162,8 @@ It's knocked out when the whole crew is down.
 
 ## Hit marks and wrecks
 
+*Hit marks are switched off in this version (`HitDecals.ENABLED`).*
+
 Every hit leaves a mark on the armour where it struck: a hole for a penetration, a bright gouge
 for a non-penetration, a scrape for a ricochet, and a soot splash for HE. A solid shot (AP, APCR,
 or APHE whose fuze didn't arm) that still has enough penetration left to beat the far plate goes
@@ -173,6 +175,15 @@ oldest mark and repairs the worst-damaged component, or until `/warsteel reset`.
 
 Knocked-out WarSteel vehicles keep their paint rather than turning black. Their destruction blast
 doesn't destroy blocks.
+
+## Sound
+
+All world sounds are mono, so Minecraft places them where they happen and fades them with
+distance (stereo sounds play at full volume everywhere). Each gun has three reports: the sharp
+close one, a muffled far one with a ground echo, and a low rolling rumble for listeners furthest
+away (`tools/localize_sounds.sh` builds them). Only the gunner's own firing sound is stereo.
+HE bursts carry roughly 25-55 blocks sharp and up to ~220 blocks as a rumble, scaled by charge;
+ricochets and armour strikes carry about 40-60 blocks.
 
 ## Data files
 

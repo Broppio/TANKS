@@ -219,8 +219,8 @@
       "SoundInfo": {
         "Fire1P": "warsteel:tiger1_1p_fire",
         "Fire3P": "warsteel:tiger1_3p_fire",
-        "Fire3PFar": "warsteel:tiger1_3p_fire",
-        "Fire3PVeryFar": "warsteel:tiger1_3p_fire",
+        "Fire3PFar": "warsteel:tiger1_3p_far",
+        "Fire3PVeryFar": "warsteel:tiger1_3p_veryfar",
         "VehicleReload": "warsteel:default_reload",
         "Change": "superbwarfare:into_cannon",
         "CancellableSounds": [

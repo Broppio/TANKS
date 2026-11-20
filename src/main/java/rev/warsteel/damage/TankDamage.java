@@ -675,7 +675,7 @@ public final class TankDamage {
 
       if (st.detonated && tank.level() instanceof ServerLevel level) {
          Vec3 at = ammoPosition(tank, model);
-         level.playSound(null, at.x, at.y, at.z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.HOSTILE, 6.0F, 0.6F);
+         level.playSound(null, at.x, at.y, at.z, SoundEvents.GENERIC_EXPLODE.value(), SoundSource.HOSTILE, 4.0F, 0.6F);
          tank.createCustomExplosion().position(at).radius(model.ammoExplosionRadius()).damage(60.0F).keepBlock().explode();
       }
 
@@ -814,7 +814,7 @@ public final class TankDamage {
       }
 
       if (tank.tickCount % 20 == 0) {
-         level.playSound(null, at.x, at.y, at.z, SoundEvents.FIRE_AMBIENT, SoundSource.HOSTILE, 2.0F, 0.8F);
+         level.playSound(null, at.x, at.y, at.z, SoundEvents.FIRE_AMBIENT, SoundSource.HOSTILE, 1.0F, 0.8F);
          Report report = new Report();
          DamageSource burn = tank.damageSources().onFire();
          List<ModuleDef> crew = new ArrayList<>();

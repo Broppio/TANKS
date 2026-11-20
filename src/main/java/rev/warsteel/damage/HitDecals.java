@@ -16,6 +16,8 @@ import org.joml.Vector4d;
  */
 public final class HitDecals {
    public static final int MAX = 40;
+   /** Hit marks are switched off for now: nothing is recorded or drawn. */
+   public static final boolean ENABLED = false;
    public static final byte PENETRATION = 0;
    public static final byte NON_PENETRATION = 1;
    public static final byte RICOCHET = 2;
@@ -39,6 +41,10 @@ public final class HitDecals {
     * @param dir       shell direction (world)
     */
    public static void add(WarSteelTank tank, String transform, Vec3 hit, Vec3 normal, Vec3 dir, byte kind, int calibre) {
+      if (!ENABLED) {
+         return;
+      }
+
       Matrix4d toLocal = new Matrix4d(tank.getTransformFromString(transform)).invert();
       Quaterniond inv = new Quaterniond(tank.getRotationFromString(transform)).conjugate();
       Vector4d p = toLocal.transform(new Vector4d(hit.x, hit.y, hit.z, 1.0));

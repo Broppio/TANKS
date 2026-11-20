@@ -545,7 +545,7 @@ public final class RicochetHandler {
    }
 
    private final void playImpactSound(ServerLevel level, Vec3 at, SoundEvent sound, int calibre, float pitch) {
-      float volume = RicochetHandlerKt.access$volumeForRange(112.0 + calibre / 3.0);
+      float volume = RicochetHandlerKt.access$volumeForRange(36.0 + calibre / 5.0);
       level.playSound(null, at.x, at.y, at.z, sound, RicochetHandlerKt.access$getIMPACT_SOUND_CATEGORY$p(), volume, pitch);
    }
 

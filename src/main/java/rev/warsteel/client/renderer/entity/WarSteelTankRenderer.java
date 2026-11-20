@@ -49,7 +49,7 @@ public abstract class WarSteelTankRenderer extends BasicVehicleRenderer {
          RENDERING_WARSTEEL.set(Boolean.FALSE);
       }
 
-      if (entity instanceof rev.rev.warsteel.damage.WarSteelTank tank) {
+      if (rev.rev.warsteel.damage.HitDecals.ENABLED && entity instanceof rev.rev.warsteel.damage.WarSteelTank tank) {
          this.renderDecals(tank, yaw, partialTick, poseStack, buffer, packedLight);
       }
       this.emitExhaustSmoke(entity, poseStack, yaw, partialTick);

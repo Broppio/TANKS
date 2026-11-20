@@ -51,12 +51,18 @@
   },
   "m_2_far": {
     "sounds": [
-      "minecraft:entity.firework_rocket.blast"
+      {
+        "name": "minecraft:entity.firework_rocket.blast",
+        "type": "event"
+      }
     ]
   },
   "m_2_veryfar": {
     "sounds": [
-      "minecraft:entity.firework_rocket.blast_far"
+      {
+        "name": "minecraft:entity.firework_rocket.blast_far",
+        "type": "event"
+      }
     ]
   },
   "ricochet1": {
@@ -140,6 +146,86 @@
   "t26_engine": {
     "sounds": [
       "warsteel:t26_engine"
+    ]
+  },
+  "kv1_3p_far": {
+    "sounds": [
+      {
+        "name": "warsteel:kv1_3p_far",
+        "stream": false
+      }
+    ]
+  },
+  "kv1_3p_veryfar": {
+    "sounds": [
+      {
+        "name": "warsteel:kv1_3p_veryfar",
+        "stream": false
+      }
+    ]
+  },
+  "kv2_3p_far": {
+    "sounds": [
+      {
+        "name": "warsteel:kv2_3p_far",
+        "stream": false
+      }
+    ]
+  },
+  "kv2_3p_veryfar": {
+    "sounds": [
+      {
+        "name": "warsteel:kv2_3p_veryfar",
+        "stream": false
+      }
+    ]
+  },
+  "tiger1_3p_far": {
+    "sounds": [
+      {
+        "name": "warsteel:tiger1_3p_far",
+        "stream": false
+      }
+    ]
+  },
+  "tiger1_3p_veryfar": {
+    "sounds": [
+      {
+        "name": "warsteel:tiger1_3p_veryfar",
+        "stream": false
+      }
+    ]
+  },
+  "sherman_3p_far": {
+    "sounds": [
+      {
+        "name": "warsteel:sherman_3p_far",
+        "stream": false
+      }
+    ]
+  },
+  "sherman_3p_veryfar": {
+    "sounds": [
+      {
+        "name": "warsteel:sherman_3p_veryfar",
+        "stream": false
+      }
+    ]
+  },
+  "t26_3p_far": {
+    "sounds": [
+      {
+        "name": "warsteel:t26_3p_far",
+        "stream": false
+      }
+    ]
+  },
+  "t26_3p_veryfar": {
+    "sounds": [
+      {
+        "name": "warsteel:t26_3p_veryfar",
+        "stream": false
+      }
     ]
   }
 }

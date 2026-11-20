@@ -195,8 +195,8 @@
       "SoundInfo": {
         "Fire1P": "warsteel:kv1_1p_fire",
         "Fire3P": "warsteel:kv1_3p_fire",
-        "Fire3PFar": "warsteel:kv1_3p_fire",
-        "Fire3PVeryFar": "warsteel:kv1_3p_fire",
+        "Fire3PFar": "warsteel:kv1_3p_far",
+        "Fire3PVeryFar": "warsteel:kv1_3p_veryfar",
         "VehicleReload": "warsteel:default_reload",
         "Change": "superbwarfare:into_cannon",
         "CancellableSounds": [

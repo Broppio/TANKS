@@ -177,9 +177,11 @@ public final class HeExplosion {
       SoundEvent far = kg >= 3.0 ? ModSounds.HUGE_EXPLOSION_FAR.get() : ModSounds.EXPLOSION_FAR.get();
       SoundEvent veryFar = kg >= 3.0 ? ModSounds.HUGE_EXPLOSION_VERY_FAR.get() : ModSounds.EXPLOSION_VERY_FAR.get();
       float pitch = (float)(1.15 - Math.min(0.45, cbrt * 0.2)) + level.random.nextFloat() * 0.1F;
-      level.playSound(null, pos.x, pos.y, pos.z, close, SoundSource.BLOCKS, (float)(2.0 + cbrt * 2.0), pitch);
-      level.playSound(null, pos.x, pos.y, pos.z, far, SoundSource.BLOCKS, (float)(6.0 + cbrt * 4.0), pitch);
-      level.playSound(null, pos.x, pos.y, pos.z, veryFar, SoundSource.BLOCKS, (float)(12.0 + cbrt * 8.0), pitch);
+      // Minecraft hears a sound out to 16 x volume blocks, fading linearly. The sharp close blast
+      // carries ~25-55 blocks, the duller far report ~60-120 and the low rumble ~120-220.
+      level.playSound(null, pos.x, pos.y, pos.z, close, SoundSource.BLOCKS, (float)(1.0 + cbrt * 1.1), pitch);
+      level.playSound(null, pos.x, pos.y, pos.z, far, SoundSource.BLOCKS, (float)(2.5 + cbrt * 2.5), pitch);
+      level.playSound(null, pos.x, pos.y, pos.z, veryFar, SoundSource.BLOCKS, (float)(5.0 + cbrt * 4.0), pitch);
    }
 
    private static boolean lineOfSight(ServerLevel level, Vec3 from, Entity target, @Nullable Entity shell) {

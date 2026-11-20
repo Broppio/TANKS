@@ -172,8 +172,8 @@
       "SoundInfo": {
         "Fire1P": "warsteel:sherman_1p_fire",
         "Fire3P": "warsteel:sherman_3p_fire",
-        "Fire3PFar": "warsteel:sherman_3p_fire",
-        "Fire3PVeryFar": "warsteel:sherman_3p_fire",
+        "Fire3PFar": "warsteel:sherman_3p_far",
+        "Fire3PVeryFar": "warsteel:sherman_3p_veryfar",
         "VehicleReload": "warsteel:default_reload",
         "Change": "superbwarfare:into_cannon",
         "CancellableSounds": [
