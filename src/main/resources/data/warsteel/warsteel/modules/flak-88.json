@@ -1,0 +1,128 @@
+{
+  "_comment": "Internal modules for the War Thunder style damage model. Position/Size (half-extents) are in blocks in the Transform frame. Crew with a Seat pass part of the damage to the player in that seat. The tank is knocked out when an ammo rack detonates or fewer than MinCrew crew remain. Use /warsteel xray to see plates (orange) and modules in game. 8.8 cm Flak 36: gunner, layer and loader work in the open on the platform; ready rounds are stacked beside the gun.",
+  "Vehicle": "warsteel:flak-88",
+  "MinCrew": 1,
+  "MainGunSeat": 0,
+  "RepairSeconds": 25,
+  "CrewReplaceSeconds": 60,
+  "CrewSwapSeconds": 5,
+  "FireSeconds": 14,
+  "FallbackDamageMultiplier": 0.25,
+  "AmmoExplosionRadius": 6,
+  "Modules": [
+    {
+      "Name": "Gunner",
+      "Type": "CREW",
+      "Transform": "Turret",
+      "Position": [
+        0.95,
+        0.55,
+        -0.2
+      ],
+      "Size": [
+        0.25,
+        0.85,
+        0.25
+      ],
+      "Role": "GUNNER",
+      "Seat": 0,
+      "External": true
+    },
+    {
+      "Name": "Layer",
+      "Type": "CREW",
+      "Transform": "Turret",
+      "Position": [
+        -0.95,
+        0.55,
+        -0.1
+      ],
+      "Size": [
+        0.25,
+        0.85,
+        0.25
+      ],
+      "Role": "COMMANDER",
+      "External": true
+    },
+    {
+      "Name": "Loader",
+      "Type": "CREW",
+      "Transform": "Turret",
+      "Position": [
+        0.0,
+        0.55,
+        -2.0
+      ],
+      "Size": [
+        0.3,
+        0.85,
+        0.3
+      ],
+      "Role": "LOADER",
+      "External": true
+    },
+    {
+      "Name": "Breech",
+      "Type": "BREECH",
+      "Transform": "Turret",
+      "Position": [
+        0,
+        1.23,
+        -1.2
+      ],
+      "Size": [
+        0.16,
+        0.16,
+        0.5
+      ]
+    },
+    {
+      "Name": "Barrel",
+      "Type": "BARREL",
+      "Transform": "Turret",
+      "Position": [
+        0,
+        1.23,
+        2.4
+      ],
+      "Size": [
+        0.09,
+        0.09,
+        1.35
+      ]
+    },
+    {
+      "Name": "TraverseGear",
+      "Type": "TURRET_DRIVE",
+      "Transform": "Turret",
+      "Position": [
+        0.35,
+        0.3,
+        0.3
+      ],
+      "Size": [
+        0.15,
+        0.15,
+        0.15
+      ]
+    },
+    {
+      "Name": "AmmoReady",
+      "Type": "AMMO_RACK",
+      "Transform": "Vehicle",
+      "Position": [
+        1.25,
+        0.95,
+        -1.6
+      ],
+      "Size": [
+        0.3,
+        0.25,
+        0.35
+      ],
+      "External": true,
+      "DetonationChance": 0.25
+    }
+  ]
+}

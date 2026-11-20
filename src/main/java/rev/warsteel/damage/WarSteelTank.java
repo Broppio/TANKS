@@ -22,6 +22,7 @@ import org.jetbrains.annotations.Nullable;
  */
 public abstract class WarSteelTank extends VehicleEntity {
    public static final EntityDataAccessor<String> MODULE_STATUS = SynchedEntityData.defineId(WarSteelTank.class, EntityDataSerializers.STRING);
+   public static final EntityDataAccessor<String> DECALS = SynchedEntityData.defineId(WarSteelTank.class, EntityDataSerializers.STRING);
    private final TankState state = new TankState();
 
    protected WarSteelTank(EntityType<?> type, Level level) {
@@ -52,6 +53,7 @@ public abstract class WarSteelTank extends VehicleEntity {
    protected void defineSynchedData(@NotNull SynchedEntityData.Builder builder) {
       super.defineSynchedData(builder);
       builder.define(MODULE_STATUS, "");
+      builder.define(DECALS, "");
    }
 
    @Override
@@ -136,6 +138,23 @@ public abstract class WarSteelTank extends VehicleEntity {
       }
    }
 
+   /** Client: the hit marks to draw. */
+   public java.util.List<HitDecals.Decal> decals() {
+      return this.state.clientDecals(this.getEntityData().get(DECALS));
+   }
+
+   /**
+    * Superb Warfare's repair tool heals vehicles; on a WarSteel tank each pass also patches the
+    * oldest hit mark and puts work into the most damaged component.
+    */
+   @Override
+   public void heal(float amount) {
+      super.heal(amount);
+      if (!this.level().isClientSide && !this.isWreck()) {
+         TankDamage.repairWork(this, amount);
+      }
+   }
+
    /** Used by debug tooling. */
    public void resetDamage() {
       DamageModel m = this.damageModel();
@@ -144,6 +163,7 @@ public abstract class WarSteelTank extends VehicleEntity {
       this.state.knockedOut = false;
       this.state.detonated = false;
       this.state.fireTicks = 0;
+      this.state.clearDecals();
       this.state.dirty = true;
    }
 

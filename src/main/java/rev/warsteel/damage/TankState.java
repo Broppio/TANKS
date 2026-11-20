@@ -22,6 +22,10 @@ public final class TankState {
    boolean knockedOut;
    boolean detonated;
    boolean dirty = true;
+   private final List<HitDecals.Decal> decals = new ArrayList<>();
+   boolean decalsDirty = true;
+   private List<HitDecals.Decal> clientDecals = List.of();
+   private String lastDecalString = null;
 
    // Client-side view, parsed from the sync string.
    private final List<Entry> clientEntries = new ArrayList<>();
@@ -209,6 +213,47 @@ public final class TankState {
       return false;
    }
 
+   // ---- hit decals ----
+
+   void addDecal(HitDecals.Decal d) {
+      this.decals.add(d);
+      while (this.decals.size() > HitDecals.MAX) {
+         this.decals.remove(0);
+      }
+
+      this.decalsDirty = true;
+   }
+
+   /** Removes the oldest mark; true if there was one. */
+   boolean removeOldestDecal() {
+      if (this.decals.isEmpty()) {
+         return false;
+      }
+
+      this.decals.remove(0);
+      this.decalsDirty = true;
+      return true;
+   }
+
+   void clearDecals() {
+      this.decals.clear();
+      this.decalsDirty = true;
+   }
+
+   String encodeDecals() {
+      return HitDecals.encode(this.decals);
+   }
+
+   /** Client: decals parsed from the synced string. */
+   public List<HitDecals.Decal> clientDecals(String synced) {
+      if (!synced.equals(this.lastDecalString)) {
+         this.lastDecalString = synced;
+         this.clientDecals = HitDecals.decode(synced);
+      }
+
+      return this.clientDecals;
+   }
+
    // ---- sync ----
 
    /** Format: flags|label~kind~percent;label~kind~percent;... */
@@ -305,12 +350,16 @@ public final class TankState {
       }
 
       tag.putBoolean("KnockedOut", this.knockedOut);
+      tag.putString("Decals", HitDecals.encode(this.decals));
       return tag;
    }
 
    public void load(CompoundTag tag, @Nullable DamageModel m) {
       this.bind(m);
       this.knockedOut = tag.getBoolean("KnockedOut");
+      this.decals.clear();
+      this.decals.addAll(HitDecals.decode(tag.getString("Decals")));
+      this.decalsDirty = true;
       if (this.model != null && tag.contains("Health")) {
          CompoundTag h = tag.getCompound("Health");
 

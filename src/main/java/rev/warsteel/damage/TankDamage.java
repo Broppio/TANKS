@@ -290,12 +290,40 @@ public final class TankDamage {
       double r = Math.max(0.5, 0.15 * Math.cbrt(filler));
       float peak = blastPeak(filler) * 0.5F;
 
+      double kg = filler / 1000.0;
+      double cbrt = Math.cbrt(kg);
+      double fragRange = 22.0 * cbrt + 4.0;
+
       for (ModuleDef d : s.model.modules()) {
-         if (d.external()) {
-            double dist = Math.sqrt(s.modules[d.index()].distanceSqr(at));
-            if (dist < r) {
-               damage(s, d.index(), (float)(peak * (1.0 - dist / r)));
+         if (!d.external()) {
+            continue;
+         }
+
+         double dist = Math.sqrt(s.modules[d.index()].distanceSqr(at));
+         if (d.type() == ModuleType.CREW) {
+            // Crew working in the open (gun crews): same blast and fragment model as infantry,
+            // scaled from a player's 20 health to the module's 100.
+            double rr = Math.max(0.3, dist);
+            double z = rr / cbrt;
+            double dmg = z < 6.0 ? 45.0 * Math.pow(1.0 - z / 6.0, 2.0) : 0.0;
+            if (rr < fragRange) {
+               double expected = 900.0 * Math.sqrt(kg) * 0.8 / (4.0 * Math.PI * rr * rr) * 0.5;
+               double mean = expected;
+               int hits = 0;
+               double l = Math.exp(-Math.min(mean, 30.0));
+               double p = 1.0;
+
+               do {
+                  hits++;
+                  p *= s.rnd.nextDouble();
+               } while (p > l && hits < 200);
+
+               dmg += (hits - 1) * (6.0 * (1.0 - rr / fragRange) + 1.0);
             }
+
+            damage(s, d.index(), (float)(dmg * 5.0));
+         } else if (dist < r) {
+            damage(s, d.index(), (float)(peak * (1.0 - dist / r)));
          }
       }
 
@@ -328,7 +356,8 @@ public final class TankDamage {
       double ratio = Math.min(1.0, excess / Math.max(effective, 5.0));
 
       switch (cls) {
-         case "HE": {
+         case "HE":
+         case "FLAK": {
             // Overmatched: bursts just behind the plate.
             double d0 = Math.min(0.25, wall * 0.5);
             s.report.rays.add(new ShotRay(entry, entry.add(dir.scale(d0)), 0, 0.0F));
@@ -628,9 +657,37 @@ public final class TankDamage {
          st.dirty = true;
       }
 
+      if (st.decalsDirty) {
+         tank.getEntityData().set(WarSteelTank.DECALS, st.encodeDecals());
+         st.decalsDirty = false;
+      }
+
       if (st.dirty || tank.tickCount % 40 == 0) {
          tank.getEntityData().set(WarSteelTank.MODULE_STATUS, st.encode());
          st.dirty = false;
+      }
+   }
+
+   /** Repair-tool work: patch one hit mark, and repair the worst-off component a little. */
+   public static void repairWork(WarSteelTank tank, float amount) {
+      TankState st = tank.damageState();
+      st.removeOldestDecal();
+      DamageModel model = st.model();
+      if (model == null) {
+         return;
+      }
+
+      ModuleDef worst = null;
+
+      for (ModuleDef d : model.modules()) {
+         if (d.type().repairable() && st.health(d.index()) < d.maxHealth()
+            && (worst == null || st.health(d.index()) / d.maxHealth() < st.health(worst.index()) / worst.maxHealth())) {
+            worst = d;
+         }
+      }
+
+      if (worst != null) {
+         st.setHealth(worst.index(), Math.min(worst.maxHealth(), st.health(worst.index()) + Math.max(6.0F, amount * 8.0F)));
       }
    }
 

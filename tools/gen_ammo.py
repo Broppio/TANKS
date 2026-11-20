@@ -21,6 +21,8 @@ JAVA = os.path.join(ROOT, 'src/main/java/rev/warsteel/item/AmmoSpecs.java')
 
 V_KV1, V_KV2, V_SH, V_T26, V_TIGER = 'warsteel:kv-1', 'warsteel:kv-2', 'warsteel:m4a3-sherman', 'warsteel:t-26-1931', 'warsteel:tiger-h1'
 TIGERS = [V_TIGER, 'warsteel:tiger-h1-grey', 'warsteel:tiger-h1-sand']
+V_FLAK = 'warsteel:flak-88'
+GUN_88 = TIGERS + [V_FLAK]
 
 # id, name, gun, calibre, class, pen@10m, dropoff, min pen, filler g, velocity m/s, mass kg,
 # vehicles, SBW damage (unique per vehicle; also what infantry/other mods' vehicles take),
@@ -40,18 +42,20 @@ AMMO = [
     ('152mm_br540', 'BR-540', '152 mm M-10T', 152, 'APHE', 110, 0.018, 80, 600, 432, 51.07, [V_KV2], 1540, 1.2, 15, 'soviet_ap', 0),
     ('152mm_of530', 'OF-530', '152 mm M-10T', 152, 'HE', 46, 0.0, 46, 6860, 436, 40.0, [V_KV2], 2800, 0, 0, 'soviet_he', 1),
     # Tiger H1: 88 mm KwK 36
-    ('88mm_pzgr39', 'PzGr 39', '8.8 cm KwK 36', 88, 'APHE', 162, 0.022, 110, 109, 773, 10.2, TIGERS, 1120, 1.2, 15, 'german_ap', 0),
-    ('88mm_pzgr40', 'PzGr 40', '8.8 cm KwK 36', 88, 'APCR', 171, 0.060, 60, 0, 930, 7.3, TIGERS, 1000, 0, 0, 'german_apcr', 0),
-    ('88mm_sprgr', 'Sprgr. L/4.5', '8.8 cm KwK 36', 88, 'HE', 13, 0.0, 13, 698, 820, 9.0, TIGERS, 1400, 0, 0, 'german_he', 1),
+    ('88mm_pzgr39', 'PzGr 39', '8.8 cm KwK 36', 88, 'APHE', 162, 0.022, 110, 109, 773, 10.2, GUN_88, 1120, 1.2, 15, 'german_ap', 0),
+    ('88mm_pzgr40', 'PzGr 40', '8.8 cm KwK 36', 88, 'APCR', 171, 0.060, 60, 0, 930, 7.3, GUN_88, 1000, 0, 0, 'german_apcr', 0),
+    ('88mm_sprgr', 'Sprgr. L/4.5', '8.8 cm KwK 36', 88, 'HE', 13, 0.0, 13, 698, 820, 9.0, GUN_88, 1400, 0, 0, 'german_he', 1),
+    # 8.8 cm Flak 36: time-fuzed anti-aircraft round (bursts near aircraft, or when its fuze runs out)
+    ('88mm_sprgr_flak', 'Sprgr. Patr. L/4.5 Kz', '8.8 cm Flak 36', 88, 'FLAK', 13, 0.0, 13, 870, 820, 9.4, [V_FLAK], 1300, 0, 0, 'german_flak', 1),
 ]
 
-CLASS_LONG = {'AP': 'AP', 'APHE': 'APHE', 'APCR': 'APCR', 'HE': 'HE'}
+CLASS_LONG = {'AP': 'AP', 'APHE': 'APHE', 'APCR': 'APCR', 'HE': 'HE', 'FLAK': 'HE (time fuze)'}
 STACK = {45: 32, 75: 16, 76: 16, 88: 16, 152: 8}
 OUT = {45: 8, 75: 4, 76: 4, 88: 3, 152: 1}
 
 
 def ricochet(cls):
-    if cls == 'HE':
+    if cls in ('HE', 'FLAK'):
         return {'Enabled': True, 'MinAngle': 80.0, 'AlwaysAngle': 88.0, 'OvermatchRatio': 2.0, 'SpeedRetained': 0.5, 'ScatterDegrees': 6.0}
     if cls == 'APCR':
         return {'Enabled': True, 'MinAngle': 58.0, 'AlwaysAngle': 74.0, 'OvermatchRatio': 2.0, 'SpeedRetained': 0.5, 'ScatterDegrees': 8.0}
@@ -81,6 +85,9 @@ for (aid, name, gun, cal, cls, pen, drop, mn, filler, vel, mass, vehicles, dmg, 
         'Ricochet': ricochet(cls),
         'DefeatedByArmour': True,
     }
+    if cls == 'FLAK':
+        p['FuzeTicks'] = 140      # longest time-fuze setting (about 2.3 km)
+        p['ProximityRange'] = 6.0  # burst distance from an aircraft, standing in for a set fuze
     if cls == 'APHE':
         p['FuzeDelay'] = fd
         p['FuzeSensitivity'] = float(fs)
@@ -89,7 +96,7 @@ for (aid, name, gun, cal, cls, pen, drop, mn, filler, vel, mass, vehicles, dmg, 
 # --------------------------------------------------------------------------------------------- vehicles
 def sbw_override(a):
     (aid, name, gun, cal, cls, pen, drop, mn, filler, vel, mass, vehicles, dmg, fd, fs, scheme, ladder) = a
-    he = cls == 'HE'
+    he = cls in ('HE', 'FLAK')
     kg = filler / 1000.0
     o = {
         'Icon': 'superbwarfare:textures/overlay/vehicle/weapon/icons/' + ('he_shell.png' if he else 'ap_shell.png'),
@@ -139,13 +146,13 @@ for f in glob.glob(os.path.join(ASSETS, 'sights/*.json')):
 
 # --------------------------------------------------------------------------------------------- recipes
 BODY = {45: ('KGK', ' P '), 75: ('CGC', ' P '), 76: ('CGC', 'CPC'), 88: ('CGC', 'SPS'), 152: ('CTC', 'CPC')}
-HEAD = {'AP': ' S ', 'APHE': 'SXS', 'APCR': 'SWS', 'HE': 'IXI'}
+HEAD = {'AP': ' S ', 'APHE': 'SXS', 'APCR': 'SWS', 'HE': 'IXI', 'FLAK': 'XFX'}
 KEYS = {
     'K': {'item': 'minecraft:copper_ingot'}, 'C': {'item': 'superbwarfare:copper_plate'},
     'G': {'item': 'minecraft:gunpowder'}, 'P': {'item': 'superbwarfare:primer'},
     'S': {'tag': 'c:ingots/steel'}, 'X': {'item': 'superbwarfare:high_energy_explosives'},
     'W': {'item': 'superbwarfare:tungsten_rod'}, 'I': {'item': 'minecraft:iron_ingot'},
-    'T': {'item': 'minecraft:tnt'},
+    'T': {'item': 'minecraft:tnt'}, 'F': {'item': 'superbwarfare:fusee'},
 }
 rdir = os.path.join(DATA, 'recipe')
 for a in AMMO:
@@ -182,6 +189,7 @@ SCHEMES = {
     'german_ap': ((30, 30, 32), (200, 200, 200), None),
     'german_apcr': ((30, 30, 32), (230, 230, 235), (230, 230, 235)),
     'german_he': ((180, 160, 70), (180, 160, 70), (40, 40, 42)),
+    'german_flak': ((180, 160, 70), (150, 150, 150), (190, 30, 30)),
 }
 WIDTH = {45: 6, 75: 8, 76: 8, 88: 9, 152: 12}
 os.makedirs(os.path.join(ASSETS, 'textures/item'), exist_ok=True)

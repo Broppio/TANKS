@@ -1,0 +1,230 @@
+{
+  "ID": "warsteel:flak-88",
+  "MaxHealth": 260,
+  "MaxEnergy": 0,
+  "Type": "Artillery",
+  "EngineType": "Fixed",
+  "TurretPos": [
+    0.0,
+    0.3915,
+    0.0
+  ],
+  "BarrelPos": [
+    0.0,
+    1.2285,
+    0.108
+  ],
+  "TurretTurnSpeed": [
+    1.6,
+    2.2
+  ],
+  "TurretPitchRange": [
+    -3,
+    85
+  ],
+  "Seats": [
+    {
+      "HidePassenger": false,
+      "Transform": "Turret",
+      "Position": [
+        0.85,
+        0.55,
+        -0.25
+      ],
+      "CameraPos": {
+        "Transform": "Barrel",
+        "ZoomPosition": [
+          0.35,
+          0.25,
+          0.4
+        ],
+        "ZoomDirection": "Barrel"
+      },
+      "MinPitch": -3,
+      "MaxPitch": 85,
+      "Sensitivity": [
+        0.42,
+        0.7,
+        0.9
+      ],
+      "Weapons": [
+        "Cannon"
+      ],
+      "CanRotateHead": false
+    }
+  ],
+  "Weapons": {
+    "Cannon": {
+      "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/ap_shell.png",
+      "DefaultFireMode": "Semi",
+      "AvailableFireModes": "Semi",
+      "Projectile": "superbwarfare:cannon_shell",
+      "DefaultZoom": 4,
+      "Magazine": 1,
+      "EmptyReloadTime": 75,
+      "Velocity": 38.65,
+      "Damage": 1120,
+      "ExplosionDamage": 48.7,
+      "ExplosionRadius": 0.76,
+      "RecoilTime": 20,
+      "RecoilForce": 0.8,
+      "ShootShake": [
+        6,
+        8,
+        50
+      ],
+      "Spread": 0.03,
+      "Crosshair": "@VehicleDynamicCross",
+      "CrosshairColor": "00000000",
+      "Name": "item.warsteel.88mm_pzgr39",
+      "AmmoType": [
+        "warsteel:88mm_pzgr39",
+        {
+          "Ammo": "warsteel:88mm_pzgr40",
+          "Override": {
+            "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/ap_shell.png",
+            "Velocity": 46.5,
+            "Damage": 1000,
+            "ExplosionDamage": 0,
+            "ExplosionRadius": 0,
+            "Name": "item.warsteel.88mm_pzgr40"
+          }
+        },
+        {
+          "Ammo": "warsteel:88mm_sprgr",
+          "Override": {
+            "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/he_shell.png",
+            "Velocity": 41.0,
+            "Damage": 1400,
+            "ExplosionDamage": 73.2,
+            "ExplosionRadius": 1.42,
+            "Name": "item.warsteel.88mm_sprgr",
+            "ShellType": "HE"
+          }
+        },
+        {
+          "Ammo": "warsteel:88mm_sprgr_flak",
+          "Override": {
+            "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/he_shell.png",
+            "Velocity": 41.0,
+            "Damage": 1300,
+            "ExplosionDamage": 77.3,
+            "ExplosionRadius": 1.53,
+            "Name": "item.warsteel.88mm_sprgr_flak",
+            "ShellType": "HE"
+          }
+        }
+      ],
+      "SoundInfo": {
+        "Fire1P": "warsteel:tiger1_1p_fire",
+        "Fire3P": "warsteel:tiger1_3p_fire",
+        "Fire3PFar": "warsteel:tiger1_3p_fire",
+        "Fire3PVeryFar": "warsteel:tiger1_3p_fire",
+        "VehicleReload": "warsteel:default_reload",
+        "Change": "superbwarfare:into_cannon",
+        "CancellableSounds": [
+          "warsteel:default_reload"
+        ]
+      },
+      "SoundRadius": 40,
+      "ShootPos": {
+        "Transform": "Barrel",
+        "Positions": [
+          [
+            0.0,
+            0.0,
+            3.6
+          ]
+        ],
+        "Directions": [
+          "Barrel"
+        ]
+      },
+      "ProjectileLife": 800,
+      "CrosshairZooming": "@VehicleCommonCannonZooming"
+    }
+  },
+  "OBB": [
+    {
+      "Size": [
+        0.45,
+        0.33,
+        2.7
+      ],
+      "Position": [
+        0.0,
+        0.33,
+        0.0
+      ]
+    },
+    {
+      "Size": [
+        2.3,
+        0.33,
+        0.45
+      ],
+      "Position": [
+        0.0,
+        0.33,
+        0.0
+      ]
+    },
+    {
+      "Part": "Turret",
+      "Size": [
+        0.75,
+        0.72,
+        0.9
+      ],
+      "Position": [
+        0.0,
+        0.73,
+        -0.17
+      ],
+      "Transform": "Turret",
+      "Rotation": "Turret"
+    }
+  ],
+  "Mass": 70,
+  "DamageModifiers": [
+    "All - 8",
+    "minecraft:lava + 8",
+    "minecraft:lava * 10",
+    "@minecraft:tnt * 3",
+    "@minecraft:tnt_minecart * 3",
+    "All * 0.2",
+    "minecraft:arrow * 1.5",
+    "minecraft:trident * 1.5",
+    "minecraft:mob_attack * 2.5",
+    "minecraft:mob_attack_no_aggro * 2",
+    "minecraft:mob_projectile * 1.5",
+    "minecraft:explosion * 6",
+    "minecraft:player_explosion * 6",
+    "@#superbwarfare:aerial_bomb * 3",
+    "superbwarfare:custom_explosion * 2.4",
+    "superbwarfare:projectile_explosion * 2",
+    "@superbwarfare:small_cannon_shell * 0.5",
+    "superbwarfare:mine * 0.75",
+    "@superbwarfare:c4 * 2.5",
+    "superbwarfare:grapeshot_hit * 0.25",
+    "#superbwarfare:projectile * 0.25",
+    "#superbwarfare:projectile_absolute * 0.85",
+    "superbwarfare:vehicle_strike * 5",
+    "@superbwarfare:gun_grenade * 1.5",
+    "$entity.getSourceAngle(source, 0.25) * damage"
+  ],
+  "DestroyInfo": {
+    "ParticleType": "Medium",
+    "ExplosionDamage": 60.0,
+    "ExplosionRadius": 5.0,
+    "ExplodeBlocks": false
+  },
+  "ThirdPersonCameraPos": [
+    0,
+    1.6,
+    7
+  ],
+  "VehicleIcon": "warsteel:textures/vehicle_icon/flak-88_icon.png",
+  "ContainerIcon": "superbwarfare:textures/gui/vehicle/type/defense.png",
+  "HudType": "@Artillery"
+}

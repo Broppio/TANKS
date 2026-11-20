@@ -1,0 +1,8 @@
+{
+  "Models": [
+    {
+      "Model": "warsteel:models/bedrock/vehicle/flak-88.geo.json",
+      "Texture": "warsteel:textures/entity/flak-88.png"
+    }
+  ]
+}

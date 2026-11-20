@@ -31,6 +31,8 @@ public final class ShellData {
    private final double fuzeDelay;
    private final double fuzeSensitivity;
    private final double mass;
+   private int fuzeTicks;
+   private double proximityRange;
 
    public ShellData(
       ResourceLocation id,
@@ -123,9 +125,29 @@ public final class ShellData {
       return this.mass;
    }
 
+   /** FLAK rounds: ticks until the time fuze bursts the shell. */
+   public int getFuzeTicks() {
+      return this.fuzeTicks;
+   }
+
+   /** FLAK rounds: distance from an aircraft at which the shell bursts. */
+   public double getProximityRange() {
+      return this.proximityRange;
+   }
+
+   ShellData withFlakFuze(int ticks, double range) {
+      this.fuzeTicks = ticks;
+      this.proximityRange = range;
+      return this;
+   }
+
+   public boolean isFlak() {
+      return this.shellClass.equals("FLAK");
+   }
+
    /** Detonates on contact with anything (HE, HESH). */
    public boolean isContactFuzed() {
-      return this.shellClass.equals("HE") || this.shellClass.equals("HESH");
+      return this.shellClass.equals("HE") || this.shellClass.equals("HESH") || this.shellClass.equals("FLAK");
    }
 
    /** Armour-piercing family (fired as SBW's AP shell type). */

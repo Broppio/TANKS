@@ -80,12 +80,12 @@ public final class RicochetHandlerKt {
             GsonHelper.getAsDouble(ric, "ScatterDegrees", 6.0)
          ),
          used,
-         GsonHelper.getAsBoolean(o, "DefeatedByArmour", !shellClass.equalsIgnoreCase("HE") && !shellClass.equalsIgnoreCase("HESH")),
+         GsonHelper.getAsBoolean(o, "DefeatedByArmour", !shellClass.equalsIgnoreCase("HE") && !shellClass.equalsIgnoreCase("HESH") && !shellClass.equalsIgnoreCase("FLAK")),
          GsonHelper.getAsDouble(o, "Filler", 0.0),
          GsonHelper.getAsDouble(o, "FuzeDelay", 1.2),
          GsonHelper.getAsDouble(o, "FuzeSensitivity", 15.0),
          GsonHelper.getAsDouble(o, "Mass", 0.0)
-      );
+      ).withFlakFuze(GsonHelper.getAsInt(o, "FuzeTicks", 0), GsonHelper.getAsDouble(o, "ProximityRange", 0.0));
    }
 
    static ArmorData parseArmor(JsonObject o) {

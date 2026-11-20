@@ -38,6 +38,7 @@ public class WarSteel {
       ModParticleTypes.register(bus);
       NeoForge.EVENT_BUS.register(RicochetHandler.INSTANCE);
       NeoForge.EVENT_BUS.register(MuzzleParticleHandler.INSTANCE);
+      NeoForge.EVENT_BUS.register(rev.rev.warsteel.combat.FlakFuze.INSTANCE);
       NeoForge.EVENT_BUS.register(rev.rev.warsteel.damage.WarSteelCommands.INSTANCE);
       bus.addListener(WarSteel::registerPayloads);
       LOGGER.info("WarSteel: registered ricochet and muzzle particle handlers");

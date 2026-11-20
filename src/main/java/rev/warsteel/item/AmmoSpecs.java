@@ -14,9 +14,10 @@ public final class AmmoSpecs {
       new AmmoSpec("76mm_of350", "OF-350", "76 mm F-34", 76, "HE", 10.0, 710.0, 680.0, 6.2, 16, List.of("warsteel:kv-1")),
       new AmmoSpec("152mm_br540", "BR-540", "152 mm M-10T", 152, "APHE", 110.0, 600.0, 432.0, 51.07, 8, List.of("warsteel:kv-2")),
       new AmmoSpec("152mm_of530", "OF-530", "152 mm M-10T", 152, "HE", 46.0, 6860.0, 436.0, 40.0, 8, List.of("warsteel:kv-2")),
-      new AmmoSpec("88mm_pzgr39", "PzGr 39", "8.8 cm KwK 36", 88, "APHE", 162.0, 109.0, 773.0, 10.2, 16, List.of("warsteel:tiger-h1", "warsteel:tiger-h1-grey", "warsteel:tiger-h1-sand")),
-      new AmmoSpec("88mm_pzgr40", "PzGr 40", "8.8 cm KwK 36", 88, "APCR", 171.0, 0.0, 930.0, 7.3, 16, List.of("warsteel:tiger-h1", "warsteel:tiger-h1-grey", "warsteel:tiger-h1-sand")),
-      new AmmoSpec("88mm_sprgr", "Sprgr. L/4.5", "8.8 cm KwK 36", 88, "HE", 13.0, 698.0, 820.0, 9.0, 16, List.of("warsteel:tiger-h1", "warsteel:tiger-h1-grey", "warsteel:tiger-h1-sand"))
+      new AmmoSpec("88mm_pzgr39", "PzGr 39", "8.8 cm KwK 36", 88, "APHE", 162.0, 109.0, 773.0, 10.2, 16, List.of("warsteel:tiger-h1", "warsteel:tiger-h1-grey", "warsteel:tiger-h1-sand", "warsteel:flak-88")),
+      new AmmoSpec("88mm_pzgr40", "PzGr 40", "8.8 cm KwK 36", 88, "APCR", 171.0, 0.0, 930.0, 7.3, 16, List.of("warsteel:tiger-h1", "warsteel:tiger-h1-grey", "warsteel:tiger-h1-sand", "warsteel:flak-88")),
+      new AmmoSpec("88mm_sprgr", "Sprgr. L/4.5", "8.8 cm KwK 36", 88, "HE", 13.0, 698.0, 820.0, 9.0, 16, List.of("warsteel:tiger-h1", "warsteel:tiger-h1-grey", "warsteel:tiger-h1-sand", "warsteel:flak-88")),
+      new AmmoSpec("88mm_sprgr_flak", "Sprgr. Patr. L/4.5 Kz", "8.8 cm Flak 36", 88, "FLAK", 13.0, 870.0, 820.0, 9.4, 16, List.of("warsteel:flak-88"))
    );
 
    private AmmoSpecs() {

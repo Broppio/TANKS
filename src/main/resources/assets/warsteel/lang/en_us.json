@@ -56,5 +56,7 @@
   "tooltip.warsteel.ammo.velocity": "Muzzle velocity: %s m/s",
   "tooltip.warsteel.ammo.filler": "Explosive filler: %s g TNT",
   "tooltip.warsteel.ammo.mass": "Projectile mass: %s kg",
-  "tooltip.warsteel.ammo.used_by": "Fits: %s"
+  "tooltip.warsteel.ammo.used_by": "Fits: %s",
+  "item.warsteel.88mm_sprgr_flak": "8.8 cm Flak 36 Sprgr. Patr. L/4.5 Kz (FLAK)",
+  "entity.warsteel.flak-88": "8.8 cm Flak 36"
 }

@@ -417,8 +417,9 @@
   ],
   "DestroyInfo": {
     "ParticleType": "Giant",
-    "ExplosionDamage": 220,
-    "ExplosionRadius": 20
+    "ExplosionDamage": 120.0,
+    "ExplosionRadius": 8.0,
+    "ExplodeBlocks": false
   },
   "ThirdPersonCameraPos": [
     -0.8669625,

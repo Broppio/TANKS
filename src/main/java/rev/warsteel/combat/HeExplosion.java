@@ -87,16 +87,30 @@ public final class HeExplosion {
          double r = Math.max(0.3, nearest.distanceTo(pos));
          boolean sighted = lineOfSight(level, pos, e, shell);
          if (e instanceof WarSteelTank tank && tank.usesModuleDamage()) {
-            if (r < blastRange) {
+            if (r < fragRange) {
                TankDamage.blastFromOutside(tank, level, pos, fillerGrams * outsideScale, source, owner);
             }
          } else if (e instanceof VehicleEntity vehicle) {
-            // Other armoured vehicles: only heavy charges close by do much.
+            float dmg = 0.0F;
+            // Armoured vehicles: only heavy charges close by do much.
             if (r < blastRange) {
-               float dmg = (float)(kg * 70.0 * outsideScale * (1.0 - r / blastRange));
-               if (dmg > 0.5F) {
-                  vehicle.hurt(source, dmg);
-               }
+               dmg += (float)(kg * 70.0 * outsideScale * (1.0 - r / blastRange));
+            }
+
+            // Aircraft are thin-skinned: a flak burst riddles them with fragments.
+            if (FlakFuze.isAircraft(vehicle) && sighted && r < fragRange) {
+               double area = Math.max(1.0, vehicle.getBbWidth() * vehicle.getBbHeight());
+               int hits = poisson(fragments * outsideScale * area / (4.0 * Math.PI * r * r), rnd);
+               dmg += (float)(hits * (4.0 * (1.0 - r / fragRange) + 1.0));
+            }
+
+            if (shell != null && rev.rev.warsteel.damage.WarSteelCommands.isTestShell(shell)) {
+               org.slf4j.LoggerFactory.getLogger("warsteel/he").info("HE {} g at {} m: vehicle {} {} damage (health {})", (int)fillerGrams,
+                  String.format(java.util.Locale.ROOT, "%.1f", r), vehicle.getType().getDescriptionId(), String.format(java.util.Locale.ROOT, "%.1f", dmg), vehicle.getHealth());
+            }
+
+            if (dmg > 0.5F) {
+               vehicle.hurt(source, dmg);
             }
          } else if (e instanceof LivingEntity living) {
             float damage = 0.0F;

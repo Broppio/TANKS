@@ -3,7 +3,8 @@
   "UsedBy": [
     "warsteel:tiger-h1",
     "warsteel:tiger-h1-grey",
-    "warsteel:tiger-h1-sand"
+    "warsteel:tiger-h1-sand",
+    "warsteel:flak-88"
   ],
   "Item": "warsteel:88mm_sprgr",
   "Name": "item.warsteel.88mm_sprgr",

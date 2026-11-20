@@ -125,6 +125,39 @@ War Thunder's hit camera:
 
 Ricochets and non-penetrations show the shell glancing off.
 
+## 8.8 cm Flak 36
+
+A dual-purpose emplaced gun, built from a Flak 36 model (reduced from about 46,500 to about 7,000
+triangles; see `tools/flak88_export.py` and `tools/flak88_atlas.py`). Place it from the creative
+tab or build it on Superb Warfare's vehicle assembling table ("defense"). It traverses 360° and
+elevates from −3° to +85°.
+
+| Role | Round |
+|---|---|
+| Anti-tank | PzGr 39 (APCBC-HE, 162 mm), PzGr 40 (APCR, 171 mm) |
+| Field artillery | Sprgr. L/4.5 (HE) |
+| Anti-aircraft | Sprgr. Patr. L/4.5 Kz (`FLAK`, 870 g TNT, time fuze) |
+
+The anti-aircraft round bursts within `ProximityRange` (6 blocks) of an aircraft, standing in for
+the predictor setting the fuze to the target's range, or when its longest fuze setting
+(`FuzeTicks`, about 2.3 km) runs out. Aircraft caught in a burst take fragment damage scaled by
+their size and distance: one burst 3 m from an AH-6 takes it to a sliver of health.
+
+The gun uses the same armour and module model as the tanks. It has no real armour, and its crew
+(gunner, layer, loader) stand in the open, so HE landing nearby wounds or kills them like infantry.
+It's knocked out when the whole crew is down.
+
+## Hit marks and wrecks
+
+Every hit leaves a mark on the armour where it struck: a hole for a penetration, a bright gouge
+for a non-penetration, a scrape for a ricochet, and a soot splash for HE. Marks are sized by
+calibre, stretched by the angle of impact, and turn with the turret. They stay (up to 40 per
+tank) until the tank is repaired with Superb Warfare's repair tool, where each pass patches the
+oldest mark and repairs the worst-damaged component, or until `/warsteel reset`.
+
+Knocked-out WarSteel vehicles keep their paint rather than turning black. Their destruction blast
+doesn't destroy blocks.
+
 ## Data files
 
 All data lives in `data/<namespace>/warsteel/`, so a data pack can override any of it.

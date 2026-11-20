@@ -21,6 +21,8 @@ public class ModEntities {
    public static final DeferredHolder<EntityType<?>, EntityType<KV2Entity>> KV_2 = ifv("kv-2", KV2Entity::new);
    public static final DeferredHolder<EntityType<?>, EntityType<M4A3ShermanEntity>> M4A3_SHERMAN = ifv("m4a3-sherman", M4A3ShermanEntity::new);
    public static final DeferredHolder<EntityType<?>, EntityType<T26Entity>> T_26 = ifv("t-26-1931", T26Entity::new);
+   public static final DeferredHolder<EntityType<?>, EntityType<rev.rev.warsteel.entity.vehicle.Flak88Entity>> FLAK_88 =
+      reg("flak-88", rev.rev.warsteel.entity.vehicle.Flak88Entity::new, 3.0F, 2.2F);
 
    private static <T extends Entity> Builder<T> vehicle(EntityFactory<T> factory, float w, float h) {
       return Builder.of(factory, MobCategory.MISC).setTrackingRange(1028).setUpdateInterval(1).fireImmune().sized(w, h);

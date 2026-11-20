@@ -235,6 +235,16 @@ public final class RicochetHandler {
       }
 
       String detail = String.format(Locale.ROOT, "%s %.0fmm @%.0f° = %.0f eff · pen %.0f", plate.getName(), plate.getThickness(), angle, effective, pen);
+      if (tank != null) {
+         // plateNormal() faces the shooter, i.e. outward from the struck face.
+         byte mark = switch (outcome) {
+            case RICOCHET -> rev.rev.warsteel.damage.HitDecals.RICOCHET;
+            case NON_PENETRATION -> data.isContactFuzed() ? rev.rev.warsteel.damage.HitDecals.SCORCH : rev.rev.warsteel.damage.HitDecals.NON_PENETRATION;
+            default -> rev.rev.warsteel.damage.HitDecals.PENETRATION;
+         };
+         rev.rev.warsteel.damage.HitDecals.add(tank, plate.getTransform(), hitVec, normal, dir, mark, data.getCalibre());
+      }
+
       switch (outcome) {
          case RICOCHET: {
             event.setCanceled(true);

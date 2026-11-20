@@ -261,4 +261,25 @@ write('tiger-h1', ARMOUR_NOTE, 1.0, tiger,
           box('Barrel', 'BARREL', (0, -0.55, 2.45), (0.1, 0.1, 1.7), 'Turret'),
       ] + tracks((1.525, 0.6, -0.748), (0.288, 0.55, 3.209), (-1.529, 0.6, -0.748), (0.291, 0.55, 3.209), armour=25),
       also=('tiger-h1-grey', 'tiger-h1-sand'))
+# ------------------------------------------------------------------------------------------------
+# 8.8 cm Flak 36. Cruciform base (two boxes) and the top carriage (turret frame). Structural steel
+# only - the crew stand on the platform, outside any armour, so they are marked External and are
+# hurt by HE bursting nearby. Knocked out when the whole crew is down (MinCrew 1).
+flak = faces('Base', 'Vehicle', (0, 0.33, 0), (0.45, 0.33, 2.7), {
+    'front': (10, 0.8), 'rear': (10, 0.8), 'left': (10, 0.8), 'right': (10, 0.8), 'roof': (10, 1.0)})
+flak += faces('Outrigger', 'Vehicle', (0, 0.33, 0), (2.3, 0.33, 0.45), {
+    'front': (10, 0.8), 'rear': (10, 0.8), 'left': (10, 0.8), 'right': (10, 0.8), 'roof': (10, 1.0)})
+flak += faces('Carriage', 'Turret', (0, 0.73, -0.17), (0.75, 0.72, 0.9), {
+    'front': (8, 0.8), 'rear': (8, 0.8), 'left': (8, 0.8), 'right': (8, 0.8), 'roof': (6, 1.0)})
+write('flak-88', ARMOUR_NOTE, 0.8, flak,
+      MODEL_NOTE + " 8.8 cm Flak 36: gunner, layer and loader work in the open on the platform; ready rounds are stacked beside the gun.",
+      1, [
+          box('Gunner', 'CREW', (0.95, 0.55, -0.2), (0.25, 0.85, 0.25), 'Turret', Role='GUNNER', Seat=0, External=True),
+          box('Layer', 'CREW', (-0.95, 0.55, -0.1), (0.25, 0.85, 0.25), 'Turret', Role='COMMANDER', External=True),
+          box('Loader', 'CREW', (0.0, 0.55, -2.0), (0.3, 0.85, 0.3), 'Turret', Role='LOADER', External=True),
+          box('Breech', 'BREECH', (0, 1.23, -1.2), (0.16, 0.16, 0.5), 'Turret'),
+          box('Barrel', 'BARREL', (0, 1.23, 2.4), (0.09, 0.09, 1.35), 'Turret'),
+          box('TraverseGear', 'TURRET_DRIVE', (0.35, 0.3, 0.3), (0.15, 0.15, 0.15), 'Turret'),
+          box('AmmoReady', 'AMMO_RACK', (1.25, 0.95, -1.6), (0.3, 0.25, 0.35), External=True, DetonationChance=0.25),
+      ])
 print('ok')
