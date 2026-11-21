@@ -41,6 +41,11 @@ public final class FlakFuze {
          return;
       }
 
+      if (ArtilleryMode.isArcShot(shell)) {
+         // ARC (indirect) fire: no time fuze, the shell bursts where it lands.
+         return;
+      }
+
       ShellData data = WarSteelCommands.forcedProfile(shell);
       if (data == null) {
          Entity owner = shell.getOwner();

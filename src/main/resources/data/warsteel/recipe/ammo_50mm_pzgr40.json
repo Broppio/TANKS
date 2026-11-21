@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SWS",
+    "KGK",
+    "KPK"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gunpowder"
+    },
+    "K": {
+      "item": "minecraft:copper_ingot"
+    },
+    "P": {
+      "item": "superbwarfare:primer"
+    },
+    "S": {
+      "tag": "c:ingots/steel"
+    },
+    "W": {
+      "item": "superbwarfare:tungsten_rod"
+    }
+  },
+  "result": {
+    "id": "warsteel:50mm_pzgr40",
+    "count": 6
+  }
+}

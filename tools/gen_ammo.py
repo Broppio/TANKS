@@ -22,6 +22,7 @@ JAVA = os.path.join(ROOT, 'src/main/java/rev/warsteel/item/AmmoSpecs.java')
 V_KV1, V_KV2, V_SH, V_T26, V_TIGER = 'warsteel:kv-1', 'warsteel:kv-2', 'warsteel:m4a3-sherman', 'warsteel:t-26-1931', 'warsteel:tiger-h1'
 TIGERS = [V_TIGER, 'warsteel:tiger-h1-grey', 'warsteel:tiger-h1-sand']
 V_FLAK = 'warsteel:flak-88'
+V_PAK = 'warsteel:pak-38'
 GUN_88 = TIGERS + [V_FLAK]
 
 # id, name, gun, calibre, class, pen@10m, dropoff, min pen, filler g, velocity m/s, mass kg,
@@ -47,11 +48,15 @@ AMMO = [
     ('88mm_sprgr', 'Sprgr. L/4.5', '8.8 cm KwK 36', 88, 'HE', 13, 0.0, 13, 698, 820, 9.0, GUN_88, 1400, 0, 0, 'german_he', 1),
     # 8.8 cm Flak 36: time-fuzed anti-aircraft round (bursts near aircraft, or when its fuze runs out)
     ('88mm_sprgr_flak', 'Sprgr. Patr. L/4.5 Kz', '8.8 cm Flak 36', 88, 'FLAK', 13, 0.0, 13, 870, 820, 9.4, [V_FLAK], 1300, 0, 0, 'german_flak', 1),
+    # 5 cm PaK 38 (L/60)
+    ('50mm_pzgr39', 'PzGr 39', '5 cm PaK 38', 50, 'APHE', 96, 0.024, 55, 17, 835, 2.06, [V_PAK], 230, 1.2, 10, 'german_ap', 0),
+    ('50mm_pzgr40', 'PzGr 40', '5 cm PaK 38', 50, 'APCR', 149, 0.085, 40, 0, 1180, 0.93, [V_PAK], 210, 0, 0, 'german_apcr', 0),
+    ('50mm_sprgr38', 'Sprgr. 38', '5 cm PaK 38', 50, 'HE', 6, 0.0, 6, 170, 550, 1.81, [V_PAK], 190, 0, 0, 'german_he', 1),
 ]
 
 CLASS_LONG = {'AP': 'AP', 'APHE': 'APHE', 'APCR': 'APCR', 'HE': 'HE', 'FLAK': 'HE (time fuze)'}
-STACK = {45: 32, 75: 16, 76: 16, 88: 16, 152: 8}
-OUT = {45: 8, 75: 4, 76: 4, 88: 3, 152: 1}
+STACK = {45: 32, 50: 24, 75: 16, 76: 16, 88: 16, 152: 8}
+OUT = {45: 8, 50: 6, 75: 4, 76: 4, 88: 3, 152: 1}
 
 
 def ricochet(cls):
@@ -145,7 +150,7 @@ for f in glob.glob(os.path.join(ASSETS, 'sights/*.json')):
     json.dump(d, open(f, 'w'), indent=2, ensure_ascii=False)
 
 # --------------------------------------------------------------------------------------------- recipes
-BODY = {45: ('KGK', ' P '), 75: ('CGC', ' P '), 76: ('CGC', 'CPC'), 88: ('CGC', 'SPS'), 152: ('CTC', 'CPC')}
+BODY = {45: ('KGK', ' P '), 50: ('KGK', 'KPK'), 75: ('CGC', ' P '), 76: ('CGC', 'CPC'), 88: ('CGC', 'SPS'), 152: ('CTC', 'CPC')}
 HEAD = {'AP': ' S ', 'APHE': 'SXS', 'APCR': 'SWS', 'HE': 'IXI', 'FLAK': 'XFX'}
 KEYS = {
     'K': {'item': 'minecraft:copper_ingot'}, 'C': {'item': 'superbwarfare:copper_plate'},
@@ -191,7 +196,7 @@ SCHEMES = {
     'german_he': ((180, 160, 70), (180, 160, 70), (40, 40, 42)),
     'german_flak': ((180, 160, 70), (150, 150, 150), (190, 30, 30)),
 }
-WIDTH = {45: 6, 75: 8, 76: 8, 88: 9, 152: 12}
+WIDTH = {45: 6, 50: 6, 75: 8, 76: 8, 88: 9, 152: 12}
 os.makedirs(os.path.join(ASSETS, 'textures/item'), exist_ok=True)
 for a in AMMO:
     aid, cal, cls, scheme = a[0], a[3], a[4], a[15]

@@ -43,7 +43,7 @@ public final class ShellCamera {
    private static final double BACK = 9.0;
    private static final double UP = 2.5;
    private static final int LINGER_TICKS = 60;
-   private static final int MAX_TICKS = 1300;
+   private static final int MAX_TICKS = 6200;
 
    private static boolean active;
    private static int shellId;
@@ -51,6 +51,8 @@ public final class ShellCamera {
    private static Vec3 shellVel = Vec3.ZERO;
    private static float gravity;
    private static boolean landed;
+   /** Game time each shell was fired, for the splash report (kept even if the camera is left early). */
+   private static final java.util.Map<Integer, Long> firedAt = new java.util.HashMap<>();
    private static int age;
    private static int linger;
    private static Vec3 camPos = Vec3.ZERO;
@@ -84,6 +86,13 @@ public final class ShellCamera {
       Minecraft mc = Minecraft.getInstance();
       LocalPlayer player = mc.player;
       observedGravity = msg.gravity();
+      if (mc.level != null) {
+         if (firedAt.size() > 32) {
+            firedAt.clear();
+         }
+
+         firedAt.put(msg.shellId(), mc.level.getGameTime());
+      }
       if (player == null || !(player.getVehicle() instanceof Flak88Entity)) {
          return;
       }
@@ -106,9 +115,24 @@ public final class ShellCamera {
    }
 
    public static void landed(ArtilleryPayloads.ShellLanded msg) {
-      if (active && msg.shellId() == shellId && !landed) {
-         landed = true;
+      LocalPlayer player = Minecraft.getInstance().player;
+      if (active && msg.shellId() == shellId) {
+         if (!landed) {
+            landed = true;
+         }
+
          shellPos = msg.pos();
+      }
+
+      if (player != null && player.getVehicle() instanceof Flak88Entity gun) {
+         // Where it came down, so the next shot can be corrected even when the splash is out of sight.
+         double dx = msg.pos().x - gun.getX();
+         double dz = msg.pos().z - gun.getZ();
+         double bearing = Math.round(Math.toDegrees(Math.atan2(-dx, dz)) + 360.0) % 360;
+         player.displayClientMessage(net.minecraft.network.chat.Component.literal(String.format(java.util.Locale.ROOT,
+            "Splash: %,.0f m, bearing %.0f°, %+.0f m height, %.1f s", Math.sqrt(dx * dx + dz * dz), bearing, msg.pos().y - gun.getY(),
+            (gun.level().getGameTime() - firedAt.getOrDefault(msg.shellId(), gun.level().getGameTime())) / 20.0F))
+            .withStyle(net.minecraft.ChatFormatting.GOLD), false);
       }
    }
 
@@ -234,7 +258,7 @@ public final class ShellCamera {
          } else {
             // Out of the client's entity range: fly the shell's own ballistics.
             Vec3 next = shellPos.add(shellVel);
-            if (mc.level.hasChunkAt(net.minecraft.core.BlockPos.containing(next))) {
+            if (ArcPredictor.loaded(mc.level, next)) {
                BlockHitResult hit = mc.level.clip(new ClipContext(shellPos, next, ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, player));
                if (hit.getType() != HitResult.Type.MISS) {
                   shellPos = hit.getLocation();

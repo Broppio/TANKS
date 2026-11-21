@@ -26,6 +26,7 @@ public class ModTabs {
             output.accept(ContainerBlockItem.createInstance(ModEntities.M4A3_SHERMAN.get()));
             output.accept(ContainerBlockItem.createInstance(ModEntities.T_26.get()));
             output.accept(ContainerBlockItem.createInstance(ModEntities.FLAK_88.get()));
+            output.accept(ContainerBlockItem.createInstance(ModEntities.PAK_38.get()));
             output.accept(new ItemStack(ModItem.TIGER_HULL.get()));
             output.accept(new ItemStack(ModItem.TIGER_TURRET.get()));
             output.accept(new ItemStack(ModItem.TIGER_BARREL.get()));

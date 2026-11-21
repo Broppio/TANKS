@@ -36,8 +36,8 @@ import rev.rev.warsteel.entity.vehicle.Flak88Entity;
 public final class ArcPredictor implements LayeredDraw.Layer {
    public static final ArcPredictor INSTANCE = new ArcPredictor();
    public static final ResourceLocation ID = ResourceLocation.fromNamespaceAndPath("warsteel", "arc_fire_control");
-   /** Superb Warfare removes cannon shells after this many ticks (ProjectileLife). */
-   private static final int SHELL_LIFE = 800;
+   /** How far ahead (ticks of flight) to predict: 5 minutes. ARC shells have no lifetime limit. */
+   private static final int SHELL_LIFE = 6000;
 
    private static final List<Vec3> path = new ArrayList<>();
    @Nullable
@@ -53,6 +53,15 @@ public final class ArcPredictor implements LayeredDraw.Layer {
    private static boolean shown;
 
    private ArcPredictor() {
+   }
+
+   /**
+    * Whether the client really holds the chunk at this point. (Level.hasChunkAt answers true for
+    * chunks the client never received, which it fills with an empty stand-in.)
+    */
+   static boolean loaded(Level level, Vec3 p) {
+      return level.getChunkSource().getChunk(BlockPos.containing(p).getX() >> 4, BlockPos.containing(p).getZ() >> 4,
+            net.minecraft.world.level.chunk.status.ChunkStatus.FULL, false) != null;
    }
 
    static void clear() {
@@ -83,7 +92,7 @@ public final class ArcPredictor implements LayeredDraw.Layer {
 
       for (; t < SHELL_LIFE; t++) {
          Vec3 next = pos.add(vel);
-         if (level.hasChunkAt(BlockPos.containing(next))) {
+         if (loaded(level, next)) {
             BlockHitResult hit = level.clip(new ClipContext(pos, next, ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, player));
             if (hit.getType() != HitResult.Type.MISS) {
                impact = hit.getLocation();
@@ -103,7 +112,7 @@ public final class ArcPredictor implements LayeredDraw.Layer {
 
          pos = next;
          vel = vel.add(0.0, -g, 0.0);
-         if (path.size() < 400 || t % 4 == 0) {
+         if (t < 400 || t % Math.max(1, t / 400) == 0) {
             path.add(pos);
          }
 
@@ -132,7 +141,7 @@ public final class ArcPredictor implements LayeredDraw.Layer {
 
       Font font = mc.font;
       int x = 8;
-      int y = g.guiHeight() / 2 - 40;
+      int y = g.guiHeight() / 2 - 12;
       if (ShellCamera.active()) {
          String s = String.format(Locale.ROOT, "SHELL CAM  T+%.1f s%s", ShellCamera.flightSeconds(), ShellCamera.hasLanded() ? "  · IMPACT" : "");
          g.drawString(font, s, x, y, 0xFFD27F, true);
@@ -159,7 +168,7 @@ public final class ArcPredictor implements LayeredDraw.Layer {
       g.drawString(font, String.format(Locale.ROOT, "Elevation %.1f°", elevation), x, lineY, 0xFFFFFF, true);
       lineY += 11;
       if (outOfLife) {
-         g.drawString(font, "Beyond fuze range: lower the charge or elevation", x, lineY, 0xFF6060, true);
+         g.drawString(font, "No impact within 5 minutes of flight", x, lineY, 0xFF6060, true);
       } else {
          g.drawString(font, String.format(Locale.ROOT, "Range %s%,.0f m   Time of flight %.1f s", approximate ? "≈" : "", range, flightTicks / 20.0), x, lineY, 0x80FF80, true);
          lineY += 11;

@@ -282,4 +282,25 @@ write('flak-88', ARMOUR_NOTE, 0.8, flak,
           box('TraverseGear', 'TURRET_DRIVE', (0.35, 0.3, 0.3), (0.15, 0.15, 0.15), 'Turret'),
           box('AmmoReady', 'AMMO_RACK', (1.25, 0.95, -1.6), (0.3, 0.25, 0.35), External=True, DetonationChance=0.25),
       ])
+# ------------------------------------------------------------------------------------------------
+# 5 cm PaK 38. Axle and wheels, the split trails (both Vehicle frame), and the upper carriage with
+# its spaced 2 x 4 mm shield (Turret frame; traverses 32 degrees each way). The crew kneel behind
+# the shield, outside any armour.
+pak = faces('Axle', 'Vehicle', (0, 0.45, 0.06), (1.0, 0.45, 0.45), {
+    'front': (4, 0.8), 'rear': (5, 0.8), 'left': (6, 0.8), 'right': (6, 0.8), 'roof': (5, 1.0)})
+pak += faces('Trail', 'Vehicle', (0, 0.22, -1.75), (1.2, 0.22, 1.3), {
+    'front': (6, 0.8), 'rear': (6, 0.8), 'left': (6, 0.8), 'right': (6, 0.8), 'roof': (6, 1.0)})
+pak += faces('Shield', 'Turret', (0, 0.48, -0.25), (0.75, 0.41, 0.43), {
+    'front': (8, 0.9), 'rear': (4, 0.8), 'left': (4, 0.8), 'right': (4, 0.8), 'roof': (4, 1.0)})
+write('pak-38', ARMOUR_NOTE, 0.8, pak,
+      MODEL_NOTE + " 5 cm PaK 38: gunner and loader kneel behind the shield, the commander behind the trails; ready rounds lie by the left trail.",
+      1, [
+          box('Gunner', 'CREW', (0.45, 0.0, -0.95), (0.25, 0.5, 0.25), 'Turret', Role='GUNNER', Seat=0, External=True),
+          box('Loader', 'CREW', (-0.45, 0.0, -0.95), (0.25, 0.5, 0.25), 'Turret', Role='LOADER', External=True),
+          box('Commander', 'CREW', (0.0, 0.0, -1.9), (0.25, 0.5, 0.25), 'Turret', Role='COMMANDER', External=True),
+          box('Breech', 'BREECH', (0, 0.48, -0.6), (0.1, 0.1, 0.35), 'Turret'),
+          box('Barrel', 'BARREL', (0, 0.48, 1.3), (0.06, 0.06, 1.3), 'Turret'),
+          box('TraverseGear', 'TURRET_DRIVE', (0.3, 0.1, -0.3), (0.12, 0.12, 0.12), 'Turret'),
+          box('AmmoReady', 'AMMO_RACK', (0.8, 0.12, -1.3), (0.25, 0.12, 0.3), External=True, DetonationChance=0.2),
+      ])
 print('ok')

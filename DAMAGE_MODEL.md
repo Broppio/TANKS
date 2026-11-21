@@ -73,6 +73,7 @@ round to see its stats.
 | KV-1 | 76 mm F-34 | BR-350A (APHEBC, 84 mm), OF-350 (HE) |
 | KV-2 | 152 mm M-10T | BR-540 (APHE, 110 mm), OF-530 (HE, 6.9 kg TNT) |
 | Tiger H1 | 8.8 cm KwK 36 | PzGr 39 (APCBC-HE, 162 mm), PzGr 40 (APCR, 171 mm), Sprgr. L/4.5 (HE) |
+| PaK 38 | 5 cm PaK 38 | PzGr 39 (APCBC-HE, 96 mm), PzGr 40 (APCR, 149 mm), Sprgr. 38 (HE) |
 
 Penetration figures are War Thunder's at 10 m. Muzzle velocities are historical (the gun sights'
 range ladders are matched to them).
@@ -90,6 +91,7 @@ propellant, and the bottom row the base with a `primer`.
 | Calibre | Case (middle, bottom) | Yield |
 |---|---|---|
 | 45 mm | copper ingots and gunpowder / primer | 8 |
+| 50 mm | copper ingots and gunpowder / copper, primer, copper | 6 |
 | 75 mm | copper plates and gunpowder / primer | 4 |
 | 76 mm | as 75 mm, plus copper plates either side of the primer | 4 |
 | 88 mm | as 75 mm, plus steel either side of the primer | 3 |
@@ -153,12 +155,31 @@ Press **B** while crewing the gun to switch between direct fire and ARC mode. In
 - after each shot the camera follows the shell, holds on the impact for three seconds, then returns
   to the gun. Press **B** to come back early. The gun stays laid while you watch.
 
-Terrain beyond your render distance isn't loaded, so shells landing that far away fly over empty
-space on camera.
+- ARC shells have no time fuze (the Kz round bursts on impact too) and no lifetime limit, and they
+  keep the chunks along their path loaded, so they fly as far as the charge and elevation send them;
+- when a shell lands, the chat shows the splash: distance, bearing, height and time of flight.
+
+Terrain beyond your render distance isn't sent to your game, so on long shots the camera follows
+the shell over open sky; the splash report tells you where it came down.
 
 The gun uses the same armour and module model as the tanks. It has no real armour, and its crew
 (gunner, layer, loader) stand in the open, so HE landing nearby wounds or kills them like infantry.
 It's knocked out when the whole crew is down.
+
+## 5 cm PaK 38
+
+A towed anti-tank gun, built from a 27,700-triangle model reduced to about 8,300 (see
+`tools/pak38_export.py` and `tools/pak38_atlas.py`). Place it from the creative tab or build it on the
+vehicle assembling table ("defense"). The gun and shield traverse 32° either side of the trails and
+elevate from −8° to +27°.
+
+| Round | Type | Penetration at 10 m | Muzzle velocity |
+|---|---|---|---|
+| PzGr 39 | APCBC-HE | 96 mm | 835 m/s |
+| PzGr 40 | APCR | 149 mm | 1,180 m/s |
+| Sprgr. 38 | HE | — | 550 m/s |
+
+The shield is two 4 mm plates; the gunner, loader and commander kneel behind it in the open.
 
 ## Hit marks and wrecks
 
