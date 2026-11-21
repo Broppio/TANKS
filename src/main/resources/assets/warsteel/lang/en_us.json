@@ -78,5 +78,6 @@
   "item.warsteel.tiger_crate": "Tiger H1 (crated)",
   "tooltip.warsteel.crate.vehicle": "A factory-built %s",
   "tooltip.warsteel.crate.production": "Factory production: one every %s days",
-  "tooltip.warsteel.crate.unpack": "Right-click to unpack into a deployable vehicle container"
+  "tooltip.warsteel.crate.unpack": "Right-click to unpack into a deployable vehicle container",
+  "message.warsteel.ww2_removed": "%s item(s) removed: not available in the WW2 setting"
 }

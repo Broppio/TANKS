@@ -57,6 +57,9 @@ public class WarSteel {
       NeoForge.EVENT_BUS.register(rev.rev.warsteel.combat.ArtilleryMode.INSTANCE);
       NeoForge.EVENT_BUS.register(rev.rev.warsteel.damage.WarSteelCommands.INSTANCE);
       bus.addListener(WarSteel::registerPayloads);
+      // Second World War setting: Superb Warfare's firearms, own vehicles and modern gear are disabled.
+      NeoForge.EVENT_BUS.register(rev.rev.warsteel.ww2.Ww2Filter.INSTANCE);
+      bus.addListener(rev.rev.warsteel.ww2.Ww2Filter::onBuildTabs);
       if (net.neoforged.fml.ModList.get().isLoaded("nationsatwar")) {
          // Vehicles are built in Nations at War factories, each on its own production time.
          NeoForge.EVENT_BUS.register(rev.rev.warsteel.compat.NationsAtWarFactories.INSTANCE);

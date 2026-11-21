@@ -211,6 +211,28 @@ elevate from −8° to +27°.
 
 The shield is two 4 mm plates; the gunner, loader and commander kneel behind it in the open.
 
+## Second World War setting
+
+With WarSteel installed, Superb Warfare is trimmed to fit the period:
+
+- **Every Superb Warfare firearm is disabled**, with its perks, blueprints, gun parts and
+  ammunition (WarSteel's Panzerfaust is unaffected). Use a WW2 gun pack for infantry weapons.
+- **Superb Warfare's own vehicles are disabled**: they can't be assembled, deployed or spawned, and
+  any already in a world disappear when their chunk loads. WarSteel's vehicles are unaffected.
+- **Modern gear is disabled**: drones, missiles and rockets, C4, claymores and modern mines,
+  tasers, modern body armour, the gun workbenches and other items that don't fit (196 in all).
+  Period items stay: hand grenades, M18 smoke, lunge mines, the M35 helmet, sandbags, barbed
+  wire, dragon's teeth, the FuMO 25 radar, knives, shovels, medical kits, parachutes, the
+  repair tool, containers and heavy machine-gun ammunition.
+
+Disabled items lose their recipes, are hidden from the creative tabs, can't be used, and are
+removed from players' inventories, the ground and mobs' hands.
+
+Server owners can adjust it with a data pack: the item tag `warsteel:disabled` lists the disabled
+items (add more, or override it with `"replace": true`), and the entity type tag
+`warsteel:allowed_vehicles` lets chosen Superb Warfare vehicles back in. Start the game with
+`-Dwarsteel.allowModern=true` to turn the whole filter off.
+
 ## Building vehicles (Nations at War factories)
 
 WarSteel vehicles can't be crafted. They're produced in **Nations at War** factories, as crates:
