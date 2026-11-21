@@ -68,5 +68,15 @@
   "item.warsteel.50mm_pzgr40": "5 cm PaK 38 PzGr 40 (APCR)",
   "item.warsteel.50mm_sprgr38": "5 cm PaK 38 Sprgr. 38 (HE)",
   "item.warsteel.panzerfaust_60": "Panzerfaust 60",
-  "entity.warsteel.panzerfaust_warhead": "Panzerfaust warhead"
+  "entity.warsteel.panzerfaust_warhead": "Panzerfaust warhead",
+  "item.warsteel.pak38_crate": "5 cm PaK 38 (crated)",
+  "item.warsteel.t26_crate": "T-26 (crated)",
+  "item.warsteel.sherman_crate": "M4A3 (75) Sherman (crated)",
+  "item.warsteel.flak88_crate": "8.8 cm Flak 36 (crated)",
+  "item.warsteel.kv1_crate": "KV-1 (crated)",
+  "item.warsteel.kv2_crate": "KV-2 (crated)",
+  "item.warsteel.tiger_crate": "Tiger H1 (crated)",
+  "tooltip.warsteel.crate.vehicle": "A factory-built %s",
+  "tooltip.warsteel.crate.production": "Factory production: one every %s days",
+  "tooltip.warsteel.crate.unpack": "Right-click to unpack into a deployable vehicle container"
 }

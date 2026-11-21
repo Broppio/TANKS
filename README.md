@@ -16,6 +16,7 @@ Requires NeoForge 21.1.203+, Superb Warfare 0.8.9.2 (NeoForge 1.21.1) and Kotlin
 Place these in `libs/` (they're compile-only and aren't committed):
 
 - `superbwarfare-0.8.9.2-hotfix-mc1.21.1-e0c2b27f.jar`
+- `nationsatwar-0.4.0.jar` (for the optional factory integration)
 - `simplebedrockmodel-*.jar`, `geckolib-*.jar` and `mae-*.jar`, taken from the Superb Warfare jar's
   `META-INF/jarjar/` folder (and SimpleBedrockModel's own `META-INF/jarjar/` for `mae`)
 

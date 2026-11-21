@@ -36,6 +36,23 @@ public class ModItem {
    public static final DeferredItem<rev.rev.warsteel.item.gun.PanzerfaustItem> PANZERFAUST_60 =
       ITEMS.register("panzerfaust_60", rev.rev.warsteel.item.gun.PanzerfaustItem::new);
 
+   /**
+    * Factory-built vehicles (see VehicleCrateItem and compat.NationsAtWarFactories). Production
+    * time in real days scales with how much the vehicle is worth: a T-26 or a towed gun comes off
+    * the line in about a week or two; a KV-2 or a Tiger takes over a month.
+    */
+   public static final DeferredItem<rev.rev.warsteel.item.VehicleCrateItem> PAK38_CRATE = crate("pak38_crate", ModEntities.PAK_38, 8);
+   public static final DeferredItem<rev.rev.warsteel.item.VehicleCrateItem> T26_CRATE = crate("t26_crate", ModEntities.T_26, 10);
+   public static final DeferredItem<rev.rev.warsteel.item.VehicleCrateItem> SHERMAN_CRATE = crate("sherman_crate", ModEntities.M4A3_SHERMAN, 21);
+   public static final DeferredItem<rev.rev.warsteel.item.VehicleCrateItem> FLAK88_CRATE = crate("flak88_crate", ModEntities.FLAK_88, 24);
+   public static final DeferredItem<rev.rev.warsteel.item.VehicleCrateItem> KV1_CRATE = crate("kv1_crate", ModEntities.KV_1, 26);
+   public static final DeferredItem<rev.rev.warsteel.item.VehicleCrateItem> KV2_CRATE = crate("kv2_crate", ModEntities.KV_2, 34);
+   public static final DeferredItem<rev.rev.warsteel.item.VehicleCrateItem> TIGER_CRATE = crate("tiger_crate", ModEntities.TigerH1, 42);
+
+   private static DeferredItem<rev.rev.warsteel.item.VehicleCrateItem> crate(String id, java.util.function.Supplier<? extends net.minecraft.world.entity.EntityType<?>> type, double days) {
+      return ITEMS.register(id, () -> new rev.rev.warsteel.item.VehicleCrateItem(type, days));
+   }
+
    /** Historical tank rounds, keyed by id (see tools/gen_ammo.py). */
    public static final Map<String, DeferredItem<AmmoItem>> AMMO = new LinkedHashMap<>();
 

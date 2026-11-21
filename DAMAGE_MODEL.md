@@ -161,7 +161,7 @@ Ricochets and non-penetrations show the shell glancing off.
 
 A dual-purpose emplaced gun, built from a Flak 36 model (reduced from about 46,500 to about 7,000
 triangles; see `tools/flak88_export.py` and `tools/flak88_atlas.py`). Place it from the creative
-tab or build it on Superb Warfare's vehicle assembling table ("defense"). It traverses 360° and
+tab, or get it from a factory (see "Building vehicles"). It traverses 360° and
 elevates from −3° to +85°.
 
 | Role | Round |
@@ -199,8 +199,8 @@ It's knocked out when the whole crew is down.
 ## 5 cm PaK 38
 
 A towed anti-tank gun, built from a 27,700-triangle model reduced to about 8,300 (see
-`tools/pak38_export.py` and `tools/pak38_atlas.py`). Place it from the creative tab or build it on the
-vehicle assembling table ("defense"). The gun and shield traverse 32° either side of the trails and
+`tools/pak38_export.py` and `tools/pak38_atlas.py`). Place it from the creative tab or get it from a
+factory (see "Building vehicles"). The gun and shield traverse 32° either side of the trails and
 elevate from −8° to +27°.
 
 | Round | Type | Penetration at 10 m | Muzzle velocity |
@@ -210,6 +210,37 @@ elevate from −8° to +27°.
 | Sprgr. 38 | HE | — | 550 m/s |
 
 The shield is two 4 mm plates; the gunner, loader and commander kneel behind it in the open.
+
+## Building vehicles (Nations at War factories)
+
+WarSteel vehicles can't be crafted. They're produced in **Nations at War** factories, as crates:
+
+| Crate | Vehicle | One every |
+|---|---|---|
+| `warsteel:pak38_crate` | 5 cm PaK 38 | 8 days |
+| `warsteel:t26_crate` | T-26 | 10 days |
+| `warsteel:sherman_crate` | M4A3 (75) Sherman | 21 days |
+| `warsteel:flak88_crate` | 8.8 cm Flak 36 | 24 days |
+| `warsteel:kv1_crate` | KV-1 | 26 days |
+| `warsteel:kv2_crate` | KV-2 | 34 days |
+| `warsteel:tiger_crate` | Tiger H1 | 42 days |
+
+1. Request a factory for the crate like any other item, e.g.
+   `/nation factory request "Tank Works" warsteel:t26_crate 1` (the amount is crates per
+   production period). An admin approves it as usual.
+2. Each period (real days, from approval) the factory delivers its crates to the nation's
+   stockpile. WarSteel runs these factories on the vehicle's own production time instead of Nations
+   at War's monthly cycle; members get a message when the line starts and on every delivery, and
+   deliveries are posted to Discord. Production only runs while the factory is active (its land
+   claimed); time it spends stopped doesn't count.
+3. Withdraw the crate from the stockpile and right-click it to unpack it into Superb Warfare's
+   deployable vehicle container, then place that.
+
+Nations at War's own "next payout" display still shows its monthly cycle for these factories;
+the crate's tooltip and the factory's start message give the real time. To test, start the server
+with `-Dwarsteel.factoryDayMillis=60000` (one production day per minute).
+
+Without Nations at War installed, vehicles come only from the creative tab or commands.
 
 ## Hit marks and wrecks
 

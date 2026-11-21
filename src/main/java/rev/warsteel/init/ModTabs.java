@@ -28,6 +28,10 @@ public class ModTabs {
             output.accept(ContainerBlockItem.createInstance(ModEntities.FLAK_88.get()));
             output.accept(ContainerBlockItem.createInstance(ModEntities.PAK_38.get()));
             output.accept(new ItemStack(ModItem.PANZERFAUST_60.get()));
+            for (net.neoforged.neoforge.registries.DeferredItem<?> crate : java.util.List.of(ModItem.PAK38_CRATE, ModItem.T26_CRATE, ModItem.SHERMAN_CRATE,
+               ModItem.FLAK88_CRATE, ModItem.KV1_CRATE, ModItem.KV2_CRATE, ModItem.TIGER_CRATE)) {
+               output.accept(new ItemStack(crate.get()));
+            }
             output.accept(new ItemStack(ModItem.TIGER_HULL.get()));
             output.accept(new ItemStack(ModItem.TIGER_TURRET.get()));
             output.accept(new ItemStack(ModItem.TIGER_BARREL.get()));

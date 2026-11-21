@@ -385,10 +385,17 @@ public final class WarSteelCommands {
 
    /** Testing: fire the gun in the player's main hand as if they had clicked. */
    private static int useGun(CommandContext<CommandSourceStack> c) {
-      if (!(c.getSource().getEntity() instanceof net.minecraft.world.entity.player.Player player)
-         || !(player.getMainHandItem().getItem() instanceof com.atsuishio.superbwarfare.item.gun.GunItem gun)) {
-         c.getSource().sendFailure(Component.literal("Not holding a gun"));
+      if (!(c.getSource().getEntity() instanceof net.minecraft.world.entity.player.Player player)) {
          return 0;
+      }
+
+      if (!(player.getMainHandItem().getItem() instanceof com.atsuishio.superbwarfare.item.gun.GunItem gun)) {
+         // Anything else: use it as if right-clicked in the air.
+         net.minecraft.world.InteractionResultHolder<net.minecraft.world.item.ItemStack> r =
+            player.getMainHandItem().use(player.level(), player, net.minecraft.world.InteractionHand.MAIN_HAND);
+         player.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, r.getObject());
+         c.getSource().sendSuccess(() -> Component.literal("Used: now holding " + player.getMainHandItem()), false);
+         return 1;
       }
 
       com.atsuishio.superbwarfare.data.gun.GunData data = com.atsuishio.superbwarfare.data.gun.GunData.from(player.getMainHandItem());

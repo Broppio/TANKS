@@ -36,6 +36,8 @@ dependencies {
     // At runtime these come from Superb Warfare itself, so they are compile-only here.
     compileOnly files('libs/superbwarfare-0.8.9.2-hotfix-mc1.21.1-e0c2b27f.jar')
     compileOnly fileTree(dir: 'libs', include: ['simplebedrockmodel-*.jar', 'geckolib-*.jar', 'mae-*.jar'])
+    // Optional: Nations at War factory integration (only used when that mod is installed)
+    compileOnly fileTree(dir: 'libs', include: ['nationsatwar-*.jar'])
     compileOnly 'org.jetbrains.kotlin:kotlin-stdlib:2.2.0'
 }
 

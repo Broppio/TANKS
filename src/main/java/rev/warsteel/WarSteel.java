@@ -57,6 +57,11 @@ public class WarSteel {
       NeoForge.EVENT_BUS.register(rev.rev.warsteel.combat.ArtilleryMode.INSTANCE);
       NeoForge.EVENT_BUS.register(rev.rev.warsteel.damage.WarSteelCommands.INSTANCE);
       bus.addListener(WarSteel::registerPayloads);
+      if (net.neoforged.fml.ModList.get().isLoaded("nationsatwar")) {
+         // Vehicles are built in Nations at War factories, each on its own production time.
+         NeoForge.EVENT_BUS.register(rev.rev.warsteel.compat.NationsAtWarFactories.INSTANCE);
+         LOGGER.info("WarSteel: Nations at War found, vehicle factories enabled");
+      }
       LOGGER.info("WarSteel: registered ricochet and muzzle particle handlers");
    }
 }
