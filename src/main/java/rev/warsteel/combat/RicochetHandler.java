@@ -163,6 +163,8 @@ public final class RicochetHandler {
       DamageSource source = ModDamageTypes.causeProjectileHitDamage(level.registryAccess(), shell, owner);
       double pen = data.getPenetration().at(this.flightDistance(owner, shell, hitVec));
       MutableComponent prefix = Component.empty();
+      // A HEAT warhead that has already gone off against spaced armour (tracks, skirts) only has its jet left.
+      boolean heatBurst = false;
 
       // 1. External modules (tracks, barrel) in front of the hull act as spaced armour.
       if (tank != null) {
@@ -171,7 +173,27 @@ public final class RicochetHandler {
                continue;
             }
 
-            if (data.isContactFuzed()) {
+            if (data.isHeat() && !heatBurst) {
+               // The warhead fires its jet here; the gap to the hull lets the jet stretch and
+               // break up, so spaced armour costs it far more than its own thickness.
+               heatBurst = true;
+               TankDamage.Report r = TankDamage.outsideBlast(tank, level, hitVec, data, source, owner);
+               HeExplosion.detonate(level, hitVec.subtract(dir.scale(0.1)), data.getFiller(), shell, owner, tank, 1.0, true);
+               TankDamage.hitExternal(tank, level, ext, data, source, owner);
+               pen = pen * 0.55 - ext.armour();
+               prefix = prefix.append(Component.literal(ext.label() + " (jet) ").withStyle(ChatFormatting.GRAY));
+               if (pen <= 0.0) {
+                  event.setCanceled(true);
+                  TankDamage.markHandled(shell);
+                  shell.discard();
+                  this.report(event, Component.literal("ABSORBED ").withStyle(ChatFormatting.YELLOW).append(prefix), r, new ReplayCtx(tank, armour, -1, hitVec, dir, null));
+                  return;
+               }
+
+               continue;
+            }
+
+            if (data.isContactFuzed() && !data.isHeat()) {
                event.setCanceled(true);
                TankDamage.markHandled(shell);
                TankDamage.Report r = TankDamage.outsideBlast(tank, level, hitVec, data, source, owner);
@@ -206,7 +228,7 @@ public final class RicochetHandler {
             // Grazed geometry that isn't armour (fenders, stowage): no effect.
             event.setCanceled(true);
             TankDamage.markHandled(shell);
-            if (data.isContactFuzed()) {
+            if (data.isContactFuzed() && !heatBurst) {
                HeExplosion.detonate(level, hitVec.subtract(dir.scale(0.1)), data.getFiller(), shell, owner, null, 1.0, true);
             }
 
@@ -261,8 +283,10 @@ public final class RicochetHandler {
             }
 
             if (data.isContactFuzed()) {
-               TankDamage.Report r = tank != null ? TankDamage.outsideBlast(tank, level, hitVec, data, source, owner) : null;
-               HeExplosion.detonate(level, hitVec.subtract(dir.scale(0.1)), data.getFiller(), shell, owner, target, 1.0, true);
+               TankDamage.Report r = tank != null && !heatBurst ? TankDamage.outsideBlast(tank, level, hitVec, data, source, owner) : null;
+               if (!heatBurst) {
+                  HeExplosion.detonate(level, hitVec.subtract(dir.scale(0.1)), data.getFiller(), shell, owner, target, 1.0, true);
+               }
                shell.discard();
                this.report(event, Component.literal("HIT ").withStyle(ChatFormatting.YELLOW).append(prefix).append(Component.literal(detail).withStyle(ChatFormatting.GRAY)), r, new ReplayCtx(tank, armour, plateIndex, hitVec, dir, null));
             } else {
@@ -286,7 +310,13 @@ public final class RicochetHandler {
             event.setCanceled(true);
             TankDamage.markHandled(shell);
             TankDamage.Report r = TankDamage.penetrate(tank, level, armour, plateIndex, data, hitVec, dir, effective, pen - effective, source, owner);
-            if (data.isContactFuzed()) {
+            if (data.isHeat()) {
+               // A shaped charge goes off on the outside of the armour; only its jet got in.
+               if (!heatBurst) {
+                  TankDamage.outsideBlast(tank, level, hitVec, data, source, owner);
+                  HeExplosion.detonate(level, hitVec.subtract(dir.scale(0.15)), data.getFiller(), shell, owner, tank, 1.0, true);
+               }
+            } else if (data.isContactFuzed()) {
                // Burst inside the hull: most of the blast is contained; only a muffled share
                // escapes through the hole and hatches.
                HeExplosion.detonate(level, hitVec, data.getFiller(), shell, owner, tank, 0.25, false);

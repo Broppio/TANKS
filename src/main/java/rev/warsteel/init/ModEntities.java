@@ -26,6 +26,11 @@ public class ModEntities {
    public static final DeferredHolder<EntityType<?>, EntityType<rev.rev.warsteel.entity.vehicle.Pak38Entity>> PAK_38 =
       reg("pak-38", rev.rev.warsteel.entity.vehicle.Pak38Entity::new, 2.0F, 1.4F);
 
+   public static final DeferredHolder<EntityType<?>, EntityType<rev.rev.warsteel.entity.projectile.PanzerfaustWarheadEntity>> PANZERFAUST_WARHEAD =
+      REGISTRY.register("panzerfaust_warhead", () -> Builder.<rev.rev.warsteel.entity.projectile.PanzerfaustWarheadEntity>of(
+            rev.rev.warsteel.entity.projectile.PanzerfaustWarheadEntity::new, MobCategory.MISC)
+         .sized(0.3F, 0.3F).clientTrackingRange(16).updateInterval(1).build("panzerfaust_warhead"));
+
    private static <T extends Entity> Builder<T> vehicle(EntityFactory<T> factory, float w, float h) {
       return Builder.of(factory, MobCategory.MISC).setTrackingRange(1028).setUpdateInterval(1).fireImmune().sized(w, h);
    }

@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "CXC",
+    " S ",
+    "GSP"
+  ],
+  "key": {
+    "C": {
+      "item": "superbwarfare:copper_plate"
+    },
+    "X": {
+      "item": "superbwarfare:high_energy_explosives"
+    },
+    "S": {
+      "tag": "c:ingots/steel"
+    },
+    "G": {
+      "item": "minecraft:gunpowder"
+    },
+    "P": {
+      "item": "superbwarfare:primer"
+    }
+  },
+  "result": {
+    "id": "warsteel:panzerfaust_60",
+    "count": 1
+  }
+}

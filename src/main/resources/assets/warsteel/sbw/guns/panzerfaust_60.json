@@ -1,0 +1,20 @@
+{
+  "Animation": {
+    "Idle": "animation.panzerfaust_60.idle",
+    "Edit": "animation.panzerfaust_60.edit",
+    "Run": "animation.panzerfaust_60.run"
+  },
+  "Model": {
+    "Animation": "warsteel:animations/panzerfaust_60.animation.json",
+    "Model": "warsteel:geo/panzerfaust_60.geo.json",
+    "Texture": "warsteel:textures/item/panzerfaust_60.png",
+    "LODModel": "warsteel:geo/panzerfaust_60.geo.json",
+    "LODTexture": "warsteel:textures/item/panzerfaust_60.png"
+  },
+  "FlarePosition": [
+    0,
+    0,
+    0.5
+  ],
+  "FlareSize": 0.5
+}

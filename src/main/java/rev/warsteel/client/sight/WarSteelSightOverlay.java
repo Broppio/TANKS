@@ -80,8 +80,13 @@ public final class WarSteelSightOverlay extends CommonOverlay {
             } else {
                openAmount = Mth.lerp(RangesKt.coerceIn(0.4F * $this$render.getPartialTick(), 0.0F, 1.0F), openAmount, 1.0F);
                GunData gunData = vehicle.getGunData(seatx);
-               double velocity = gunData != null ? ((Number)gunData.get(GunProp.VELOCITY)).doubleValue() : 0.0;
-               double gravity = gunData != null ? ((Number)gunData.get(GunProp.GRAVITY)).doubleValue() : 0.05;
+               // The loaded round's own ballistics (an HE shell is slower than AP).
+               double velocity = vehicle.getProjectileVelocity((Entity)$this$render.getPlayer());
+               double gravity = vehicle.getProjectileGravity((Entity)$this$render.getPlayer());
+               if (velocity <= 0.0 && gunData != null) {
+                  velocity = ((Number)gunData.get(GunProp.VELOCITY)).doubleValue();
+                  gravity = ((Number)gunData.get(GunProp.GRAVITY)).doubleValue();
+               }
                double zoomFactor = RangesKt.coerceAtLeast(vehicle.getDefaultZoom((Entity)$this$render.getPlayer()), 1.0);
                Double lookedAt = ClientEventHandler.fov;
                double it = lookedAt.doubleValue();
@@ -104,6 +109,18 @@ public final class WarSteelSightOverlay extends CommonOverlay {
 
                float cx = $this$render.getScreenWidth() * 0.5F;
                float cy = $this$render.getScreenHeight() * 0.5F;
+               // Centre the reticle on where the gun really points, not on the middle of the screen:
+               // the sight sits beside the bore and the turret lags the view while it traverses,
+               // so a centred reticle doesn't show where the shell will go.
+               Vec3 bore = vehicle.getShootVec((Entity)$this$render.getPlayer(), $this$render.getPartialTick());
+               if (bore != null && bore.lengthSqr() > 1.0E-6) {
+                  Vec3 aim = shootPos.add(bore.normalize().scale(hasTarget ? Math.max(range, 5.0) : 400.0));
+                  if (VectorToolKt.canSee(aim)) {
+                     Vec3 p = VectorToolKt.worldToScreen(aim);
+                     cx = Mth.clamp((float)p.x, 0.0F, $this$render.getScreenWidth());
+                     cy = Mth.clamp((float)p.y, 0.0F, $this$render.getScreenHeight());
+                  }
+               }
                SightRender.INSTANCE.beginOverlay();
                this.renderAiming($this$render, spec, vehicle, gunner, secondary, cx, cy, fovVertical, gravity, velocity, range, hasTarget);
                if (spec.getTargetMarker() && hasTarget && lookedAtx != null) {

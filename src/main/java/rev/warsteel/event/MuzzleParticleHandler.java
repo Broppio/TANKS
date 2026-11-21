@@ -52,8 +52,29 @@ public final class MuzzleParticleHandler {
          (EntityType)ModEntities.KV_1.get(),
          (EntityType)ModEntities.KV_2.get(),
          (EntityType)ModEntities.M4A3_SHERMAN.get(),
-         (EntityType)ModEntities.T_26.get()
+         (EntityType)ModEntities.T_26.get(),
+         (EntityType)ModEntities.FLAK_88.get(),
+         (EntityType)ModEntities.PAK_38.get()
       };
       return SetsKt.setOf(var0);
+   }
+
+   /**
+    * Superb Warfare doesn't raise ShootEvent for vehicle weapons, so the muzzle blast is made when
+    * a main-gun shell appears: any cannon shell whose owner is crewing a WarSteel vehicle.
+    */
+   @SubscribeEvent
+   public final void onShellSpawn(@NotNull net.neoforged.neoforge.event.entity.EntityJoinLevelEvent event) {
+      if (!(event.getLevel() instanceof net.minecraft.server.level.ServerLevel level)
+         || !(event.getEntity() instanceof com.atsuishio.superbwarfare.entity.projectile.CannonShellEntity shell)
+         || shell instanceof rev.rev.warsteel.entity.projectile.PanzerfaustWarheadEntity
+         || !(shell.getOwner() instanceof net.minecraft.world.entity.LivingEntity gunner)
+         || !(gunner.getVehicle() instanceof rev.rev.warsteel.damage.WarSteelTank vehicle)
+         || shell.getDamage() < CANNON_DAMAGE_THRESHOLD) {
+         return;
+      }
+
+      net.minecraft.world.phys.Vec3 dir = shell.getDeltaMovement().lengthSqr() > 1.0E-6 ? shell.getDeltaMovement().normalize() : vehicle.getShootVec(gunner, 1.0F);
+      ParticleTool.spawnBigCannonMuzzleParticles(dir, shell.position(), level, (Entity)vehicle);
    }
 }

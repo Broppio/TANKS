@@ -1,0 +1,29 @@
+{
+  "_comment": "Panzerfaust 60. Fired as WarSteel's own HEAT warhead (PanzerfaustItem.shootBullet, profile warsteel:pzf60_heat): 200 mm, 45 m/s, real gravity. Single shot; the empty tube is discarded.",
+  "Spread": 3,
+  "RecoilX": 0.004,
+  "RecoilY": 0.01,
+  "Damage": 300,
+  "Projectile": "warsteel:panzerfaust_warhead",
+  "ExplosionDamage": 40,
+  "ExplosionRadius": 2,
+  "ZoomReload": false,
+  "Headshot": 0,
+  "Velocity": 2.25,
+  "Gravity": 0.0245,
+  "Magazine": 1,
+  "Weight": 6,
+  "EmptyReloadTime": 2000,
+  "RPM": 60,
+  "ProjectileLife": 200,
+  "DefaultZoom": 1.6,
+  "GunType": "DirectLauncher",
+  "AmmoType": "warsteel:panzerfaust_60",
+  "Icon": "warsteel:textures/gun_icon/panzerfaust_60_icon.png",
+  "SoundInfo": {
+    "Fire1P": "superbwarfare:rpg_fire_1p",
+    "Fire3P": "superbwarfare:rpg_fire_3p",
+    "Fire3PFar": "superbwarfare:rpg_far",
+    "Fire3PVeryFar": "superbwarfare:rpg_veryfar"
+  }
+}

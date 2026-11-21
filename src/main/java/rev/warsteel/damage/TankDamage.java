@@ -293,7 +293,7 @@ public final class TankDamage {
 
       double kg = filler / 1000.0;
       double cbrt = Math.cbrt(kg);
-      double fragRange = 22.0 * cbrt + 4.0;
+      double fragRange = 30.0 * cbrt + 6.0;
 
       for (ModuleDef d : s.model.modules()) {
          if (!d.external()) {
@@ -306,9 +306,9 @@ public final class TankDamage {
             // scaled from a player's 20 health to the module's 100.
             double rr = Math.max(0.3, dist);
             double z = rr / cbrt;
-            double dmg = z < 6.0 ? 45.0 * Math.pow(1.0 - z / 6.0, 2.0) : 0.0;
+            double dmg = z < 7.5 ? 55.0 * Math.pow(1.0 - z / 7.5, 1.6) : 0.0;
             if (rr < fragRange) {
-               double expected = 900.0 * Math.sqrt(kg) * 0.8 / (4.0 * Math.PI * rr * rr) * 0.5;
+               double expected = 900.0 * Math.sqrt(kg) * 0.8 / (4.0 * Math.PI * rr * rr) * 0.6;
                double mean = expected;
                int hits = 0;
                double l = Math.exp(-Math.min(mean, 30.0));
@@ -319,7 +319,7 @@ public final class TankDamage {
                   p *= s.rnd.nextDouble();
                } while (p > l && hits < 200);
 
-               dmg += (hits - 1) * (6.0 * (1.0 - rr / fragRange) + 1.0);
+               dmg += (hits - 1) * (9.0 * (1.0 - rr / fragRange) + 2.0);
             }
 
             damage(s, d.index(), (float)(dmg * 5.0));
@@ -364,6 +364,21 @@ public final class TankDamage {
             double d0 = Math.min(0.25, wall * 0.5);
             s.report.rays.add(new ShotRay(entry, entry.add(dir.scale(d0)), 0, 0.0F));
             burst(s, entry.add(dir.scale(d0)), shell.getFiller(), (float)d0);
+            break;
+         }
+         case "HEAT": {
+            // The shaped-charge jet: a thin, extremely hot stream that wrecks whatever it touches
+            // along a short line behind the plate, plus a narrow cone of molten armour. It is
+            // spent within a metre or two unless it has a lot of penetration to spare.
+            double jet = Math.min(wall, 1.0 + excess / 80.0);
+            core(s, entry, dir, jet, 260.0F);
+            int n = clamp((int)(6 + excess / 25.0), 6, 14);
+            spall(s, entry, dir, n, 14.0, 30.0F, 0.0F);
+            if (jet >= wall - 0.05) {
+               exitHole(s, armour, entry, dir, wall, excess);
+            }
+
+            s.report.add("jet", Component.literal("HEAT jet " + String.format(java.util.Locale.ROOT, "%.1f", jet) + " m").withStyle(ChatFormatting.GRAY));
             break;
          }
          case "HESH": {

@@ -66,6 +66,10 @@ public final class WarSteelCommands {
 
    @Nullable
    public static ShellData forcedProfile(net.minecraft.world.entity.Entity shell) {
+      if (shell instanceof rev.rev.warsteel.entity.projectile.PanzerfaustWarheadEntity warhead) {
+         return warhead.profile();
+      }
+
       return FORCED.get(shell);
    }
 
@@ -93,6 +97,8 @@ public final class WarSteelCommands {
             .then(Commands.literal("status").executes(WarSteelCommands::status))
             .then(Commands.literal("obbs").executes(WarSteelCommands::obbs))
             .then(Commands.literal("reset").executes(WarSteelCommands::reset))
+            .then(Commands.literal("vshoot").executes(WarSteelCommands::vshoot))
+            .then(Commands.literal("use").executes(WarSteelCommands::useGun))
             .then(
                Commands.literal("damage")
                   .then(
@@ -355,6 +361,39 @@ public final class WarSteelCommands {
       TEST_SHELLS.add(shell);
       level.addFreshEntity(shell);
       c.getSource().sendSuccess(() -> Component.literal("Fired " + id + " (" + data.getShellClass() + ", " + data.getPenetration().getMuzzle() + " mm)"), false);
+      return 1;
+   }
+
+   /** Testing: the player's vehicle fires its main gun as if they had clicked. */
+   private static int vshoot(CommandContext<CommandSourceStack> c) {
+      if (!(c.getSource().getEntity() instanceof net.minecraft.world.entity.LivingEntity living)
+         || !(living.getVehicle() instanceof com.atsuishio.superbwarfare.entity.vehicle.base.VehicleEntity vehicle)) {
+         c.getSource().sendFailure(Component.literal("Not in a vehicle"));
+         return 0;
+      }
+
+      // Testing aid: chamber a round so the shot isn't refused for want of ammunition.
+      com.atsuishio.superbwarfare.data.gun.GunData gun = vehicle.getGunData("Cannon");
+      if (gun != null && gun.ammo.get() <= 0) {
+         gun.ammo.set(1);
+         gun.save();
+      }
+
+      vehicle.vehicleShoot(living, "Cannon", null);
+      return 1;
+   }
+
+   /** Testing: fire the gun in the player's main hand as if they had clicked. */
+   private static int useGun(CommandContext<CommandSourceStack> c) {
+      if (!(c.getSource().getEntity() instanceof net.minecraft.world.entity.player.Player player)
+         || !(player.getMainHandItem().getItem() instanceof com.atsuishio.superbwarfare.item.gun.GunItem gun)) {
+         c.getSource().sendFailure(Component.literal("Not holding a gun"));
+         return 0;
+      }
+
+      com.atsuishio.superbwarfare.data.gun.GunData data = com.atsuishio.superbwarfare.data.gun.GunData.from(player.getMainHandItem());
+      gun.shoot(data, player, 0.0, false, null);
+      data.save();
       return 1;
    }
 }

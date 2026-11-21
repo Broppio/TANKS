@@ -33,13 +33,14 @@ import rev.rev.warsteel.damage.WarSteelTank;
  * explosion for WarSteel shells.
  *
  * Blast: overpressure falls with the scaled distance Z = R / W^(1/3) (Hopkinson-Cranz, W in kg
- * TNT). It is lethal to a person around Z = 2 and harmless beyond Z = 6, so a 76 mm OF-350
- * (0.71 kg) kills within about 1.8 m and a 152 mm OF-530 (6.9 kg) within about 3.8 m.
+ * TNT). Together with the near-field fragments it is lethal to a person out to Z = 3.5 and
+ * harmless beyond Z = 7.5, so a 45 mm O-240 kills within about 1.7 m, a 76 mm OF-350 (0.71 kg)
+ * within about 3 m and a 152 mm OF-530 (6.9 kg) within about 6.7 m.
  *
  * Fragments: the casing breaks into roughly 900 * sqrt(W) useful fragments thrown out evenly.
- * Each target in line of sight is hit by about N * area / (4 pi R^2) of them (half go into the
- * ground), each doing less damage with range. That makes a 76 mm shell dangerous out to about
- * 20 m without being reliably lethal past a few metres, as in reality.
+ * Each target in line of sight is hit by about N * area / (4 pi R^2) of them (40% go into the
+ * ground), each doing less damage with range. A 76 mm shell wounds out to about 33 m and is
+ * very likely to kill an exposed man within 6-8 m.
  *
  * Craters: a small vanilla explosion (no entity damage) sized to the charge, only when Superb
  * Warfare's explosion block damage is enabled.
@@ -77,7 +78,7 @@ public final class HeExplosion {
       effects(level, pos, kg, cbrt);
       DamageSource source = ModDamageTypes.causeCustomExplosionDamage(level.registryAccess(), shell != null ? shell : owner, owner);
       double blastRange = 6.0 * cbrt;
-      double fragRange = 22.0 * cbrt + 4.0;
+      double fragRange = 30.0 * cbrt + 6.0;
       int fragments = (int)(900.0 * Math.sqrt(kg));
       List<Entity> near = level.getEntities(shell, new AABB(pos, pos).inflate(fragRange), e -> e != skip && e.isAlive() && e.getVehicle() == null);
 
@@ -115,16 +116,16 @@ public final class HeExplosion {
          } else if (e instanceof LivingEntity living) {
             float damage = 0.0F;
             double z = r / cbrt;
-            if (z < 6.0) {
-               double blast = 45.0 * Math.pow(1.0 - z / 6.0, 2.0) * outsideScale;
+            if (z < 7.5) {
+               double blast = 55.0 * Math.pow(1.0 - z / 7.5, 1.6) * outsideScale;
                damage += (float)(sighted ? blast : blast * 0.5);
             }
 
             if (sighted && r < fragRange) {
                double area = Math.max(0.2, e.getBbWidth() * e.getBbHeight());
-               double expected = fragments * outsideScale * area / (4.0 * Math.PI * r * r) * 0.5;
+               double expected = fragments * outsideScale * area / (4.0 * Math.PI * r * r) * 0.6;
                int hits = poisson(expected, rnd);
-               double perHit = 6.0 * (1.0 - r / fragRange) + 1.0;
+               double perHit = 9.0 * (1.0 - r / fragRange) + 2.0;
                damage += (float)(hits * perHit);
             }
 
@@ -137,7 +138,7 @@ public final class HeExplosion {
             if (damage > 0.0F) {
                living.invulnerableTime = 0;
                living.hurt(source, damage);
-               double push = Math.max(0.0, 1.0 - z / 6.0) * 0.8 * outsideScale;
+               double push = Math.max(0.0, 1.0 - z / 7.5) * 0.9 * outsideScale;
                if (push > 0.0) {
                   Vec3 away = e.position().add(0.0, e.getBbHeight() * 0.5, 0.0).subtract(pos).normalize().scale(push);
                   e.push(away.x, away.y * 0.6 + push * 0.3, away.z);
@@ -156,11 +157,11 @@ public final class HeExplosion {
    }
 
    private static void effects(ServerLevel level, Vec3 pos, double kg, double cbrt) {
-      if (kg < 0.2) {
+      if (kg < 0.08) {
          ParticleTool.spawnMiniExplosionParticles(level, pos);
-      } else if (kg < 1.0) {
+      } else if (kg < 0.5) {
          ParticleTool.spawnSmallExplosionParticles(level, pos);
-      } else if (kg < 3.0) {
+      } else if (kg < 2.0) {
          ParticleTool.spawnMediumExplosionParticles(level, pos);
       } else {
          ParticleTool.spawnLargeExplosionParticles(level, pos);
@@ -170,7 +171,18 @@ public final class HeExplosion {
       BlockPos below = BlockPos.containing(pos.x, pos.y - 0.3, pos.z);
       BlockState ground = level.getBlockState(below);
       if (!ground.isAir()) {
-         level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, ground), pos.x, pos.y + 0.2, pos.z, (int)(30 * cbrt) + 8, 0.6 * cbrt, 0.3, 0.6 * cbrt, 0.35);
+         level.sendParticles(new BlockParticleOption(ParticleTypes.BLOCK, ground), pos.x, pos.y + 0.2, pos.z, (int)(45 * cbrt) + 10, 1.0 * cbrt, 0.4, 1.0 * cbrt, 0.4);
+      }
+
+      // A ring of dust and smoke kicked out along the ground by the blast wave.
+      int ring = (int)(16 + 14 * cbrt);
+      double rr = 1.2 + 2.2 * cbrt;
+      for (int i = 0; i < ring; i++) {
+         double a = i * Math.PI * 2.0 / ring + level.random.nextDouble() * 0.2;
+         double cx = Math.cos(a), cz = Math.sin(a);
+         level.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, pos.x + cx * rr * 0.4, pos.y + 0.3, pos.z + cz * rr * 0.4, 0,
+            cx, 0.08, cz, 0.12 + 0.05 * cbrt);
+         level.sendParticles(ParticleTypes.POOF, pos.x + cx * rr, pos.y + 0.2, pos.z + cz * rr, 1, 0.2, 0.1, 0.2, 0.05);
       }
 
       SoundEvent close = kg >= 3.0 ? ModSounds.HUGE_EXPLOSION_CLOSE.get() : ModSounds.EXPLOSION_CLOSE.get();

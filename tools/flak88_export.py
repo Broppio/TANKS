@@ -22,6 +22,7 @@ RATIOS = {'gun': float(argv[1]), 'carriage': float(argv[2]), 'base': float(argv[
 SCALE = 1.35 * 16.0           # Blender metres -> model pixels at real size
 XC, YC = -0.50, -0.065        # traverse axis (centre of the cruciform base), Blender world
 TRUNNION_X, TRUNNION_Z = -0.42, 1.20   # elevation axis, Blender world
+MUZZLE = (2.30, 1.18)                  # muzzle (x forward, z up), Blender world
 
 TILE = {'Mat haut': (0, 0), 'mat sous haut': (1, 0), 'Mat pied': (0, 1), 'Mat pied detail': (1, 1)}
 PART = {'Mat haut': 'gun', 'mat sous haut': 'carriage', 'Mat pied': 'base', 'Mat pied detail': 'base_detail'}
@@ -42,6 +43,35 @@ bpy.ops.mesh.select_all(action='SELECT')
 bpy.ops.mesh.separate(type='MATERIAL')
 bpy.ops.object.mode_set(mode='OBJECT')
 
+def split_tube(o):
+    """Splits the barrel tube (the pieces on the bore axis, forward of the breech) out of the gun
+    so it can recoil through the cradle. Returns the tube object."""
+    bpy.ops.object.select_all(action='DESELECT')
+    o.select_set(True)
+    bpy.context.view_layer.objects.active = o
+    bpy.ops.object.mode_set(mode='EDIT')
+    bpy.ops.mesh.select_all(action='SELECT')
+    bpy.ops.mesh.separate(type='LOOSE')
+    bpy.ops.object.mode_set(mode='OBJECT')
+    pieces = [x for x in bpy.context.selected_objects]
+    tube, rest = [], []
+    for x in pieces:
+        ws = [x.matrix_world @ v.co for v in x.data.vertices]
+        mn = [min(p[i] for p in ws) for i in range(3)]
+        mx = [max(p[i] for p in ws) for i in range(3)]
+        on_axis = mn[2] >= 1.05 and mx[2] <= 1.30 and mx[1] - mn[1] <= 0.26 and (mn[0] + mx[0]) / 2 > -1.0
+        (tube if on_axis else rest).append(x)
+    out = []
+    for group in (rest, tube):
+        bpy.ops.object.select_all(action='DESELECT')
+        for x in group:
+            x.select_set(True)
+        bpy.context.view_layer.objects.active = group[0]
+        bpy.ops.object.join()
+        out.append(bpy.context.view_layer.objects.active)
+    return out
+
+
 meshes = {}
 for o in list(bpy.context.view_layer.objects):
     if o.type != 'MESH' or not o.data.materials:
@@ -49,6 +79,19 @@ for o in list(bpy.context.view_layer.objects):
     mat = o.data.materials[0].name
     part = PART.get(mat)
     if part is None:
+        continue
+    if part == 'gun':
+        gun, tube = split_tube(o)
+        for obj, name in ((gun, 'gun'), (tube, 'tube')):
+            bpy.context.view_layer.objects.active = obj
+            dec = obj.modifiers.new('dec', 'DECIMATE')
+            dec.decimate_type = 'COLLAPSE'
+            dec.ratio = RATIOS['gun']
+            dec.use_collapse_triangulate = True
+            bpy.ops.object.modifier_apply(modifier='dec')
+            tri = obj.modifiers.new('tri', 'TRIANGULATE')
+            bpy.ops.object.modifier_apply(modifier='tri')
+            meshes.setdefault(name, []).append((obj, mat))
         continue
     bpy.context.view_layer.objects.active = o
     dec = o.modifiers.new('dec', 'DECIMATE')
@@ -126,6 +169,9 @@ bones = [
     {'name': 'carriage', 'parent': 'turret', 'pivot': [0, 0.29 * SCALE, 0], 'poly_mesh': poly_mesh(meshes['carriage'])},
     {'name': 'barrel', 'parent': 'turret', 'pivot': [0, round(tr_y, 3), round(tr_z, 3)]},
     {'name': 'gun', 'parent': 'barrel', 'pivot': [0, round(tr_y, 3), round(tr_z, 3)], 'poly_mesh': poly_mesh(meshes['gun'])},
+    # Recoils through the cradle (animation.cannon.fire); the flare bone is Superb Warfare's muzzle flash.
+    {'name': 'tube', 'parent': 'barrel', 'pivot': [0, round(tr_y, 3), round(tr_z, 3)], 'poly_mesh': poly_mesh(meshes['tube'])},
+    {'name': 'flare', 'parent': 'tube', 'pivot': [0, round(MUZZLE[1] * SCALE, 3), round(-(MUZZLE[0] - XC) * SCALE, 3)]},
 ]
 geo = {
     'format_version': '1.12.0',

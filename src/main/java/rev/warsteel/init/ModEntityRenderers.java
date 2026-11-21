@@ -26,5 +26,6 @@ public class ModEntityRenderers {
       event.registerEntityRenderer(ModEntities.T_26.get(), T26Renderer::new);
       event.registerEntityRenderer(ModEntities.FLAK_88.get(), rev.rev.warsteel.client.renderer.entity.Flak88Renderer::new);
       event.registerEntityRenderer(ModEntities.PAK_38.get(), rev.rev.warsteel.client.renderer.entity.Pak38Renderer::new);
+      event.registerEntityRenderer(ModEntities.PANZERFAUST_WARHEAD.get(), rev.rev.warsteel.client.panzerfaust.PanzerfaustWarheadRenderer::new);
    }
 }

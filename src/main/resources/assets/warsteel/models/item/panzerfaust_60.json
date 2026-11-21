@@ -1,0 +1,15 @@
+{
+  "base": {
+    "parent": "warsteel:item/panzerfaust_60_base"
+  },
+  "gui_light": "front",
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "gui": {
+      "parent": "warsteel:item/panzerfaust_60_icon"
+    }
+  },
+  "textures": {
+    "particle": "warsteel:item/panzerfaust_60_icon"
+  }
+}

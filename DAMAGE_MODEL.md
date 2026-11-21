@@ -105,16 +105,46 @@ the tanks' ammo lists, recipes, textures, names and sights). Edit the table and 
 WarSteel's HE (and APHE) shells don't use Superb Warfare's fixed explosion. Their effect is
 worked out from the TNT-equivalent charge:
 
-- **Blast** falls with scaled distance Z = R / W^(1/3) (W in kg). It's lethal to a person within
-  Z ≈ 2 and harmless beyond Z ≈ 6. A 76 mm OF-350 (0.71 kg) kills within about 1.8 m; a 152 mm
-  OF-530 (6.9 kg) within about 3.8 m.
-- **Fragments**: about 900·√W fragments fly out evenly. Each person in line of sight is hit by
+- **Blast** falls with scaled distance Z = R / W^(1/3) (W in kg). With the close-in fragments it's
+  lethal to a person within Z ≈ 3.5 and harmless beyond Z ≈ 7.5. A 76 mm OF-350 (0.71 kg) kills
+  within about 3-4 m and wounds to about 6 m; a 152 mm OF-530 (6.9 kg) kills within about 7 m.
+- **Fragments**: about 900·√W fragments fly out evenly, reaching 30·∛W + 6 m. Each person in line of sight is hit by
   their share (by area and distance), so HE wounds at random out to tens of metres while being
   reliably lethal only close in. Walls and terrain block fragments.
 - **Craters** are small and sized to the charge, only when Superb Warfare's explosion block
   damage setting is on.
 - **Tanks caught in the blast** take module damage (tracks, barrel). HE that penetrates bursts
   inside; only a small, muffled share of its blast escapes.
+
+## Panzerfaust 60
+
+A disposable anti-tank launcher. It comes loaded; aim and fire like Superb Warfare's RPG. The
+empty tube is thrown away a moment after firing, so carry spares (the HUD counts them).
+
+- **Warhead:** 150 mm shaped charge (HEAT), **200 mm** of armour at any range. A shaped charge's
+  penetration comes from its jet, not its speed, so it doesn't fall off with distance.
+- **Flight:** 45 m/s with real gravity, so it drops about 9 m at 60 m: aim high at range, as with
+  the real leaf sight (30/60/80 m).
+- **Against armour:** the warhead bursts on the outside of the plate and its jet goes in: a short,
+  very destructive line plus a narrow cone of molten spall, spent within a metre or two. Tracks
+  and other spaced armour in front of the hull set it off early and cost it nearly half its
+  penetration. Very steep hits can fail to fuze and glance off (from 72°).
+- **Backblast:** anyone within 3 m behind the tube is burned.
+- **Recipe:** copper plate, high-energy explosive, copper plate / steel ingot (middle) / gunpowder,
+  steel ingot, primer.
+
+The launcher uses Superb Warfare's RPG-7 first-person rig (arms, recoil, sway); its own mesh is drawn
+by `PanzerfaustItemRenderer` (see `tools/panzerfaust_export.py`).
+
+## Gun recoil, muzzle blast and sights
+
+The Flak 88 and PaK 38 tubes run back through their cradles when they fire (about 0.9 m and 0.6 m)
+with a muzzle flash. Every WarSteel gun throws a muzzle blast of smoke and dust.
+
+The gun sight's reticle is drawn where the gun actually points (the bore line at the rangefinder
+distance), not at the middle of the screen, so it stays true while the turret is still traversing
+and allows for the sight sitting beside the gun. Its range marks use the loaded round's own
+velocity.
 
 ## Shot replay
 

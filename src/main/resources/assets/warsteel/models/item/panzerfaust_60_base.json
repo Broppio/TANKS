@@ -1,0 +1,6 @@
+{
+  "parent": "warsteel:displaysettings/panzerfaust_60.item",
+  "textures": {
+    "layer0": "warsteel:item/panzerfaust_60_icon"
+  }
+}

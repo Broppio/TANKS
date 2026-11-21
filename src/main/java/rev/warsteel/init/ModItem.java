@@ -33,6 +33,9 @@ public class ModItem {
    public static final DeferredItem<Item> TIGER_BARREL = ITEMS.registerSimpleItem("tiger_barrel");
    public static final DeferredItem<Item> TIGER_TRACK = ITEMS.registerSimpleItem("tiger_track");
 
+   public static final DeferredItem<rev.rev.warsteel.item.gun.PanzerfaustItem> PANZERFAUST_60 =
+      ITEMS.register("panzerfaust_60", rev.rev.warsteel.item.gun.PanzerfaustItem::new);
+
    /** Historical tank rounds, keyed by id (see tools/gen_ammo.py). */
    public static final Map<String, DeferredItem<AmmoItem>> AMMO = new LinkedHashMap<>();
 

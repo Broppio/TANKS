@@ -145,9 +145,14 @@ public final class ShellData {
       return this.shellClass.equals("FLAK");
    }
 
-   /** Detonates on contact with anything (HE, HESH). */
+   /** Detonates on contact with anything (HE, HESH, HEAT). */
    public boolean isContactFuzed() {
-      return this.shellClass.equals("HE") || this.shellClass.equals("HESH") || this.shellClass.equals("FLAK");
+      return this.shellClass.equals("HE") || this.shellClass.equals("HESH") || this.shellClass.equals("FLAK") || this.isHeat();
+   }
+
+   /** Shaped charge: penetration comes from the jet, not the shell's speed, so it doesn't fall with range. */
+   public boolean isHeat() {
+      return this.shellClass.equals("HEAT");
    }
 
    /** Armour-piercing family (fired as SBW's AP shell type). */

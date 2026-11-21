@@ -66,5 +66,7 @@
   "entity.warsteel.pak-38": "5 cm PaK 38",
   "item.warsteel.50mm_pzgr39": "5 cm PaK 38 PzGr 39 (APHE)",
   "item.warsteel.50mm_pzgr40": "5 cm PaK 38 PzGr 40 (APCR)",
-  "item.warsteel.50mm_sprgr38": "5 cm PaK 38 Sprgr. 38 (HE)"
+  "item.warsteel.50mm_sprgr38": "5 cm PaK 38 Sprgr. 38 (HE)",
+  "item.warsteel.panzerfaust_60": "Panzerfaust 60",
+  "entity.warsteel.panzerfaust_warhead": "Panzerfaust warhead"
 }

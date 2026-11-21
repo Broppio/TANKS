@@ -17,7 +17,7 @@ from mathutils import Vector
 
 argv = sys.argv[sys.argv.index('--') + 1:]
 SRC, OUT = argv[0], argv[1]
-RATIOS = {'base': float(argv[2]), 'carriage': float(argv[3]), 'gun': float(argv[4])}
+RATIOS = {'base': float(argv[2]), 'carriage': float(argv[3]), 'gun': float(argv[4]), 'tube': float(argv[4])}
 
 K = 0.0077 * 1.2 * 16.0          # OBJ units -> model pixels
 Y0 = 20.0                        # traverse axis (forward position), OBJ units
@@ -67,10 +67,19 @@ bpy.ops.mesh.select_all(action='SELECT')
 bpy.ops.mesh.separate(type='LOOSE')
 bpy.ops.object.mode_set(mode='OBJECT')
 
-groups = {'base': [], 'carriage': [], 'gun': []}
+groups = {'base': [], 'carriage': [], 'gun': [], 'tube': []}
 for o in list(bpy.data.objects):
     if o.type == 'MESH':
-        groups[classify(o)].append(o)
+        g = classify(o)
+        if g == 'gun':
+            ws = [o.matrix_world @ v.co for v in o.data.vertices]
+            mx_y = max(p.y for p in ws)
+            cy = (min(p.y for p in ws) + mx_y) / 2
+            cx = (min(p.x for p in ws) + max(p.x for p in ws)) / 2
+            # The tube (with its muzzle brake and breech ring) recoils; the cradle and sight don't.
+            if mx_y > 250 or cy > 150 or (cy < -85 and abs(cx) < 14):
+                g = 'tube'
+        groups[g].append(o)
 
 parts = {}
 for g, objs in groups.items():
@@ -141,6 +150,9 @@ bones = [
     {'name': 'carriage', 'parent': 'turret', 'pivot': [0, tv_y, 0], 'poly_mesh': poly_mesh(parts['carriage'])},
     {'name': 'barrel', 'parent': 'turret', 'pivot': [0, tr_y, tr_z]},
     {'name': 'gun', 'parent': 'barrel', 'pivot': [0, tr_y, tr_z], 'poly_mesh': poly_mesh(parts['gun'])},
+    # Recoils through the cradle (animation.cannon.fire); the flare bone is Superb Warfare's muzzle flash.
+    {'name': 'tube', 'parent': 'barrel', 'pivot': [0, tr_y, tr_z], 'poly_mesh': poly_mesh(parts['tube'])},
+    {'name': 'flare', 'parent': 'tube', 'pivot': [0, round(112.5 * K, 3), round(-(309.0 - Y0) * K, 3)]},
 ]
 geo = {
     'format_version': '1.12.0',
