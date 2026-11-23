@@ -52,14 +52,17 @@ public class T22Entity extends WarSteelTank implements NavalHull, ShipFlooding.H
    private static final double DISPLACEMENT = 1300.0;
    /** Superb Warfare's gravity plus vertical drag as the hull feels it (measured: 0.071 per tick). */
    private static final double EFFECTIVE_GRAVITY = 0.071;
+   /** Superb Warfare buoyancy per block submerged (t-22.json) and the hull's depth to the main deck. */
+   private static final double BUOYANCY = 0.0215;
+   private static final double HULL_DEPTH = 6.7;
    /** Mount A may train 150 degrees either side of the bow before the bridge is in the way. */
    public static final float MOUNT_A_ARC = 150.0F;
 
    private final ShipFlooding flooding = new ShipFlooding(8, -48.6, 97.2, 9.8, 6.7, DISPLACEMENT);
-   private float appliedTrim;
-   private float appliedList;
    private float trim;
+   private float trimO;
    private float list;
+   private float listO;
    private int sunkTicks;
    @Nullable
    private Matrix4d frame;
@@ -75,6 +78,15 @@ public class T22Entity extends WarSteelTank implements NavalHull, ShipFlooding.H
       int m = this.torpedoMount;
       this.torpedoMount = (this.torpedoMount + 1) % 2;
       return m;
+   }
+
+   /** Bow-down trim and list to starboard (degrees) to draw, interpolated. */
+   public float visualTrim(float partialTicks) {
+      return Mth.lerp(partialTicks, this.trimO, this.trim);
+   }
+
+   public float visualList(float partialTicks) {
+      return Mth.lerp(partialTicks, this.listO, this.list);
    }
 
    public ShipFlooding flooding() {
@@ -108,15 +120,20 @@ public class T22Entity extends WarSteelTank implements NavalHull, ShipFlooding.H
 
    @Override
    public void baseTick() {
-      // Take our trim and list off before Superb Warfare's ship engine damps the body's pitch and roll.
-      this.setXRot(this.getXRot() - this.appliedTrim);
-      this.setZRot(this.getRoll() - this.appliedList);
       this.frame = null;
       super.baseTick();
       this.frame = null;
       boolean server = !this.level().isClientSide;
       if (server) {
          this.serverShipTick();
+      }
+
+      // Superb Warfare's buoyancy grows with the water over the keel, measured across the whole
+      // bounding box - which reaches up to the masthead. Only the hull displaces water: past the deck
+      // the superstructure adds (next to) nothing, so take the excess back off (after its 0.85 damping).
+      double submerged = this.getFluidTypeHeight(net.neoforged.neoforge.common.NeoForgeMod.WATER_TYPE.value());
+      if (submerged > HULL_DEPTH) {
+         this.setDeltaMovement(this.getDeltaMovement().add(0.0, -0.85 * BUOYANCY * (submerged - HULL_DEPTH), 0.0));
       }
 
       // Both sides (the driver's client moves the ship): flood water is weight - as a share of her
@@ -134,14 +151,15 @@ public class T22Entity extends WarSteelTank implements NavalHull, ShipFlooding.H
          this.setDeltaMovement(v.x * cap / h, v.y, v.z * cap / h);
       }
 
-      // Trim and list, eased in.
+      // Trim and list, eased in. They're drawn by the renderer rather than written into the body's
+      // pitch and roll: Superb Warfare damps those every tick and the network rounds them to 1.4
+      // degrees, and fighting both made a sinking ship shake.
+      this.trimO = this.trim;
+      this.listO = this.list;
       this.trim += (this.getEntityData().get(TRIM) - this.trim) * 0.02F;
       this.list += (this.getEntityData().get(LIST) - this.list) * 0.015F;
-      this.appliedTrim = this.trim;
-      this.appliedList = this.list;
-      this.setXRot(this.getXRot() + this.appliedTrim);
-      this.setZRot(this.getRoll() + this.appliedList);
    }
+
 
    private double speedCap() {
       double cap = 0.9;
@@ -378,8 +396,11 @@ public class T22Entity extends WarSteelTank implements NavalHull, ShipFlooding.H
       java.util.List<Obb> out = new java.util.ArrayList<>();
       int i = 0;
       for (OBB o : this.getOBBs()) {
+         if (o.part == OBB.Part.COLLISION) {
+            continue;
+         }
          if (i++ >= 3) {
-            break;   // the first three boxes are the hull (midships, bow, stern)
+            break;   // after the collision box, the first three boxes are the hull (midships, bow, stern)
          }
          out.add(new Obb(new Vec3(o.center.x, o.center.y, o.center.z), o.rotation(), o.extents().x, o.extents().y, o.extents().z));
       }

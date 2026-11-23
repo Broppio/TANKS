@@ -102,6 +102,16 @@ public final class WarSteelCommands {
             .then(Commands.literal("torpedo").executes(WarSteelCommands::torpedo))
             .then(Commands.literal("use").executes(WarSteelCommands::useGun))
             .then(
+               Commands.literal("look")
+                  .then(
+                     Commands.argument("yaw", com.mojang.brigadier.arguments.FloatArgumentType.floatArg())
+                        .then(
+                           Commands.argument("pitch", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(-90.0F, 90.0F))
+                              .executes(WarSteelCommands::look)
+                        )
+                  )
+            )
+            .then(
                Commands.literal("damage")
                   .then(
                      Commands.argument("module", com.mojang.brigadier.arguments.StringArgumentType.word())
@@ -385,6 +395,19 @@ public final class WarSteelCommands {
       return 1;
    }
 
+   /** Testing: turn the player's view without taking them out of their seat (unlike /tp). */
+   private static int look(CommandContext<CommandSourceStack> c) {
+      if (!(c.getSource().getEntity() instanceof ServerPlayer player)) {
+         return 0;
+      }
+
+      float yaw = com.mojang.brigadier.arguments.FloatArgumentType.getFloat(c, "yaw");
+      float pitch = com.mojang.brigadier.arguments.FloatArgumentType.getFloat(c, "pitch");
+      player.connection.teleport(0.0, 0.0, 0.0, yaw, pitch, java.util.EnumSet.of(
+         net.minecraft.world.entity.RelativeMovement.X, net.minecraft.world.entity.RelativeMovement.Y, net.minecraft.world.entity.RelativeMovement.Z));
+      return 1;
+   }
+
    /** Testing: fire the gun in the player's main hand as if they had clicked. */
    private static int useGun(CommandContext<CommandSourceStack> c) {
       if (!(c.getSource().getEntity() instanceof net.minecraft.world.entity.player.Player player)) {
@@ -425,11 +448,17 @@ public final class WarSteelCommands {
 
       String msg = String.format(java.util.Locale.ROOT,
          "%s: keel y %.2f, flooded %.0f m3 (%.0f%% of reserve), trim %.1f deg, list %.1f deg, speed %.2f b/t, %d holes (%.2f m2), compartments aft->bow [%s]%s",
-         ship.getDisplayName().getString(), ship.getY(), f.totalWater(), f.floodRatio() * 100, ship.getXRot(), ship.getRoll(),
+         ship.getDisplayName().getString(), ship.getY(), f.totalWater(), f.floodRatio() * 100, ship.visualTrim(1.0F), ship.visualList(1.0F),
          ship.getDeltaMovement().horizontalDistance(), f.holes.size(), f.holes.stream().mapToDouble(h -> h.area()).sum(), comps,
          ship.isWreck() ? ", WRECK" : "");
-      org.slf4j.LoggerFactory.getLogger("warsteel/ship").info(msg);
-      c.getSource().sendSuccess(() -> Component.literal(msg), false);
+      net.minecraft.world.phys.AABB bb = ship.getBoundingBox();
+      String reach = c.getSource().getEntity() instanceof net.minecraft.world.entity.player.Player p
+         ? String.format(java.util.Locale.ROOT, "; box %.0fx%.0fx%.0f, %s can reach her: %s", bb.getXsize(), bb.getYsize(), bb.getZsize(),
+            p.getName().getString(), p.canInteractWithEntity(ship, 3.0))
+         : "";
+      final String msgOut = msg + reach;
+      org.slf4j.LoggerFactory.getLogger("warsteel/ship").info(msgOut);
+      c.getSource().sendSuccess(() -> Component.literal(msgOut), false);
       return 1;
    }
 

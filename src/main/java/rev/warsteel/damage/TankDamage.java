@@ -195,7 +195,7 @@ public final class TankDamage {
 
          for (com.atsuishio.superbwarfare.tools.OBB o : tank.getOBBs()) {
             String part = o.part == null ? "BODY" : o.part.name();
-            if (!part.startsWith("WHEEL")) {
+            if (!part.startsWith("WHEEL") && !part.equals("COLLISION")) {
                this.envelope.add(new Obb(new Vec3(o.center.x, o.center.y, o.center.z), o.rotation(), o.extents().x, o.extents().y, o.extents().z));
             }
          }

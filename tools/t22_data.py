@@ -54,9 +54,14 @@ def deck_seat(x, z):
             'DismountInfo': {'Transform': 'Vehicle', 'Position': [x, 7.2, z]}}
 
 
-captain = {'HidePassenger': True, 'Transform': 'Vehicle', 'Position': [0, 10.6, 22.5], 'CanRotateHead': False,
+# The captain sits in mount A's frame like a tank gunner: he looks where he likes and the mount
+# trains after him. His camera is over the gun shield (clear of the bridge at any bearing) and the
+# gunsight at the muzzle, so nothing on the ship blocks the view.
+barrel_rel = [round(barrel[0] - turret[0], 3), round(barrel[1] - turret[1], 3), round(barrel[2] - turret[2], 3)]
+captain = {'HidePassenger': True, 'Transform': 'Turret', 'Position': [0, 1.0, -1.5], 'CanRotateHead': False,
            'Sensitivity': [0.35, 0.6, 0.9],
-           'CameraPos': {'Transform': 'Barrel', 'ZoomPosition': [0.6, 0.55, 0.6], 'ZoomDirection': 'Barrel'},
+           'CameraPos': {'Transform': 'Turret', 'UseFixedCameraPos': True, 'Position': [0, 4.0, -2.5], 'Direction': 'Barrel',
+                         'ZoomPosition': [0, round(barrel_rel[1] + 0.45, 3), round(barrel_rel[2] + muzzle_len + 0.4, 3)]},
            'MinPitch': -10, 'MaxPitch': 40, 'Weapons': ['Cannon'],
            'DismountInfo': {'Transform': 'Vehicle', 'Position': [0, 7.2, 18.0]}}
 
@@ -73,7 +78,7 @@ d = {
                    'EngineSoundVolume': 1.4},
     'TurretControllerIndex': 0,
     'TurretPos': turret,
-    'BarrelPos': [round(barrel[0] - turret[0], 3), round(barrel[1] - turret[1], 3), round(barrel[2] - turret[2], 3)],
+    'BarrelPos': barrel_rel,
     'TurretTurnSpeed': [0.9, 1.4],
     'TurretPitchRange': [-10, 40],
     'Seats': [
@@ -123,6 +128,9 @@ d = {
                                    'Directions': ['Passenger'], 'DefaultBarrelDirection': [1, 0, 0]}},
     },
     'OBB': [
+        # Collision box: the whole hull. It is what Superb Warfare collides with blocks, and what sets the
+        # entity's bounding box - so the ship can be boarded and her hold opened anywhere along her length.
+        {'Part': 'Collision', 'Size': [4.9, 3.35, 48.6], 'Position': [0, 3.35, 0]},
         {'Size': [4.9, 3.35, 30.0], 'Position': [0, 3.35, 0]},
         {'Size': [3.1, 3.7, 9.3], 'Position': [0, 3.7, 39.3]},
         {'Size': [3.8, 3.2, 9.3], 'Position': [0, 3.2, -39.3]},

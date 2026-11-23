@@ -39,6 +39,17 @@ public final class T22Renderer extends WarSteelTankRenderer {
       super(manager);
    }
 
+   /** Trim and list from flooding, about the waterline amidships, on top of Superb Warfare's own pitch and roll. */
+   @Override
+   public void rotateVehicleAxis(VehicleEntity entity, PoseStack poseStack, float entityYaw, float partialTicks) {
+      super.rotateVehicleAxis(entity, poseStack, entityYaw, partialTicks);
+      if (entity instanceof rev.rev.warsteel.entity.vehicle.T22Entity ship) {
+         float pivot = (float)entity.getRotateOffsetHeight();
+         poseStack.rotateAround(com.mojang.math.Axis.XP.rotationDegrees(-ship.visualTrim(partialTicks)), 0.0F, pivot, 0.0F);
+         poseStack.rotateAround(com.mojang.math.Axis.ZP.rotationDegrees(-ship.visualList(partialTicks)), 0.0F, pivot, 0.0F);
+      }
+   }
+
    @Override
    public void transformCustomModelPart(VehicleEntity entity, VehicleModelInstance instance, PoseStack poseStack, float yaw, float partialTicks) {
       super.transformCustomModelPart(entity, instance, poseStack, yaw, partialTicks);

@@ -38,6 +38,10 @@ public final class ShotReplayHud implements LayeredDraw.Layer {
    private Vector3f centre = new Vector3f();
    private float scale = 1.0F;
    private float baseYaw;
+   /** Perspective strength: per block of depth, scaled to the view so near corners never pass the eye. */
+   private float persp = 0.035F;
+   /** Past this radius (a ship) the view frames the impact instead of the whole target. */
+   private static final float MAX_VIEW = 7.0F;
 
    private ShotReplayHud() {
    }
@@ -57,6 +61,16 @@ public final class ShotReplayHud implements LayeredDraw.Layer {
 
       this.centre = new Vector3f((min[0] + max[0]) / 2, (min[1] + max[1]) / 2, (min[2] + max[2]) / 2);
       float radius = 0.5F * (float)Math.sqrt(sq(max[0] - min[0]) + sq(max[1] - min[1]) + sq(max[2] - min[2]));
+      if (radius > MAX_VIEW) {
+         // A big target: frame the impact point, flat (no perspective), the rest runs off the edges.
+         this.centre = new Vector3f(p.shellHit());
+         radius = MAX_VIEW;
+         this.persp = 0.0F;
+      } else {
+         // Keep the eye well clear of the nearest corner whatever the target's size.
+         this.persp = 0.14F / Math.max(4.0F, radius);
+      }
+
       this.scale = (H * 0.46F) / Math.max(1.0F, radius);
       Vector3f d = new Vector3f(p.shellHit()).sub(p.shellFrom());
       this.baseYaw = (float)Math.atan2(d.x, d.z);
@@ -268,7 +282,7 @@ public final class ShotReplayHud implements LayeredDraw.Layer {
       float y2 = py * cosP - z1 * sinP;
       float z2 = py * sinP + z1 * cosP;
       // Mild perspective so depth reads clearly.
-      float persp = 1.0F / (1.0F + z2 * 0.035F);
+      float persp = 1.0F / (1.0F + Math.max(-0.6F, z2 * this.persp));
       return new float[]{cx - x1 * this.scale * persp, cy - y2 * this.scale * persp, z2};
    }
 

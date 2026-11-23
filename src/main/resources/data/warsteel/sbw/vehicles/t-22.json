@@ -38,11 +38,11 @@
   "Seats": [
     {
       "HidePassenger": true,
-      "Transform": "Vehicle",
+      "Transform": "Turret",
       "Position": [
         0,
-        10.6,
-        22.5
+        1.0,
+        -1.5
       ],
       "CanRotateHead": false,
       "Sensitivity": [
@@ -51,13 +51,19 @@
         0.9
       ],
       "CameraPos": {
-        "Transform": "Barrel",
-        "ZoomPosition": [
-          0.6,
-          0.55,
-          0.6
+        "Transform": "Turret",
+        "UseFixedCameraPos": true,
+        "Position": [
+          0,
+          4.0,
+          -2.5
         ],
-        "ZoomDirection": "Barrel"
+        "Direction": "Barrel",
+        "ZoomPosition": [
+          0,
+          2.107,
+          3.718
+        ]
       },
       "MinPitch": -10,
       "MaxPitch": 40,
@@ -790,6 +796,19 @@
     }
   },
   "OBB": [
+    {
+      "Part": "Collision",
+      "Size": [
+        4.9,
+        3.35,
+        48.6
+      ],
+      "Position": [
+        0,
+        3.35,
+        0
+      ]
+    },
     {
       "Size": [
         4.9,

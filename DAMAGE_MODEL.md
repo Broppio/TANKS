@@ -281,7 +281,9 @@ The model is cut down to about 16,000 triangles (from 46,000).
 | 6 | Torpedo officer | Spread of three G7a torpedoes |
 | 7-12 | Deck passengers | none |
 
-The captain aims mount A. Every other mount that bears on the same bearing fires with it, so one
+The captain sits at mount A like a tank gunner: look around and the mount trains after you (about
+1 degree per tick; it can't train through the bridge, so 150 degrees either side of the bow). The
+camera sits over the gun shield; zoom for the gunsight at the muzzle. Every other mount that bears on the same bearing fires with it, so one
 person can sail her and fight her main battery alone:
 
 - Ahead, mounts A and B fire.
