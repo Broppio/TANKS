@@ -3,7 +3,7 @@
 WarSteel is a World War 2 tank add-on for Superb Warfare by Lilrevo, ported to NeoForge 1.21.1.
 It replaces hit points with a War Thunder style damage model: armour penetration, spall, crew and
 modules. It also adds each tank's own historical, craftable ammunition, realistic HE explosions and
-a hit-camera shot replay, an 8.8 cm Flak 36 dual-purpose gun, and hit marks on armour. See [DAMAGE_MODEL.md](DAMAGE_MODEL.md).
+a hit-camera shot replay, an 8.8 cm Flak 36 dual-purpose gun, a 5 cm PaK 38, the Panzerfaust, a T-22 torpedo boat with flooding and sinking, and hit marks on armour. See [DAMAGE_MODEL.md](DAMAGE_MODEL.md).
 
 ## Download
 

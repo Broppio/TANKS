@@ -98,6 +98,8 @@ public final class WarSteelCommands {
             .then(Commands.literal("obbs").executes(WarSteelCommands::obbs))
             .then(Commands.literal("reset").executes(WarSteelCommands::reset))
             .then(Commands.literal("vshoot").executes(WarSteelCommands::vshoot))
+            .then(Commands.literal("ship").executes(WarSteelCommands::shipStatus))
+            .then(Commands.literal("torpedo").executes(WarSteelCommands::torpedo))
             .then(Commands.literal("use").executes(WarSteelCommands::useGun))
             .then(
                Commands.literal("damage")
@@ -401,6 +403,45 @@ public final class WarSteelCommands {
       com.atsuishio.superbwarfare.data.gun.GunData data = com.atsuishio.superbwarfare.data.gun.GunData.from(player.getMainHandItem());
       gun.shoot(data, player, 0.0, false, null);
       data.save();
+      return 1;
+   }
+
+   /** Flooding report for the nearest ship (also logged). */
+   private static int shipStatus(CommandContext<CommandSourceStack> c) {
+      net.minecraft.world.phys.Vec3 at = c.getSource().getPosition();
+      rev.rev.warsteel.entity.vehicle.T22Entity ship = c.getSource().getLevel()
+         .getEntitiesOfClass(rev.rev.warsteel.entity.vehicle.T22Entity.class, new net.minecraft.world.phys.AABB(at, at).inflate(256))
+         .stream().min(java.util.Comparator.comparingDouble(e -> e.distanceToSqr(at))).orElse(null);
+      if (ship == null) {
+         c.getSource().sendFailure(Component.literal("No ship within 256 blocks"));
+         return 0;
+      }
+
+      rev.rev.warsteel.naval.ShipFlooding f = ship.flooding();
+      StringBuilder comps = new StringBuilder();
+      for (int i = 0; i < f.compartments(); i++) {
+         comps.append(String.format(java.util.Locale.ROOT, "%s%.0f%%", i == 0 ? "" : " ", f.fill(i) * 100));
+      }
+
+      String msg = String.format(java.util.Locale.ROOT,
+         "%s: keel y %.2f, flooded %.0f m3 (%.0f%% of reserve), trim %.1f deg, list %.1f deg, speed %.2f b/t, %d holes (%.2f m2), compartments aft->bow [%s]%s",
+         ship.getDisplayName().getString(), ship.getY(), f.totalWater(), f.floodRatio() * 100, ship.getXRot(), ship.getRoll(),
+         ship.getDeltaMovement().horizontalDistance(), f.holes.size(), f.holes.stream().mapToDouble(h -> h.area()).sum(), comps,
+         ship.isWreck() ? ", WRECK" : "");
+      org.slf4j.LoggerFactory.getLogger("warsteel/ship").info(msg);
+      c.getSource().sendSuccess(() -> Component.literal(msg), false);
+      return 1;
+   }
+
+   /** Testing: launch a G7a from where the source stands, along its facing. */
+   private static int torpedo(CommandContext<CommandSourceStack> c) {
+      rev.rev.warsteel.naval.TorpedoEntity t = rev.rev.warsteel.init.ModEntities.TORPEDO.get().create(c.getSource().getLevel());
+      if (t == null) {
+         return 0;
+      }
+
+      t.launch(c.getSource().getEntity(), null, c.getSource().getPosition(), c.getSource().getRotation().y);
+      c.getSource().getLevel().addFreshEntity(t);
       return 1;
    }
 }

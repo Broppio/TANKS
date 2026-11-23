@@ -303,4 +303,50 @@ write('pak-38', ARMOUR_NOTE, 0.8, pak,
           box('TraverseGear', 'TURRET_DRIVE', (0.3, 0.1, -0.3), (0.12, 0.12, 0.12), 'Turret'),
           box('AmmoReady', 'AMMO_RACK', (0.8, 0.12, -1.3), (0.25, 0.12, 0.3), External=True, DetonationChance=0.2),
       ])
+# ------------------------------------------------------------------------------------------------
+# T-22 (Flottentorpedoboot 1939, Elbing class). Unarmoured: 8 mm shell plating, 6 mm decks and
+# deckhouses, 6 mm splinter shields on the 10.5 cm mounts. Vehicle frame: x to port, y up from the
+# keel, z forward, origin amidships. Plates sit on the hit boxes in data/.../sbw/vehicles/t-22.json.
+# Hull damage below the waterline floods the compartments (see naval/ShipFlooding.java).
+SHIP = lambda side, deck: {'front': (side, 0.6), 'rear': (side, 0.6), 'left': (side, 0.5), 'right': (side, 0.5),
+                           'roof': (deck, 0.9), 'floor': (side, 0.5)}
+ship = faces('Hull', 'Vehicle', (0, 3.35, 0), (4.9, 3.35, 30.0), SHIP(8, 6))
+ship += faces('Bow', 'Vehicle', (0, 3.7, 39.3), (3.1, 3.7, 9.3), SHIP(8, 6))
+ship += faces('Stern', 'Vehicle', (0, 3.2, -39.3), (3.8, 3.2, 9.3), SHIP(8, 6))
+ship += faces('Bridge', 'Vehicle', (0, 10.9, 22.7), (4.0, 4.3, 6.0), {'front': (8, 0.7), 'rear': (5, 0.7), 'left': (6, 0.6), 'right': (6, 0.6), 'roof': (5, 0.9)})
+ship += faces('Midships', 'Vehicle', (0, 9.5, 1.7), (3.0, 2.8, 15.0), {'front': (6, 0.7), 'rear': (6, 0.7), 'left': (6, 0.6), 'right': (6, 0.6), 'roof': (5, 0.9)})
+ship += faces('AftHouse', 'Vehicle', (0, 8.3, -19.3), (3.0, 1.7, 4.0), {'front': (6, 0.7), 'rear': (6, 0.7), 'left': (6, 0.6), 'right': (6, 0.6), 'roof': (5, 0.9)})
+ship += faces('MountA', 'Turret', (0, 1.2, 0), (1.25, 1.35, 1.3), {'front': (6, 0.8), 'left': (6, 0.7), 'right': (6, 0.7), 'roof': (4, 0.9)})
+GUN = lambda name, z, y: [crew(name + 'Layer', 'LOADER', (0.6, y, z), half=(0.3, 0.9, 0.3)), crew(name + 'Loader', 'LOADER', (-0.6, y, z - 1.0), half=(0.3, 0.9, 0.3)),
+                          box(name + 'Gun', 'BREECH', (0, y + 0.8, z), (0.5, 0.5, 1.2), DetonationChance=0.0)]
+write('t-22', ARMOUR_NOTE, 0.7, ship,
+      MODEL_NOTE + " T-22: a ship is not knocked out by losing crew; it is lost when it floods and sinks, or when a magazine goes up and breaks its back.",
+      1, [
+          crew('Captain', 'DRIVER', (0.0, 10.6, 22.5), seat=0, half=(0.3, 0.9, 0.3)),
+          crew('Helmsman', 'COMMANDER', (-0.8, 10.6, 23.2), half=(0.3, 0.9, 0.3)),
+          box('GunA', 'BREECH', (0, 8.2, 31.9), (0.5, 0.5, 1.2)),
+          box('BarrelA', 'BARREL', (0, 8.6, 34.0), (0.15, 0.15, 1.8)),
+          crew('GunALayer', 'GUNNER', (0.6, 7.9, 31.0), half=(0.3, 0.9, 0.3)),
+          crew('GunALoader', 'LOADER', (-0.6, 7.9, 30.4), half=(0.3, 0.9, 0.3)),
+          ] + GUN('GunB', -1.6, 7.9) + GUN('GunC', -24.5, 7.9) + GUN('GunD', -33.8, 6.7) + [
+          box('FlakPortCrew', 'CREW', (2.5, 9.0, -9.9), (0.6, 0.9, 0.6), Role='LOADER', Seat=1, External=True),
+          box('FlakStbdCrew', 'CREW', (-2.5, 9.0, -9.9), (0.6, 0.9, 0.6), Role='LOADER', Seat=2, External=True),
+          box('FlakvierlingCrew', 'CREW', (0, 9.8, -21.0), (0.7, 0.9, 0.7), Role='LOADER', Seat=3, External=True),
+          box('TorpedoCrew', 'CREW', (0, 7.4, 7.4), (1.0, 0.9, 1.0), Role='LOADER', Seat=6, External=True),
+          # Machinery: four boilers and two turbine sets. Each lost boiler costs a quarter of full power.
+          box('Boiler1', 'ENGINE', (0, 3.2, 12.0), (2.8, 2.2, 3.0), FireChance=0.25),
+          box('Boiler2', 'ENGINE', (0, 3.2, 5.5), (2.8, 2.2, 3.0), FireChance=0.25),
+          box('Boiler3', 'ENGINE', (0, 3.2, -1.0), (2.8, 2.2, 3.0), FireChance=0.25),
+          box('Boiler4', 'ENGINE', (0, 3.2, -7.5), (2.8, 2.2, 3.0), FireChance=0.25),
+          box('TurbinePort', 'TRANSMISSION', (1.8, 2.6, -14.0), (1.4, 1.8, 3.0)),
+          box('TurbineStbd', 'TRANSMISSION', (-1.8, 2.6, -14.0), (1.4, 1.8, 3.0)),
+          box('SteeringGear', 'TURRET_DRIVE', (0, 2.6, -44.0), (1.2, 1.0, 1.5)),
+          box('FuelPort', 'FUEL_TANK', (3.6, 2.2, 3.0), (0.9, 1.6, 9.0), FireChance=0.35),
+          box('FuelStbd', 'FUEL_TANK', (-3.6, 2.2, 3.0), (0.9, 1.6, 9.0), FireChance=0.35),
+          # Magazines deep under the mounts, below the waterline. A detonation breaks the ship's back.
+          box('MagazineFwd', 'AMMO_RACK', (0, 1.5, 28.0), (2.0, 1.1, 3.0), DetonationChance=0.15),
+          box('MagazineAft', 'AMMO_RACK', (0, 1.5, -30.0), (2.2, 1.1, 4.0), DetonationChance=0.15),
+          box('TorpedoesFwd', 'AMMO_RACK', (0, 7.2, 7.4), (1.0, 0.5, 4.4), DetonationChance=0.35, External=True),
+          box('TorpedoesAft', 'AMMO_RACK', (0, 7.0, -16.2), (1.0, 0.5, 4.4), DetonationChance=0.35, External=True),
+      ])
 print('ok')

@@ -20,7 +20,11 @@ public final class AmmoSpecs {
       new AmmoSpec("88mm_sprgr_flak", "Sprgr. Patr. L/4.5 Kz", "8.8 cm Flak 36", 88, "FLAK", 13.0, 870.0, 820.0, 9.4, 16, List.of("warsteel:flak-88")),
       new AmmoSpec("50mm_pzgr39", "PzGr 39", "5 cm PaK 38", 50, "APHE", 96.0, 17.0, 835.0, 2.06, 24, List.of("warsteel:pak-38")),
       new AmmoSpec("50mm_pzgr40", "PzGr 40", "5 cm PaK 38", 50, "APCR", 149.0, 0.0, 1180.0, 0.93, 24, List.of("warsteel:pak-38")),
-      new AmmoSpec("50mm_sprgr38", "Sprgr. 38", "5 cm PaK 38", 50, "HE", 6.0, 170.0, 550.0, 1.81, 24, List.of("warsteel:pak-38"))
+      new AmmoSpec("50mm_sprgr38", "Sprgr. 38", "5 cm PaK 38", 50, "HE", 6.0, 170.0, 550.0, 1.81, 24, List.of("warsteel:pak-38")),
+      new AmmoSpec("105mm_sprgr", "Sprgr. L/4.4 m. Kz", "10.5 cm SK C/32", 105, "HE", 16.0, 1530.0, 785.0, 15.1, 8, List.of("warsteel:t-22")),
+      new AmmoSpec("105mm_psgr", "Psgr. m. Hb", "10.5 cm SK C/32", 105, "APHE", 120.0, 220.0, 785.0, 15.1, 8, List.of("warsteel:t-22")),
+      new AmmoSpec("37mm_sprgr", "Sprgr. Patr. 37 L/Spur", "3.7 cm SK C/30", 37, "HE", 6.0, 30.0, 1000.0, 0.74, 32, List.of()),
+      new AmmoSpec("20mm_sprgr", "Sprgr. Patr. L/Spur", "2 cm Flak 38", 20, "HE", 3.0, 6.0, 900.0, 0.12, 64, List.of())
    );
 
    private AmmoSpecs() {

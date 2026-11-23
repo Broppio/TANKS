@@ -246,6 +246,7 @@ WarSteel vehicles can't be crafted. They're produced in **Nations at War** facto
 | `warsteel:kv1_crate` | KV-1 | 26 days |
 | `warsteel:kv2_crate` | KV-2 | 34 days |
 | `warsteel:tiger_crate` | Tiger H1 | 42 days |
+| `warsteel:t22_crate` | T-22 torpedo boat | 60 days |
 
 1. Request a factory for the crate like any other item, e.g.
    `/nation factory request "Tank Works" warsteel:t26_crate 1` (the amount is crates per
@@ -263,6 +264,57 @@ the crate's tooltip and the factory's start message give the real time. To test,
 with `-Dwarsteel.factoryDayMillis=60000` (one production day per minute).
 
 Without Nations at War installed, vehicles come only from the creative tab or commands.
+
+## T-22 torpedo boat (Flottentorpedoboot 1939)
+
+A Superb Warfare ship (`warsteel:t-22`), 97 m long, 3.3 m draught, about 33 knots flat out.
+The model is cut down to about 16,000 triangles (from 46,000).
+
+### Crew and weapons
+
+| Seat | Post | Weapon |
+|---|---|---|
+| 0 | Captain (drives) | Main battery: four 10.5 cm SK C/32 (Sprgr. HE, Psgr. APHE) |
+| 1-2 | Port / starboard 3.7 cm Flak | 37 mm Sprgr. |
+| 3 | 2 cm Flakvierling (aft) | 20 mm Sprgr. |
+| 4-5 | Port / starboard 2 cm Flak | 20 mm Sprgr. |
+| 6 | Torpedo officer | Spread of three G7a torpedoes |
+| 7-12 | Deck passengers | none |
+
+The captain aims mount A. Every other mount that bears on the same bearing fires with it, so one
+person can sail her and fight her main battery alone:
+
+- Ahead, mounts A and B fire.
+- Abeam, all four fire.
+- Astern, A, C and D fire.
+
+The AA mounts and the torpedo tubes train to follow their own gunners.
+
+G7a torpedoes:
+
+- They run at 44 knots, 1.5 m deep, and arm after 20 m.
+- Each carries 340 kg of TNT equivalent.
+- Under water they tear holes tens of square metres across.
+- The tubes alternate between the two mounts, and need `warsteel:torpedo_g7a` as ammunition.
+
+### Damage, flooding and sinking
+
+The ship floats on displacement, not hit points. Her hull is split into eight watertight
+compartments. Holes let water in at a rate that depends on how far below the surface they are.
+A full compartment whose deck is under water spills over its bulkheads into its neighbours. The
+weight of the water takes her down, trims her by the head or stern and lists her towards the
+flooded side. Lost boilers or turbines and the extra weight slow her down. While any boiler
+works, her pumps fight the flooding.
+
+- **Any explosion** near the ship holes the hull and damages the modules near it. That covers
+  Superb Warfare's, WarSteel's, TNT, creepers and other mods' explosions. Holes are bigger the
+  closer and heavier the blast, and three times bigger under water.
+- A shell that penetrates the hull plating leaves a hole the size of its calibre.
+- Small arms hit the exposed AA and torpedo crews. The hull doesn't care about them.
+- Two magazines and the torpedo reserves can detonate, which breaks her back.
+- When "killed", or once her magazines go up, she doesn't vanish: her back breaks, and she floods
+  and sinks. When her deck has been well under water for 10 seconds, the crew are thrown clear
+  and she becomes a wreck on the seabed.
 
 ## Hit marks and wrecks
 
@@ -316,4 +368,6 @@ origin on the turret pivot and turns with the turret. One block is one metre.
 - `/warsteel reset`: restore the nearest tank.
 - `/warsteel fire <shell>`: fire a real cannon shell with a given profile (e.g.
   `warsteel:88mm_pzgr39`) from where you're looking (also works from command blocks with `execute positioned ... facing ...`).
+- `/warsteel ship`: flooding report for the nearest ship (compartments, water, trim, list, holes).
+- `/warsteel torpedo`: launch a G7a from where you're looking.
 - `/warsteel obbs`: print the nearest tank's hitboxes in its own frames, for writing plate data.

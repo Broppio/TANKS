@@ -1,0 +1,931 @@
+{
+  "ID": "warsteel:t-22",
+  "MaxHealth": 3000,
+  "MaxEnergy": 400000000,
+  "Type": "Boat",
+  "EngineType": "Ship",
+  "EngineInfo": {
+    "Buoyancy": 0.0215,
+    "EnergyCostRate": 40,
+    "MaxForwardSpeedRate": 3.0,
+    "MaxBackwardSpeedRate": -0.9,
+    "Increment": 0.004,
+    "Decrement": 0.004,
+    "SteeringSpeed": 0.012,
+    "BodyRollRate": 0.3,
+    "BodyPitchRate": 0.05,
+    "EngineSoundVolume": 1.4
+  },
+  "TurretControllerIndex": 0,
+  "TurretPos": [
+    0.0,
+    6.987,
+    31.95
+  ],
+  "BarrelPos": [
+    0.0,
+    1.657,
+    -0.106
+  ],
+  "TurretTurnSpeed": [
+    0.9,
+    1.4
+  ],
+  "TurretPitchRange": [
+    -10,
+    40
+  ],
+  "Seats": [
+    {
+      "HidePassenger": true,
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        10.6,
+        22.5
+      ],
+      "CanRotateHead": false,
+      "Sensitivity": [
+        0.35,
+        0.6,
+        0.9
+      ],
+      "CameraPos": {
+        "Transform": "Barrel",
+        "ZoomPosition": [
+          0.6,
+          0.55,
+          0.6
+        ],
+        "ZoomDirection": "Barrel"
+      },
+      "MinPitch": -10,
+      "MaxPitch": 40,
+      "Weapons": [
+        "Cannon"
+      ],
+      "DismountInfo": {
+        "Transform": "Vehicle",
+        "Position": [
+          0,
+          7.2,
+          18.0
+        ]
+      }
+    },
+    {
+      "HidePassenger": true,
+      "Transform": "Vehicle",
+      "Position": [
+        2.476,
+        8.218,
+        -9.886
+      ],
+      "Orientation": 90,
+      "RotateWithVehicle": true,
+      "MinYaw": -120,
+      "MaxYaw": 120,
+      "MinPitch": -85,
+      "MaxPitch": 5,
+      "Sensitivity": [
+        0.5,
+        0.7,
+        0.9
+      ],
+      "CameraPos": {
+        "Transform": "Vehicle",
+        "UseFixedCameraPos": true,
+        "Position": [
+          2.578,
+          9.819,
+          -9.886
+        ]
+      },
+      "Weapons": [
+        "Flak37Port"
+      ],
+      "DismountInfo": {
+        "Transform": "Vehicle",
+        "Position": [
+          0,
+          7.2,
+          -9.89
+        ]
+      }
+    },
+    {
+      "HidePassenger": true,
+      "Transform": "Vehicle",
+      "Position": [
+        -2.476,
+        8.218,
+        -9.886
+      ],
+      "Orientation": -90,
+      "RotateWithVehicle": true,
+      "MinYaw": -120,
+      "MaxYaw": 120,
+      "MinPitch": -85,
+      "MaxPitch": 5,
+      "Sensitivity": [
+        0.5,
+        0.7,
+        0.9
+      ],
+      "CameraPos": {
+        "Transform": "Vehicle",
+        "UseFixedCameraPos": true,
+        "Position": [
+          -2.578,
+          9.819,
+          -9.886
+        ]
+      },
+      "Weapons": [
+        "Flak37Starboard"
+      ],
+      "DismountInfo": {
+        "Transform": "Vehicle",
+        "Position": [
+          0,
+          7.2,
+          -9.89
+        ]
+      }
+    },
+    {
+      "HidePassenger": true,
+      "Transform": "Vehicle",
+      "Position": [
+        0.0,
+        9.071,
+        -20.965
+      ],
+      "Orientation": 180,
+      "RotateWithVehicle": true,
+      "MinYaw": -150,
+      "MaxYaw": 150,
+      "MinPitch": -85,
+      "MaxPitch": 5,
+      "Sensitivity": [
+        0.5,
+        0.7,
+        0.9
+      ],
+      "CameraPos": {
+        "Transform": "Vehicle",
+        "UseFixedCameraPos": true,
+        "Position": [
+          -0.0,
+          10.626,
+          -21.13
+        ]
+      },
+      "Weapons": [
+        "Flakvierling"
+      ],
+      "DismountInfo": {
+        "Transform": "Vehicle",
+        "Position": [
+          0,
+          7.2,
+          -20.96
+        ]
+      }
+    },
+    {
+      "HidePassenger": true,
+      "Transform": "Vehicle",
+      "Position": [
+        3.062,
+        11.305,
+        20.713
+      ],
+      "Orientation": 90,
+      "RotateWithVehicle": true,
+      "MinYaw": -110,
+      "MaxYaw": 110,
+      "MinPitch": -85,
+      "MaxPitch": 5,
+      "Sensitivity": [
+        0.5,
+        0.7,
+        0.9
+      ],
+      "CameraPos": {
+        "Transform": "Vehicle",
+        "UseFixedCameraPos": true,
+        "Position": [
+          2.679,
+          12.998,
+          20.713
+        ]
+      },
+      "Weapons": [
+        "Flak20Port"
+      ],
+      "DismountInfo": {
+        "Transform": "Vehicle",
+        "Position": [
+          0,
+          7.2,
+          20.71
+        ]
+      }
+    },
+    {
+      "HidePassenger": true,
+      "Transform": "Vehicle",
+      "Position": [
+        -3.062,
+        11.305,
+        20.713
+      ],
+      "Orientation": -90,
+      "RotateWithVehicle": true,
+      "MinYaw": -110,
+      "MaxYaw": 110,
+      "MinPitch": -85,
+      "MaxPitch": 5,
+      "Sensitivity": [
+        0.5,
+        0.7,
+        0.9
+      ],
+      "CameraPos": {
+        "Transform": "Vehicle",
+        "UseFixedCameraPos": true,
+        "Position": [
+          -2.679,
+          12.998,
+          20.713
+        ]
+      },
+      "Weapons": [
+        "Flak20Starboard"
+      ],
+      "DismountInfo": {
+        "Transform": "Vehicle",
+        "Position": [
+          0,
+          7.2,
+          20.71
+        ]
+      }
+    },
+    {
+      "HidePassenger": true,
+      "Transform": "Vehicle",
+      "Position": [
+        0.0,
+        7.581,
+        7.421
+      ],
+      "RotateWithVehicle": true,
+      "MinYaw": -180,
+      "MaxYaw": 180,
+      "MinPitch": -10,
+      "MaxPitch": 10,
+      "Sensitivity": [
+        0.4,
+        0.6,
+        0.9
+      ],
+      "CameraPos": {
+        "Transform": "Vehicle",
+        "UseFixedCameraPos": true,
+        "Position": [
+          0,
+          12.5,
+          18.0
+        ]
+      },
+      "Weapons": [
+        "Torpedoes"
+      ],
+      "DismountInfo": {
+        "Transform": "Vehicle",
+        "Position": [
+          0,
+          7.2,
+          7.0
+        ]
+      }
+    },
+    {
+      "Transform": "Vehicle",
+      "Position": [
+        2.0,
+        7.0,
+        12.0
+      ],
+      "RotateWithVehicle": true,
+      "MinYaw": -120,
+      "MaxYaw": 120,
+      "DismountInfo": {
+        "Transform": "Vehicle",
+        "Position": [
+          2.0,
+          7.2,
+          12.0
+        ]
+      }
+    },
+    {
+      "Transform": "Vehicle",
+      "Position": [
+        -2.0,
+        7.0,
+        12.0
+      ],
+      "RotateWithVehicle": true,
+      "MinYaw": -120,
+      "MaxYaw": 120,
+      "DismountInfo": {
+        "Transform": "Vehicle",
+        "Position": [
+          -2.0,
+          7.2,
+          12.0
+        ]
+      }
+    },
+    {
+      "Transform": "Vehicle",
+      "Position": [
+        2.0,
+        7.0,
+        -3.0
+      ],
+      "RotateWithVehicle": true,
+      "MinYaw": -120,
+      "MaxYaw": 120,
+      "DismountInfo": {
+        "Transform": "Vehicle",
+        "Position": [
+          2.0,
+          7.2,
+          -3.0
+        ]
+      }
+    },
+    {
+      "Transform": "Vehicle",
+      "Position": [
+        -2.0,
+        7.0,
+        -3.0
+      ],
+      "RotateWithVehicle": true,
+      "MinYaw": -120,
+      "MaxYaw": 120,
+      "DismountInfo": {
+        "Transform": "Vehicle",
+        "Position": [
+          -2.0,
+          7.2,
+          -3.0
+        ]
+      }
+    },
+    {
+      "Transform": "Vehicle",
+      "Position": [
+        2.0,
+        7.0,
+        -27.0
+      ],
+      "RotateWithVehicle": true,
+      "MinYaw": -120,
+      "MaxYaw": 120,
+      "DismountInfo": {
+        "Transform": "Vehicle",
+        "Position": [
+          2.0,
+          7.2,
+          -27.0
+        ]
+      }
+    },
+    {
+      "Transform": "Vehicle",
+      "Position": [
+        -2.0,
+        7.0,
+        -27.0
+      ],
+      "RotateWithVehicle": true,
+      "MinYaw": -120,
+      "MaxYaw": 120,
+      "DismountInfo": {
+        "Transform": "Vehicle",
+        "Position": [
+          -2.0,
+          7.2,
+          -27.0
+        ]
+      }
+    }
+  ],
+  "Weapons": {
+    "Cannon": {
+      "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/he_shell.png",
+      "DefaultFireMode": "Semi",
+      "AvailableFireModes": "Semi",
+      "Projectile": "superbwarfare:cannon_shell",
+      "DefaultZoom": 4,
+      "Magazine": 1,
+      "EmptyReloadTime": 80,
+      "Velocity": 39.25,
+      "Damage": 1500,
+      "ExplosionDamage": 89.1,
+      "ExplosionRadius": 1.84,
+      "RecoilTime": 20,
+      "RecoilForce": 0.3,
+      "ShootShake": [
+        4,
+        6,
+        40
+      ],
+      "Spread": 0.15,
+      "Crosshair": "@VehicleDynamicCross",
+      "CrosshairColor": "00000000",
+      "CrosshairZooming": "@VehicleCommonCannonZooming",
+      "Name": "item.warsteel.105mm_sprgr",
+      "SoundInfo": {
+        "Fire1P": "warsteel:tiger1_1p_fire",
+        "Fire3P": "warsteel:tiger1_3p_fire",
+        "Fire3PFar": "warsteel:tiger1_3p_far",
+        "Fire3PVeryFar": "warsteel:tiger1_3p_veryfar",
+        "VehicleReload": "warsteel:default_reload",
+        "Change": "superbwarfare:into_cannon",
+        "CancellableSounds": [
+          "warsteel:default_reload"
+        ]
+      },
+      "SoundRadius": 64,
+      "ShootPos": {
+        "Transform": "Barrel",
+        "Positions": [
+          [
+            0.0,
+            0.0,
+            3.424
+          ]
+        ],
+        "Directions": [
+          "Barrel"
+        ]
+      },
+      "ProjectileLife": 800,
+      "ShellType": "HE",
+      "AmmoType": [
+        "warsteel:105mm_sprgr",
+        {
+          "Ammo": "warsteel:105mm_psgr",
+          "Override": {
+            "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/ap_shell.png",
+            "Velocity": 39.25,
+            "Damage": 1650,
+            "ExplosionDamage": 56.2,
+            "ExplosionRadius": 0.97,
+            "Name": "item.warsteel.105mm_psgr"
+          }
+        }
+      ]
+    },
+    "Flak37Port": {
+      "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/cannon_40mm_he.png",
+      "DefaultFireMode": "Auto",
+      "AvailableFireModes": "Auto",
+      "Projectile": "superbwarfare:small_cannon_shell",
+      "RPM": 120,
+      "Magazine": 8,
+      "EmptyReloadTime": 50,
+      "Velocity": 50.0,
+      "Damage": 90,
+      "ExplosionDamage": 14,
+      "ExplosionRadius": 2.4,
+      "Spread": 0.35,
+      "HeatPerShoot": 1,
+      "NaturalCooldown": 1,
+      "Name": "item.warsteel.37mm_sprgr",
+      "AmmoType": "warsteel:37mm_sprgr",
+      "Crosshair": "@VehicleCommonGun",
+      "CrosshairColor": "0xFFFFFF",
+      "SoundInfo": {
+        "Fire1P": "superbwarfare:bofos_fire_1p",
+        "Fire3P": "superbwarfare:bofos_fire_3p",
+        "Fire3PFar": "superbwarfare:bofos_fire_far",
+        "Fire3PVeryFar": "superbwarfare:bofos_fire_veryfar"
+      },
+      "SoundRadius": 24,
+      "ShootPos": {
+        "Transform": "Vehicle",
+        "ShootPositionForHud": [
+          2.578,
+          9.219,
+          -9.886
+        ],
+        "Positions": [
+          [
+            2.578,
+            9.219,
+            -9.886
+          ]
+        ],
+        "Directions": [
+          "Passenger"
+        ],
+        "DefaultBarrelDirection": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    "Flak37Starboard": {
+      "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/cannon_40mm_he.png",
+      "DefaultFireMode": "Auto",
+      "AvailableFireModes": "Auto",
+      "Projectile": "superbwarfare:small_cannon_shell",
+      "RPM": 120,
+      "Magazine": 8,
+      "EmptyReloadTime": 50,
+      "Velocity": 50.0,
+      "Damage": 90,
+      "ExplosionDamage": 14,
+      "ExplosionRadius": 2.4,
+      "Spread": 0.35,
+      "HeatPerShoot": 1,
+      "NaturalCooldown": 1,
+      "Name": "item.warsteel.37mm_sprgr",
+      "AmmoType": "warsteel:37mm_sprgr",
+      "Crosshair": "@VehicleCommonGun",
+      "CrosshairColor": "0xFFFFFF",
+      "SoundInfo": {
+        "Fire1P": "superbwarfare:bofos_fire_1p",
+        "Fire3P": "superbwarfare:bofos_fire_3p",
+        "Fire3PFar": "superbwarfare:bofos_fire_far",
+        "Fire3PVeryFar": "superbwarfare:bofos_fire_veryfar"
+      },
+      "SoundRadius": 24,
+      "ShootPos": {
+        "Transform": "Vehicle",
+        "ShootPositionForHud": [
+          -2.578,
+          9.219,
+          -9.886
+        ],
+        "Positions": [
+          [
+            -2.578,
+            9.219,
+            -9.886
+          ]
+        ],
+        "Directions": [
+          "Passenger"
+        ],
+        "DefaultBarrelDirection": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    "Flakvierling": {
+      "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/cannon_25mm_he.png",
+      "DefaultFireMode": "Auto",
+      "AvailableFireModes": "Auto",
+      "Projectile": "superbwarfare:small_cannon_shell",
+      "RPM": 800,
+      "Magazine": 80,
+      "EmptyReloadTime": 70,
+      "Velocity": 45.0,
+      "Damage": 35,
+      "ExplosionDamage": 6,
+      "ExplosionRadius": 1.6,
+      "Spread": 0.35,
+      "HeatPerShoot": 1,
+      "NaturalCooldown": 1,
+      "Name": "item.warsteel.20mm_sprgr",
+      "AmmoType": "warsteel:20mm_sprgr",
+      "Crosshair": "@VehicleCommonGun",
+      "CrosshairColor": "0xFFFFFF",
+      "SoundInfo": {
+        "Fire1P": "superbwarfare:m_2_hb_fire_1p",
+        "Fire3P": "superbwarfare:m_2_hb_fire_3p",
+        "Fire3PFar": "superbwarfare:m_2_hb_far",
+        "Fire3PVeryFar": "superbwarfare:m_2_hb_veryfar"
+      },
+      "SoundRadius": 24,
+      "ShootPos": {
+        "Transform": "Vehicle",
+        "ShootPositionForHud": [
+          -0.0,
+          10.026,
+          -21.13
+        ],
+        "Positions": [
+          [
+            -0.0,
+            10.026,
+            -21.13
+          ]
+        ],
+        "Directions": [
+          "Passenger"
+        ],
+        "DefaultBarrelDirection": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    "Flak20Port": {
+      "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/cannon_25mm_he.png",
+      "DefaultFireMode": "Auto",
+      "AvailableFireModes": "Auto",
+      "Projectile": "superbwarfare:small_cannon_shell",
+      "RPM": 450,
+      "Magazine": 20,
+      "EmptyReloadTime": 50,
+      "Velocity": 45.0,
+      "Damage": 35,
+      "ExplosionDamage": 6,
+      "ExplosionRadius": 1.6,
+      "Spread": 0.35,
+      "HeatPerShoot": 1,
+      "NaturalCooldown": 1,
+      "Name": "item.warsteel.20mm_sprgr",
+      "AmmoType": "warsteel:20mm_sprgr",
+      "Crosshair": "@VehicleCommonGun",
+      "CrosshairColor": "0xFFFFFF",
+      "SoundInfo": {
+        "Fire1P": "superbwarfare:m_2_hb_fire_1p",
+        "Fire3P": "superbwarfare:m_2_hb_fire_3p",
+        "Fire3PFar": "superbwarfare:m_2_hb_far",
+        "Fire3PVeryFar": "superbwarfare:m_2_hb_veryfar"
+      },
+      "SoundRadius": 24,
+      "ShootPos": {
+        "Transform": "Vehicle",
+        "ShootPositionForHud": [
+          2.679,
+          12.398,
+          20.713
+        ],
+        "Positions": [
+          [
+            2.679,
+            12.398,
+            20.713
+          ]
+        ],
+        "Directions": [
+          "Passenger"
+        ],
+        "DefaultBarrelDirection": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    "Flak20Starboard": {
+      "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/cannon_25mm_he.png",
+      "DefaultFireMode": "Auto",
+      "AvailableFireModes": "Auto",
+      "Projectile": "superbwarfare:small_cannon_shell",
+      "RPM": 450,
+      "Magazine": 20,
+      "EmptyReloadTime": 50,
+      "Velocity": 45.0,
+      "Damage": 35,
+      "ExplosionDamage": 6,
+      "ExplosionRadius": 1.6,
+      "Spread": 0.35,
+      "HeatPerShoot": 1,
+      "NaturalCooldown": 1,
+      "Name": "item.warsteel.20mm_sprgr",
+      "AmmoType": "warsteel:20mm_sprgr",
+      "Crosshair": "@VehicleCommonGun",
+      "CrosshairColor": "0xFFFFFF",
+      "SoundInfo": {
+        "Fire1P": "superbwarfare:m_2_hb_fire_1p",
+        "Fire3P": "superbwarfare:m_2_hb_fire_3p",
+        "Fire3PFar": "superbwarfare:m_2_hb_far",
+        "Fire3PVeryFar": "superbwarfare:m_2_hb_veryfar"
+      },
+      "SoundRadius": 24,
+      "ShootPos": {
+        "Transform": "Vehicle",
+        "ShootPositionForHud": [
+          -2.679,
+          12.398,
+          20.713
+        ],
+        "Positions": [
+          [
+            -2.679,
+            12.398,
+            20.713
+          ]
+        ],
+        "Directions": [
+          "Passenger"
+        ],
+        "DefaultBarrelDirection": [
+          0,
+          0,
+          1
+        ]
+      }
+    },
+    "Torpedoes": {
+      "Icon": "superbwarfare:textures/overlay/vehicle/weapon/icons/ap_shell.png",
+      "DefaultFireMode": "Semi",
+      "AvailableFireModes": "Semi",
+      "Projectile": "superbwarfare:cannon_shell",
+      "Magazine": 1,
+      "EmptyReloadTime": 400,
+      "Velocity": 1.0,
+      "Damage": 4242,
+      "ExplosionDamage": 0,
+      "ExplosionRadius": 0,
+      "Name": "item.warsteel.torpedo_g7a",
+      "AmmoType": "warsteel:torpedo_g7a",
+      "Crosshair": "@VehicleCommonGun",
+      "CrosshairColor": "0xFFFFFF",
+      "SoundInfo": {
+        "Fire3P": "superbwarfare:mortar_fire",
+        "Fire1P": "superbwarfare:mortar_fire"
+      },
+      "SoundRadius": 24,
+      "ShootPos": {
+        "Transform": "Vehicle",
+        "ShootPositionForHud": [
+          0.0,
+          7.581,
+          7.421
+        ],
+        "Positions": [
+          [
+            0.0,
+            7.581,
+            7.421
+          ]
+        ],
+        "Directions": [
+          "Passenger"
+        ],
+        "DefaultBarrelDirection": [
+          1,
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "OBB": [
+    {
+      "Size": [
+        4.9,
+        3.35,
+        30.0
+      ],
+      "Position": [
+        0,
+        3.35,
+        0
+      ]
+    },
+    {
+      "Size": [
+        3.1,
+        3.7,
+        9.3
+      ],
+      "Position": [
+        0,
+        3.7,
+        39.3
+      ]
+    },
+    {
+      "Size": [
+        3.8,
+        3.2,
+        9.3
+      ],
+      "Position": [
+        0,
+        3.2,
+        -39.3
+      ]
+    },
+    {
+      "Size": [
+        4.0,
+        4.3,
+        6.0
+      ],
+      "Position": [
+        0,
+        10.9,
+        22.7
+      ]
+    },
+    {
+      "Size": [
+        3.0,
+        2.8,
+        15.0
+      ],
+      "Position": [
+        0,
+        9.5,
+        1.7
+      ]
+    },
+    {
+      "Size": [
+        3.0,
+        1.7,
+        4.0
+      ],
+      "Position": [
+        0,
+        8.3,
+        -19.3
+      ]
+    },
+    {
+      "Part": "Turret",
+      "Size": [
+        1.25,
+        1.35,
+        1.3
+      ],
+      "Position": [
+        0,
+        1.2,
+        0
+      ],
+      "Transform": "Turret",
+      "Rotation": "Turret"
+    }
+  ],
+  "Mass": 400,
+  "UpStep": 0.0,
+  "RotateOffsetHeight": 3.3,
+  "DestroyInfo": {
+    "ExplosionDamage": 0,
+    "ExplosionRadius": 0,
+    "ExplodeBlocks": false,
+    "ExplodePassengers": false
+  },
+  "ThirdPersonCameraPos": [
+    0,
+    14,
+    60
+  ],
+  "VehicleIcon": "warsteel:textures/vehicle_icon/t-22_icon.png",
+  "ContainerIcon": "superbwarfare:textures/gui/vehicle/type/water.png",
+  "VehicleContainerType": "Huge",
+  "HudType": "@Land",
+  "CollisionLevel": {
+    "Level": 5,
+    "PowerLimits": [
+      [
+        0,
+        0,
+        true
+      ],
+      [
+        0,
+        0,
+        true
+      ],
+      [
+        0.1,
+        0.05,
+        false
+      ],
+      [
+        1,
+        0.3,
+        false
+      ],
+      [
+        3,
+        0.5,
+        false
+      ]
+    ]
+  },
+  "EngineSound": "warsteel:tiger_engine",
+  "InertiaRotateRate": 0.4
+}

@@ -310,6 +310,10 @@ public final class RicochetHandler {
             event.setCanceled(true);
             TankDamage.markHandled(shell);
             TankDamage.Report r = TankDamage.penetrate(tank, level, armour, plateIndex, data, hitVec, dir, effective, pen - effective, source, owner);
+            if (tank instanceof rev.rev.warsteel.naval.NavalHull hull && !data.isContactFuzed()) {
+               // A shot through a ship's thin plating leaves a hole about its own size (HE holes the hull through HeExplosion).
+               hull.hullHole(hitVec, Math.PI * Math.pow(data.getCalibre() / 2000.0, 2) * 1.6);
+            }
             if (data.isHeat()) {
                // A shaped charge goes off on the outside of the armour; only its jet got in.
                if (!heatBurst) {

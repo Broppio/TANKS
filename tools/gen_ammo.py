@@ -23,6 +23,7 @@ V_KV1, V_KV2, V_SH, V_T26, V_TIGER = 'warsteel:kv-1', 'warsteel:kv-2', 'warsteel
 TIGERS = [V_TIGER, 'warsteel:tiger-h1-grey', 'warsteel:tiger-h1-sand']
 V_FLAK = 'warsteel:flak-88'
 V_PAK = 'warsteel:pak-38'
+V_T22 = 'warsteel:t-22'
 GUN_88 = TIGERS + [V_FLAK]
 
 # id, name, gun, calibre, class, pen@10m, dropoff, min pen, filler g, velocity m/s, mass kg,
@@ -52,11 +53,17 @@ AMMO = [
     ('50mm_pzgr39', 'PzGr 39', '5 cm PaK 38', 50, 'APHE', 96, 0.024, 55, 17, 835, 2.06, [V_PAK], 230, 1.2, 10, 'german_ap', 0),
     ('50mm_pzgr40', 'PzGr 40', '5 cm PaK 38', 50, 'APCR', 149, 0.085, 40, 0, 1180, 0.93, [V_PAK], 210, 0, 0, 'german_apcr', 0),
     ('50mm_sprgr38', 'Sprgr. 38', '5 cm PaK 38', 50, 'HE', 6, 0.0, 6, 170, 550, 1.81, [V_PAK], 190, 0, 0, 'german_he', 1),
+    # T-22 (Elbing-class torpedo boat): 10.5 cm SK C/32 main battery
+    ('105mm_sprgr', 'Sprgr. L/4.4 m. Kz', '10.5 cm SK C/32', 105, 'HE', 16, 0.0, 16, 1530, 785, 15.1, [V_T22], 1500, 0, 0, 'german_he', 1),
+    ('105mm_psgr', 'Psgr. m. Hb', '10.5 cm SK C/32', 105, 'APHE', 120, 0.018, 70, 220, 785, 15.1, [V_T22], 1650, 1.2, 12, 'german_ap', 0),
+    # T-22 anti-aircraft guns (fired as Superb Warfare small-calibre shells, not through the armour model)
+    ('37mm_sprgr', 'Sprgr. Patr. 37 L/Spur', '3.7 cm SK C/30', 37, 'HE', 6, 0.0, 6, 30, 1000, 0.74, [], 90, 0, 0, 'german_he', 1),
+    ('20mm_sprgr', 'Sprgr. Patr. L/Spur', '2 cm Flak 38', 20, 'HE', 3, 0.0, 3, 6, 900, 0.12, [], 35, 0, 0, 'german_he', 1),
 ]
 
 CLASS_LONG = {'AP': 'AP', 'APHE': 'APHE', 'APCR': 'APCR', 'HE': 'HE', 'FLAK': 'HE (time fuze)'}
-STACK = {45: 32, 50: 24, 75: 16, 76: 16, 88: 16, 152: 8}
-OUT = {45: 8, 50: 6, 75: 4, 76: 4, 88: 3, 152: 1}
+STACK = {20: 64, 37: 32, 105: 8, 45: 32, 50: 24, 75: 16, 76: 16, 88: 16, 152: 8}
+OUT = {20: 16, 37: 8, 105: 2, 45: 8, 50: 6, 75: 4, 76: 4, 88: 3, 152: 1}
 
 
 def ricochet(cls):
@@ -132,6 +139,8 @@ for v, ammo in by_vehicle.items():
     first = sbw_override(ammo[0])
     cannon.update({k: first[k] for k in ('Icon', 'Velocity', 'Damage', 'ExplosionDamage', 'ExplosionRadius', 'Name')})
     cannon.pop('ShellType', None)
+    if 'ShellType' in first:
+        cannon['ShellType'] = first['ShellType']
     cannon['AmmoType'] = ['warsteel:' + ammo[0][0]] + [{'Ammo': 'warsteel:' + a[0], 'Override': sbw_override(a)} for a in ammo[1:]]
     json.dump(d, open(path, 'w'), indent=2)
 
@@ -150,7 +159,7 @@ for f in glob.glob(os.path.join(ASSETS, 'sights/*.json')):
     json.dump(d, open(f, 'w'), indent=2, ensure_ascii=False)
 
 # --------------------------------------------------------------------------------------------- recipes
-BODY = {45: ('KGK', ' P '), 50: ('KGK', 'KPK'), 75: ('CGC', ' P '), 76: ('CGC', 'CPC'), 88: ('CGC', 'SPS'), 152: ('CTC', 'CPC')}
+BODY = {20: ('KGK', ' P '), 37: ('KGK', ' P '), 105: ('CGC', 'SPS'), 45: ('KGK', ' P '), 50: ('KGK', 'KPK'), 75: ('CGC', ' P '), 76: ('CGC', 'CPC'), 88: ('CGC', 'SPS'), 152: ('CTC', 'CPC')}
 HEAD = {'AP': ' S ', 'APHE': 'SXS', 'APCR': 'SWS', 'HE': 'IXI', 'FLAK': 'XFX'}
 KEYS = {
     'K': {'item': 'minecraft:copper_ingot'}, 'C': {'item': 'superbwarfare:copper_plate'},
@@ -196,7 +205,7 @@ SCHEMES = {
     'german_he': ((180, 160, 70), (180, 160, 70), (40, 40, 42)),
     'german_flak': ((180, 160, 70), (150, 150, 150), (190, 30, 30)),
 }
-WIDTH = {45: 6, 50: 6, 75: 8, 76: 8, 88: 9, 152: 12}
+WIDTH = {20: 4, 37: 5, 105: 10, 45: 6, 50: 6, 75: 8, 76: 8, 88: 9, 152: 12}
 os.makedirs(os.path.join(ASSETS, 'textures/item'), exist_ok=True)
 for a in AMMO:
     aid, cal, cls, scheme = a[0], a[3], a[4], a[15]

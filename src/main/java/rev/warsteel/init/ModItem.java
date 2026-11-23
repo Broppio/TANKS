@@ -48,6 +48,10 @@ public class ModItem {
    public static final DeferredItem<rev.rev.warsteel.item.VehicleCrateItem> KV1_CRATE = crate("kv1_crate", ModEntities.KV_1, 26);
    public static final DeferredItem<rev.rev.warsteel.item.VehicleCrateItem> KV2_CRATE = crate("kv2_crate", ModEntities.KV_2, 34);
    public static final DeferredItem<rev.rev.warsteel.item.VehicleCrateItem> TIGER_CRATE = crate("tiger_crate", ModEntities.TigerH1, 42);
+   /** A whole warship: two months on the slipway. */
+   public static final DeferredItem<rev.rev.warsteel.item.VehicleCrateItem> T22_CRATE = crate("t22_crate", ModEntities.T_22, 60);
+   /** G7a torpedo, for the T-22's tubes. */
+   public static final DeferredItem<Item> TORPEDO_G7A = ITEMS.register("torpedo_g7a", () -> new Item(new Item.Properties().stacksTo(3)));
 
    private static DeferredItem<rev.rev.warsteel.item.VehicleCrateItem> crate(String id, java.util.function.Supplier<? extends net.minecraft.world.entity.EntityType<?>> type, double days) {
       return ITEMS.register(id, () -> new rev.rev.warsteel.item.VehicleCrateItem(type, days));

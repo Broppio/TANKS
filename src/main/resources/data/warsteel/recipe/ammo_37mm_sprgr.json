@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "IXI",
+    "KGK",
+    " P "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:gunpowder"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "K": {
+      "item": "minecraft:copper_ingot"
+    },
+    "P": {
+      "item": "superbwarfare:primer"
+    },
+    "X": {
+      "item": "superbwarfare:high_energy_explosives"
+    }
+  },
+  "result": {
+    "id": "warsteel:37mm_sprgr",
+    "count": 8
+  }
+}

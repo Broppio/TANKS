@@ -1,0 +1,9 @@
+{
+  "Animation": "warsteel:animations/bedrock/vehicle/t-22.animation.json",
+  "Models": [
+    {
+      "Model": "warsteel:models/bedrock/vehicle/t-22.geo.json",
+      "Texture": "warsteel:textures/entity/t-22.png"
+    }
+  ]
+}

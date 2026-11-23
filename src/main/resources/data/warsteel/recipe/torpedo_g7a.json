@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "SXS",
+    "SMS",
+    "SPS"
+  ],
+  "key": {
+    "S": {
+      "tag": "c:ingots/steel"
+    },
+    "X": {
+      "item": "superbwarfare:high_energy_explosives"
+    },
+    "M": {
+      "item": "superbwarfare:motor"
+    },
+    "P": {
+      "item": "superbwarfare:propeller"
+    }
+  },
+  "result": {
+    "id": "warsteel:torpedo_g7a",
+    "count": 1
+  }
+}

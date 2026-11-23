@@ -81,6 +81,15 @@ public final class HeExplosion {
       double fragRange = 30.0 * cbrt + 6.0;
       int fragments = (int)(900.0 * Math.sqrt(kg));
       List<Entity> near = level.getEntities(shell, new AABB(pos, pos).inflate(fragRange), e -> e != skip && e.isAlive() && e.getVehicle() == null);
+      // Ships: hole the hull wherever along it the burst is (their entity box only covers amidships),
+      // and wreck the parts near it unless they're handled below or already were (an internal burst).
+      for (Entity ship : level.getEntities((Entity)null, new AABB(pos, pos).inflate(fragRange + 60.0), x -> x instanceof rev.rev.warsteel.naval.NavalHull && x.isAlive())) {
+         boolean handledBelow = near.contains(ship);
+         ((rev.rev.warsteel.naval.NavalHull)ship).hullBlast(pos, kg, owner);
+         if (!handledBelow && ship != skip && ship instanceof WarSteelTank st && st.usesModuleDamage()) {
+            TankDamage.blastFromOutside(st, level, pos, fillerGrams * outsideScale, source, owner);
+         }
+      }
 
       for (Entity e : near) {
          AABB box = e.getBoundingBox();
@@ -152,7 +161,12 @@ public final class HeExplosion {
 
       if (craters && outsideScale > 0.5 && ExplosionConfig.EXPLOSION_DESTROY.get()) {
          float power = (float)Math.max(0.5, 1.3 * cbrt);
-         level.explode(shell, null, BLOCKS_ONLY, pos.x, pos.y, pos.z, power, false, Level.ExplosionInteraction.TNT, ParticleTypes.SMOKE, ParticleTypes.SMOKE, net.minecraft.core.Holder.direct(net.minecraft.sounds.SoundEvents.EMPTY));
+         rev.rev.warsteel.naval.ShipExplosions.CRATER.set(Boolean.TRUE);
+         try {
+            level.explode(shell, null, BLOCKS_ONLY, pos.x, pos.y, pos.z, power, false, Level.ExplosionInteraction.TNT, ParticleTypes.SMOKE, ParticleTypes.SMOKE, net.minecraft.core.Holder.direct(net.minecraft.sounds.SoundEvents.EMPTY));
+         } finally {
+            rev.rev.warsteel.naval.ShipExplosions.CRATER.set(Boolean.FALSE);
+         }
       }
    }
 

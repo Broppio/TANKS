@@ -1,0 +1,532 @@
+{
+  "_comment": "Internal modules for the War Thunder style damage model. Position/Size (half-extents) are in blocks in the Transform frame. Crew with a Seat pass part of the damage to the player in that seat. The tank is knocked out when an ammo rack detonates or fewer than MinCrew crew remain. Use /warsteel xray to see plates (orange) and modules in game. T-22: a ship is not knocked out by losing crew; it is lost when it floods and sinks, or when a magazine goes up and breaks its back.",
+  "Vehicle": "warsteel:t-22",
+  "MinCrew": 1,
+  "MainGunSeat": 0,
+  "RepairSeconds": 25,
+  "CrewReplaceSeconds": 60,
+  "CrewSwapSeconds": 5,
+  "FireSeconds": 14,
+  "FallbackDamageMultiplier": 0.25,
+  "AmmoExplosionRadius": 6,
+  "Modules": [
+    {
+      "Name": "Captain",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        0.0,
+        10.6,
+        22.5
+      ],
+      "Size": [
+        0.3,
+        0.9,
+        0.3
+      ],
+      "Role": "DRIVER",
+      "Seat": 0
+    },
+    {
+      "Name": "Helmsman",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        -0.8,
+        10.6,
+        23.2
+      ],
+      "Size": [
+        0.3,
+        0.9,
+        0.3
+      ],
+      "Role": "COMMANDER"
+    },
+    {
+      "Name": "GunA",
+      "Type": "BREECH",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        8.2,
+        31.9
+      ],
+      "Size": [
+        0.5,
+        0.5,
+        1.2
+      ]
+    },
+    {
+      "Name": "BarrelA",
+      "Type": "BARREL",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        8.6,
+        34.0
+      ],
+      "Size": [
+        0.15,
+        0.15,
+        1.8
+      ]
+    },
+    {
+      "Name": "GunALayer",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        0.6,
+        7.9,
+        31.0
+      ],
+      "Size": [
+        0.3,
+        0.9,
+        0.3
+      ],
+      "Role": "GUNNER"
+    },
+    {
+      "Name": "GunALoader",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        -0.6,
+        7.9,
+        30.4
+      ],
+      "Size": [
+        0.3,
+        0.9,
+        0.3
+      ],
+      "Role": "LOADER"
+    },
+    {
+      "Name": "GunBLayer",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        0.6,
+        7.9,
+        -1.6
+      ],
+      "Size": [
+        0.3,
+        0.9,
+        0.3
+      ],
+      "Role": "LOADER"
+    },
+    {
+      "Name": "GunBLoader",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        -0.6,
+        7.9,
+        -2.6
+      ],
+      "Size": [
+        0.3,
+        0.9,
+        0.3
+      ],
+      "Role": "LOADER"
+    },
+    {
+      "Name": "GunBGun",
+      "Type": "BREECH",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        8.7,
+        -1.6
+      ],
+      "Size": [
+        0.5,
+        0.5,
+        1.2
+      ],
+      "DetonationChance": 0.0
+    },
+    {
+      "Name": "GunCLayer",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        0.6,
+        7.9,
+        -24.5
+      ],
+      "Size": [
+        0.3,
+        0.9,
+        0.3
+      ],
+      "Role": "LOADER"
+    },
+    {
+      "Name": "GunCLoader",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        -0.6,
+        7.9,
+        -25.5
+      ],
+      "Size": [
+        0.3,
+        0.9,
+        0.3
+      ],
+      "Role": "LOADER"
+    },
+    {
+      "Name": "GunCGun",
+      "Type": "BREECH",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        8.7,
+        -24.5
+      ],
+      "Size": [
+        0.5,
+        0.5,
+        1.2
+      ],
+      "DetonationChance": 0.0
+    },
+    {
+      "Name": "GunDLayer",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        0.6,
+        6.7,
+        -33.8
+      ],
+      "Size": [
+        0.3,
+        0.9,
+        0.3
+      ],
+      "Role": "LOADER"
+    },
+    {
+      "Name": "GunDLoader",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        -0.6,
+        6.7,
+        -34.8
+      ],
+      "Size": [
+        0.3,
+        0.9,
+        0.3
+      ],
+      "Role": "LOADER"
+    },
+    {
+      "Name": "GunDGun",
+      "Type": "BREECH",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        7.5,
+        -33.8
+      ],
+      "Size": [
+        0.5,
+        0.5,
+        1.2
+      ],
+      "DetonationChance": 0.0
+    },
+    {
+      "Name": "FlakPortCrew",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        2.5,
+        9.0,
+        -9.9
+      ],
+      "Size": [
+        0.6,
+        0.9,
+        0.6
+      ],
+      "Role": "LOADER",
+      "Seat": 1,
+      "External": true
+    },
+    {
+      "Name": "FlakStbdCrew",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        -2.5,
+        9.0,
+        -9.9
+      ],
+      "Size": [
+        0.6,
+        0.9,
+        0.6
+      ],
+      "Role": "LOADER",
+      "Seat": 2,
+      "External": true
+    },
+    {
+      "Name": "FlakvierlingCrew",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        9.8,
+        -21.0
+      ],
+      "Size": [
+        0.7,
+        0.9,
+        0.7
+      ],
+      "Role": "LOADER",
+      "Seat": 3,
+      "External": true
+    },
+    {
+      "Name": "TorpedoCrew",
+      "Type": "CREW",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        7.4,
+        7.4
+      ],
+      "Size": [
+        1.0,
+        0.9,
+        1.0
+      ],
+      "Role": "LOADER",
+      "Seat": 6,
+      "External": true
+    },
+    {
+      "Name": "Boiler1",
+      "Type": "ENGINE",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        3.2,
+        12.0
+      ],
+      "Size": [
+        2.8,
+        2.2,
+        3.0
+      ],
+      "FireChance": 0.25
+    },
+    {
+      "Name": "Boiler2",
+      "Type": "ENGINE",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        3.2,
+        5.5
+      ],
+      "Size": [
+        2.8,
+        2.2,
+        3.0
+      ],
+      "FireChance": 0.25
+    },
+    {
+      "Name": "Boiler3",
+      "Type": "ENGINE",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        3.2,
+        -1.0
+      ],
+      "Size": [
+        2.8,
+        2.2,
+        3.0
+      ],
+      "FireChance": 0.25
+    },
+    {
+      "Name": "Boiler4",
+      "Type": "ENGINE",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        3.2,
+        -7.5
+      ],
+      "Size": [
+        2.8,
+        2.2,
+        3.0
+      ],
+      "FireChance": 0.25
+    },
+    {
+      "Name": "TurbinePort",
+      "Type": "TRANSMISSION",
+      "Transform": "Vehicle",
+      "Position": [
+        1.8,
+        2.6,
+        -14.0
+      ],
+      "Size": [
+        1.4,
+        1.8,
+        3.0
+      ]
+    },
+    {
+      "Name": "TurbineStbd",
+      "Type": "TRANSMISSION",
+      "Transform": "Vehicle",
+      "Position": [
+        -1.8,
+        2.6,
+        -14.0
+      ],
+      "Size": [
+        1.4,
+        1.8,
+        3.0
+      ]
+    },
+    {
+      "Name": "SteeringGear",
+      "Type": "TURRET_DRIVE",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        2.6,
+        -44.0
+      ],
+      "Size": [
+        1.2,
+        1.0,
+        1.5
+      ]
+    },
+    {
+      "Name": "FuelPort",
+      "Type": "FUEL_TANK",
+      "Transform": "Vehicle",
+      "Position": [
+        3.6,
+        2.2,
+        3.0
+      ],
+      "Size": [
+        0.9,
+        1.6,
+        9.0
+      ],
+      "FireChance": 0.35
+    },
+    {
+      "Name": "FuelStbd",
+      "Type": "FUEL_TANK",
+      "Transform": "Vehicle",
+      "Position": [
+        -3.6,
+        2.2,
+        3.0
+      ],
+      "Size": [
+        0.9,
+        1.6,
+        9.0
+      ],
+      "FireChance": 0.35
+    },
+    {
+      "Name": "MagazineFwd",
+      "Type": "AMMO_RACK",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        1.5,
+        28.0
+      ],
+      "Size": [
+        2.0,
+        1.1,
+        3.0
+      ],
+      "DetonationChance": 0.15
+    },
+    {
+      "Name": "MagazineAft",
+      "Type": "AMMO_RACK",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        1.5,
+        -30.0
+      ],
+      "Size": [
+        2.2,
+        1.1,
+        4.0
+      ],
+      "DetonationChance": 0.15
+    },
+    {
+      "Name": "TorpedoesFwd",
+      "Type": "AMMO_RACK",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        7.2,
+        7.4
+      ],
+      "Size": [
+        1.0,
+        0.5,
+        4.4
+      ],
+      "DetonationChance": 0.35,
+      "External": true
+    },
+    {
+      "Name": "TorpedoesAft",
+      "Type": "AMMO_RACK",
+      "Transform": "Vehicle",
+      "Position": [
+        0,
+        7.0,
+        -16.2
+      ],
+      "Size": [
+        1.0,
+        0.5,
+        4.4
+      ],
+      "DetonationChance": 0.35,
+      "External": true
+    }
+  ]
+}

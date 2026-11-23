@@ -55,6 +55,8 @@ public class WarSteel {
       NeoForge.EVENT_BUS.register(MuzzleParticleHandler.INSTANCE);
       NeoForge.EVENT_BUS.register(rev.rev.warsteel.combat.FlakFuze.INSTANCE);
       NeoForge.EVENT_BUS.register(rev.rev.warsteel.combat.ArtilleryMode.INSTANCE);
+      NeoForge.EVENT_BUS.register(rev.rev.warsteel.naval.NavalWeapons.INSTANCE);
+      NeoForge.EVENT_BUS.register(rev.rev.warsteel.naval.ShipExplosions.INSTANCE);
       NeoForge.EVENT_BUS.register(rev.rev.warsteel.damage.WarSteelCommands.INSTANCE);
       bus.addListener(WarSteel::registerPayloads);
       // Second World War setting: Superb Warfare's firearms, own vehicles and modern gear are disabled.

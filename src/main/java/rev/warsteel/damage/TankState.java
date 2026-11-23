@@ -21,6 +21,11 @@ public final class TankState {
    int crewDownTicks;
    boolean knockedOut;
    boolean detonated;
+
+   /** True once an ammunition detonation has knocked this vehicle out. */
+   public boolean detonated() {
+      return this.detonated;
+   }
    boolean dirty = true;
    private final List<HitDecals.Decal> decals = new ArrayList<>();
    boolean decalsDirty = true;

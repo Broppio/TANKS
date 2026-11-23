@@ -79,5 +79,13 @@
   "tooltip.warsteel.crate.vehicle": "A factory-built %s",
   "tooltip.warsteel.crate.production": "Factory production: one every %s days",
   "tooltip.warsteel.crate.unpack": "Right-click to unpack into a deployable vehicle container",
-  "message.warsteel.ww2_removed": "%s item(s) removed: not available in the WW2 setting"
+  "message.warsteel.ww2_removed": "%s item(s) removed: not available in the WW2 setting",
+  "item.warsteel.105mm_sprgr": "10.5 cm SK C/32 Sprgr. L/4.4 m. Kz (HE)",
+  "item.warsteel.105mm_psgr": "10.5 cm SK C/32 Psgr. m. Hb (APHE)",
+  "item.warsteel.37mm_sprgr": "3.7 cm SK C/30 Sprgr. Patr. 37 L/Spur (HE)",
+  "item.warsteel.20mm_sprgr": "2 cm Flak 38 Sprgr. Patr. L/Spur (HE)",
+  "entity.warsteel.t-22": "Torpedoboot T-22 (Elbing class)",
+  "entity.warsteel.torpedo_g7a": "G7a torpedo",
+  "item.warsteel.torpedo_g7a": "G7a 53.3 cm torpedo",
+  "item.warsteel.t22_crate": "Torpedoboot T-22 (shipyard delivery)"
 }
