@@ -78,7 +78,7 @@ public class T22Entity extends WarSteelTank implements NavalHull, ShipFlooding.H
    private boolean soundsStarted;
    private float turnRate;
    /** Per tick, how far the rate of turn moves towards what the helm asks for. */
-   private static final float TURN_EASE = 0.06F;
+   private static final float TURN_EASE = 0.3F;
    private int floodSoundCooldown;
    private int creakCooldown = 100;
 

@@ -9,9 +9,9 @@
     "EnergyCostRate": 40,
     "MaxForwardSpeedRate": 3.0,
     "MaxBackwardSpeedRate": -0.9,
-    "Increment": 0.004,
-    "Decrement": 0.004,
-    "SteeringSpeed": 0.012,
+    "Increment": 0.02,
+    "Decrement": 0.015,
+    "SteeringSpeed": 0.04,
     "BodyRollRate": 0.3,
     "BodyPitchRate": 0.05,
     "EngineSoundVolume": 3.0

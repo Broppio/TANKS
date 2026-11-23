@@ -301,8 +301,8 @@ G7a torpedoes:
 
 ### Handling, boarding and sounds
 
-- She answers the helm slowly: she swings into a turn and carries on swinging a little after the
-  rudder is centred. Lost boilers or turbines cut her top speed.
+- She gets up to speed in about 5 seconds and answers the helm quickly, with a short ease into and
+  out of each turn. Lost boilers or turbines cut her top speed.
 - Board her anywhere along her length. Getting off puts you over the side next to your post
   (or the other side if a pier is in the way); the deck isn't solid to walk on.
 - The steam whistle is on Superb Warfare's decoy key (the trucks' horn key).

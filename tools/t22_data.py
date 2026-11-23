@@ -81,7 +81,7 @@ d = {
     # 33 kn (0.85 blocks/tick) at full power; a turning circle of about 300 m. Floats at its 3.3 m draught
     # (measured in game: buoyancy 0.0215 puts the keel 3.3 m under). Flooding is added on top of this by WarSteel (ShipFlooding).
     'EngineInfo': {'Buoyancy': 0.0215, 'EnergyCostRate': 40, 'MaxForwardSpeedRate': 3.0, 'MaxBackwardSpeedRate': -0.9,
-                   'Increment': 0.004, 'Decrement': 0.004, 'SteeringSpeed': 0.012, 'BodyRollRate': 0.3, 'BodyPitchRate': 0.05,
+                   'Increment': 0.02, 'Decrement': 0.015, 'SteeringSpeed': 0.04, 'BodyRollRate': 0.3, 'BodyPitchRate': 0.05,
                    'EngineSoundVolume': 3.0},
     'TurretControllerIndex': 0,
     'TurretPos': turret,
