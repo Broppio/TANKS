@@ -30,6 +30,14 @@ public class ModSounds {
    public static final DeferredHolder<SoundEvent, SoundEvent> YX_100_RELOAD = register("yx_100_reload");
    public static final DeferredHolder<SoundEvent, SoundEvent> ARMOR_RICOCHET = register("armor_ricochet");
    public static final DeferredHolder<SoundEvent, SoundEvent> SHELL_NONPEN = register("shell_nonpen");
+   public static final DeferredHolder<SoundEvent, SoundEvent> T22_TURBINE = register("t22_turbine");
+   public static final DeferredHolder<SoundEvent, SoundEvent> T22_MACHINERY = register("t22_machinery");
+   public static final DeferredHolder<SoundEvent, SoundEvent> T22_WASH = register("t22_wash");
+   public static final DeferredHolder<SoundEvent, SoundEvent> T22_WHISTLE = register("t22_whistle");
+   public static final DeferredHolder<SoundEvent, SoundEvent> T22_TORPEDO = register("t22_torpedo");
+   public static final DeferredHolder<SoundEvent, SoundEvent> T22_FLOOD = register("t22_flood");
+   public static final DeferredHolder<SoundEvent, SoundEvent> T22_CREAK = register("t22_creak");
+   public static final DeferredHolder<SoundEvent, SoundEvent> T22_GROAN = register("t22_groan");
    @Deprecated
    public static final DeferredHolder<SoundEvent, SoundEvent> RICOCHET_1 = register("ricochet1");
    @Deprecated

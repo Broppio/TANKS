@@ -102,6 +102,16 @@ public final class WarSteelCommands {
             .then(Commands.literal("torpedo").executes(WarSteelCommands::torpedo))
             .then(Commands.literal("use").executes(WarSteelCommands::useGun))
             .then(
+               Commands.literal("throttle")
+                  .then(
+                     Commands.argument("power", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(-1.0F, 1.3F))
+                        .then(
+                           Commands.argument("rudder", com.mojang.brigadier.arguments.FloatArgumentType.floatArg(-1.0F, 1.0F))
+                              .executes(WarSteelCommands::throttle)
+                        )
+                  )
+            )
+            .then(
                Commands.literal("look")
                   .then(
                      Commands.argument("yaw", com.mojang.brigadier.arguments.FloatArgumentType.floatArg())
@@ -392,6 +402,22 @@ public final class WarSteelCommands {
       }
 
       vehicle.vehicleShoot(living, "Cannon", null);
+      return 1;
+   }
+
+   /** Testing (dev runs only): hold the nearest ship's throttle and rudder. */
+   private static int throttle(CommandContext<CommandSourceStack> c) {
+      net.minecraft.world.phys.Vec3 at = c.getSource().getPosition();
+      rev.rev.warsteel.entity.vehicle.T22Entity ship = c.getSource().getLevel()
+         .getEntitiesOfClass(rev.rev.warsteel.entity.vehicle.T22Entity.class, new net.minecraft.world.phys.AABB(at, at).inflate(256))
+         .stream().findFirst().orElse(null);
+      if (ship == null) {
+         return 0;
+      }
+
+      ship.setEnergy(ship.getMaxEnergy());   // test ships spawn with empty bunkers
+      ship.devThrottle = com.mojang.brigadier.arguments.FloatArgumentType.getFloat(c, "power");
+      ship.devRudder = com.mojang.brigadier.arguments.FloatArgumentType.getFloat(c, "rudder");
       return 1;
    }
 

@@ -14,7 +14,7 @@
     "SteeringSpeed": 0.012,
     "BodyRollRate": 0.3,
     "BodyPitchRate": 0.05,
-    "EngineSoundVolume": 1.4
+    "EngineSoundVolume": 3.0
   },
   "TurretControllerIndex": 0,
   "TurretPos": [
@@ -73,9 +73,9 @@
       "DismountInfo": {
         "Transform": "Vehicle",
         "Position": [
-          0,
-          7.2,
-          18.0
+          6.5,
+          6.5,
+          30.0
         ]
       }
     },
@@ -113,8 +113,8 @@
       "DismountInfo": {
         "Transform": "Vehicle",
         "Position": [
-          0,
-          7.2,
+          6.5,
+          6.5,
           -9.89
         ]
       }
@@ -153,8 +153,8 @@
       "DismountInfo": {
         "Transform": "Vehicle",
         "Position": [
-          0,
-          7.2,
+          -6.5,
+          6.5,
           -9.89
         ]
       }
@@ -193,8 +193,8 @@
       "DismountInfo": {
         "Transform": "Vehicle",
         "Position": [
-          0,
-          7.2,
+          6.5,
+          6.5,
           -20.96
         ]
       }
@@ -233,8 +233,8 @@
       "DismountInfo": {
         "Transform": "Vehicle",
         "Position": [
-          0,
-          7.2,
+          6.5,
+          6.5,
           20.71
         ]
       }
@@ -273,8 +273,8 @@
       "DismountInfo": {
         "Transform": "Vehicle",
         "Position": [
-          0,
-          7.2,
+          -6.5,
+          6.5,
           20.71
         ]
       }
@@ -312,8 +312,8 @@
       "DismountInfo": {
         "Transform": "Vehicle",
         "Position": [
-          0,
-          7.2,
+          6.5,
+          6.5,
           7.0
         ]
       }
@@ -331,8 +331,8 @@
       "DismountInfo": {
         "Transform": "Vehicle",
         "Position": [
-          2.0,
-          7.2,
+          6.5,
+          6.5,
           12.0
         ]
       }
@@ -350,8 +350,8 @@
       "DismountInfo": {
         "Transform": "Vehicle",
         "Position": [
-          -2.0,
-          7.2,
+          -6.5,
+          6.5,
           12.0
         ]
       }
@@ -369,8 +369,8 @@
       "DismountInfo": {
         "Transform": "Vehicle",
         "Position": [
-          2.0,
-          7.2,
+          6.5,
+          6.5,
           -3.0
         ]
       }
@@ -388,8 +388,8 @@
       "DismountInfo": {
         "Transform": "Vehicle",
         "Position": [
-          -2.0,
-          7.2,
+          -6.5,
+          6.5,
           -3.0
         ]
       }
@@ -407,8 +407,8 @@
       "DismountInfo": {
         "Transform": "Vehicle",
         "Position": [
-          2.0,
-          7.2,
+          6.5,
+          6.5,
           -27.0
         ]
       }
@@ -426,8 +426,8 @@
       "DismountInfo": {
         "Transform": "Vehicle",
         "Position": [
-          -2.0,
-          7.2,
+          -6.5,
+          6.5,
           -27.0
         ]
       }
@@ -766,10 +766,10 @@
       "Crosshair": "@VehicleCommonGun",
       "CrosshairColor": "0xFFFFFF",
       "SoundInfo": {
-        "Fire3P": "superbwarfare:mortar_fire",
-        "Fire1P": "superbwarfare:mortar_fire"
+        "Fire3P": "warsteel:t22_torpedo",
+        "Fire1P": "warsteel:t22_torpedo"
       },
-      "SoundRadius": 24,
+      "SoundRadius": 48,
       "ShootPos": {
         "Transform": "Vehicle",
         "ShootPositionForHud": [
@@ -945,6 +945,7 @@
       ]
     ]
   },
-  "EngineSound": "warsteel:tiger_engine",
-  "InertiaRotateRate": 0.4
+  "EngineSound": "warsteel:t22_turbine",
+  "HornSound": "warsteel:t22_whistle",
+  "InertiaRotateRate": 0.08
 }

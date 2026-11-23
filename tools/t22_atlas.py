@@ -1,10 +1,35 @@
 #!/usr/bin/env python3
 """Packs the T-22's diffuse textures into the 2048 atlas used by t-22.geo.json (cells as in
-tools/t22_export.py: 4x4 cells of 512 px, the hull taking 2x2). Alpha is dropped (the source
-textures use it for other data).
+tools/t22_export.py: 4x4 cells of 512 px, the hull taking 2x2). Alpha only marks the UV islands: their colours are
+bled out over the padding, then alpha is dropped.
 Usage: python3 tools/t22_atlas.py <T-22 Texture folder>"""
 import os, sys
+import numpy as np
 from PIL import Image
+
+
+def bleed(im):
+    """Grow each UV island's colours out over the transparent padding around it, so scaling the
+    texture down (and Minecraft's mipmaps) don't pull black into the island edges as dark seams."""
+    a = np.asarray(im.convert('RGBA')).astype(np.float32)
+    rgb, ok = a[..., :3], a[..., 3] > 127
+    rgb[~ok] = 0.0
+    for _ in range(48):
+        if ok.all():
+            break
+        acc = np.zeros_like(rgb)
+        n = np.zeros(ok.shape, np.float32)
+        for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            m = np.roll(ok, (dy, dx), (0, 1))
+            acc += np.roll(rgb, (dy, dx), (0, 1)) * m[..., None]
+            n += m
+        grow = ~ok & (n > 0)
+        rgb[grow] = acc[grow] / n[grow, None]
+        ok = ok | grow
+    if not ok.all():
+        rgb[~ok] = rgb[ok].mean(0)
+    return Image.fromarray(np.clip(rgb, 0, 255).astype(np.uint8), 'RGB')
+
 
 src = sys.argv[1]
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -17,7 +42,7 @@ CELLS = {
 }
 atlas = Image.new('RGB', (2048, 2048), (70, 72, 74))
 for name, (c, r, span) in CELLS.items():
-    im = Image.open(os.path.join(src, name)).convert('RGB').resize((512 * span, 512 * span), Image.LANCZOS)
+    im = bleed(Image.open(os.path.join(src, name))).resize((512 * span, 512 * span), Image.LANCZOS)
     atlas.paste(im, (c * 512, r * 512))
 atlas.paste((38, 38, 38), (2 * 512, 3 * 512, 3 * 512, 4 * 512))   # cables and rigging
 atlas.convert('RGBA').save(out, optimize=True)

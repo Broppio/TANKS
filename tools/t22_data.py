@@ -40,18 +40,25 @@ def aa_weapon(ammo, name, rpm, mag, reload, vel, dmg, exp_dmg, exp_r, sounds, po
                          'DefaultBarrelDirection': [0, 0, 1]}}
 
 
+def over_side(x, z):
+    """Dismount point over the side nearest the seat (port for x >= 0), just outboard of the hull at
+    deck height: the deck isn't solid to walk on, so you step off into the sea beside the ship
+    rather than inside her superstructure. WarSteel tries the other side if this one is blocked."""
+    return {'Transform': 'Vehicle', 'Position': [6.5 if x >= 0 else -6.5, 6.5, round(z, 2)]}
+
+
 def gunner_seat(mount, gun, weapon, orientation, min_yaw, max_yaw, min_pitch=-5, max_pitch=85):
     p = v(mount, dy=0.2)
     c = v(gun, dy=0.6)
     return {'HidePassenger': True, 'Transform': 'Vehicle', 'Position': p, 'Orientation': orientation, 'RotateWithVehicle': True,
             'MinYaw': min_yaw, 'MaxYaw': max_yaw, 'MinPitch': -max_pitch, 'MaxPitch': -min_pitch, 'Sensitivity': [0.5, 0.7, 0.9],
             'CameraPos': {'Transform': 'Vehicle', 'UseFixedCameraPos': True, 'Position': c}, 'Weapons': [weapon],
-            'DismountInfo': {'Transform': 'Vehicle', 'Position': [0, 7.2, round(p[2], 2)]}}
+            'DismountInfo': over_side(p[0], p[2])}
 
 
 def deck_seat(x, z):
     return {'Transform': 'Vehicle', 'Position': [x, 7.0, z], 'RotateWithVehicle': True, 'MinYaw': -120, 'MaxYaw': 120,
-            'DismountInfo': {'Transform': 'Vehicle', 'Position': [x, 7.2, z]}}
+            'DismountInfo': over_side(x, z)}
 
 
 # The captain sits in mount A's frame like a tank gunner: he looks where he likes and the mount
@@ -63,7 +70,7 @@ captain = {'HidePassenger': True, 'Transform': 'Turret', 'Position': [0, 1.0, -1
            'CameraPos': {'Transform': 'Turret', 'UseFixedCameraPos': True, 'Position': [0, 4.0, -2.5], 'Direction': 'Barrel',
                          'ZoomPosition': [0, round(barrel_rel[1] + 0.45, 3), round(barrel_rel[2] + muzzle_len + 0.4, 3)]},
            'MinPitch': -10, 'MaxPitch': 40, 'Weapons': ['Cannon'],
-           'DismountInfo': {'Transform': 'Vehicle', 'Position': [0, 7.2, 18.0]}}
+           'DismountInfo': over_side(1, 30.0)}
 
 d = {
     'ID': 'warsteel:t-22',
@@ -75,7 +82,7 @@ d = {
     # (measured in game: buoyancy 0.0215 puts the keel 3.3 m under). Flooding is added on top of this by WarSteel (ShipFlooding).
     'EngineInfo': {'Buoyancy': 0.0215, 'EnergyCostRate': 40, 'MaxForwardSpeedRate': 3.0, 'MaxBackwardSpeedRate': -0.9,
                    'Increment': 0.004, 'Decrement': 0.004, 'SteeringSpeed': 0.012, 'BodyRollRate': 0.3, 'BodyPitchRate': 0.05,
-                   'EngineSoundVolume': 1.4},
+                   'EngineSoundVolume': 3.0},
     'TurretControllerIndex': 0,
     'TurretPos': turret,
     'BarrelPos': barrel_rel,
@@ -91,7 +98,7 @@ d = {
         {'HidePassenger': True, 'Transform': 'Vehicle', 'Position': v('torp_1', dy=1.0), 'RotateWithVehicle': True,
          'MinYaw': -180, 'MaxYaw': 180, 'MinPitch': -10, 'MaxPitch': 10, 'Sensitivity': [0.4, 0.6, 0.9],
          'CameraPos': {'Transform': 'Vehicle', 'UseFixedCameraPos': True, 'Position': [0, 12.5, 18.0]},
-         'Weapons': ['Torpedoes'], 'DismountInfo': {'Transform': 'Vehicle', 'Position': [0, 7.2, 7.0]}},
+         'Weapons': ['Torpedoes'], 'DismountInfo': over_side(1, 7.0)},
         deck_seat(2.0, 12.0), deck_seat(-2.0, 12.0), deck_seat(2.0, -3.0), deck_seat(-2.0, -3.0), deck_seat(2.0, -27.0), deck_seat(-2.0, -27.0),
     ],
     'Weapons': {
@@ -123,7 +130,7 @@ d = {
                       'AvailableFireModes': 'Semi', 'Projectile': 'superbwarfare:cannon_shell', 'Magazine': 1, 'EmptyReloadTime': 400,
                       'Velocity': 1.0, 'Damage': 4242, 'ExplosionDamage': 0, 'ExplosionRadius': 0, 'Name': 'item.warsteel.torpedo_g7a',
                       'AmmoType': 'warsteel:torpedo_g7a', 'Crosshair': '@VehicleCommonGun', 'CrosshairColor': '0xFFFFFF',
-                      'SoundInfo': {'Fire3P': 'superbwarfare:mortar_fire', 'Fire1P': 'superbwarfare:mortar_fire'}, 'SoundRadius': 24,
+                      'SoundInfo': {'Fire3P': 'warsteel:t22_torpedo', 'Fire1P': 'warsteel:t22_torpedo'}, 'SoundRadius': 48,
                       'ShootPos': {'Transform': 'Vehicle', 'ShootPositionForHud': v('torp_1', dy=1.0), 'Positions': [v('torp_1', dy=1.0)],
                                    'Directions': ['Passenger'], 'DefaultBarrelDirection': [1, 0, 0]}},
     },
@@ -150,8 +157,9 @@ d = {
     'VehicleContainerType': 'Huge',
     'HudType': '@Land',
     'CollisionLevel': {'Level': 5, 'PowerLimits': [[0, 0, True], [0, 0, True], [0.1, 0.05, False], [1, 0.3, False], [3, 0.5, False]]},
-    'EngineSound': 'warsteel:tiger_engine',
-    'InertiaRotateRate': 0.4,
+    'EngineSound': 'warsteel:t22_turbine',
+    'HornSound': 'warsteel:t22_whistle',
+    'InertiaRotateRate': 0.08,
 }
 out = os.path.join(ROOT, 'src/main/resources/data/warsteel/sbw/vehicles/t-22.json')
 json.dump(d, open(out, 'w'), indent=2)

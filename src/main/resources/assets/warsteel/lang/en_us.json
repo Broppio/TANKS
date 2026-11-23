@@ -87,5 +87,13 @@
   "entity.warsteel.t-22": "Torpedoboot T-22 (Elbing class)",
   "entity.warsteel.torpedo_g7a": "G7a torpedo",
   "item.warsteel.torpedo_g7a": "G7a 53.3 cm torpedo",
-  "item.warsteel.t22_crate": "Torpedoboot T-22 (shipyard delivery)"
+  "item.warsteel.t22_crate": "Torpedoboot T-22 (shipyard delivery)",
+  "subtitles.warsteel.t22_turbine": "Ship turbines",
+  "subtitles.warsteel.t22_machinery": "Ship machinery",
+  "subtitles.warsteel.t22_wash": "Bow wave",
+  "subtitles.warsteel.t22_whistle": "Ship whistle",
+  "subtitles.warsteel.t22_torpedo": "Torpedo launched",
+  "subtitles.warsteel.t22_flood": "Water floods in",
+  "subtitles.warsteel.t22_creak": "Hull creaks",
+  "subtitles.warsteel.t22_groan": "Hull breaks"
 }

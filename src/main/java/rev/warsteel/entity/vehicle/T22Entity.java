@@ -1,6 +1,7 @@
 package rev.rev.warsteel.entity.vehicle;
 
 import com.atsuishio.superbwarfare.tools.OBB;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -47,6 +48,8 @@ public class T22Entity extends WarSteelTank implements NavalHull, ShipFlooding.H
    private static final EntityDataAccessor<Float> FLOOD = SynchedEntityData.defineId(T22Entity.class, EntityDataSerializers.FLOAT);
    private static final EntityDataAccessor<Float> TRIM = SynchedEntityData.defineId(T22Entity.class, EntityDataSerializers.FLOAT);
    private static final EntityDataAccessor<Float> LIST = SynchedEntityData.defineId(T22Entity.class, EntityDataSerializers.FLOAT);
+   /** Share of full speed the surviving boilers and turbines allow; synced, so the driver's client agrees with the server. */
+   private static final EntityDataAccessor<Float> MACHINERY = SynchedEntityData.defineId(T22Entity.class, EntityDataSerializers.FLOAT);
    private static final EntityDataAccessor<Float> WEIGHT = SynchedEntityData.defineId(T22Entity.class, EntityDataSerializers.FLOAT);
    /** Loaded displacement (t) and Superb Warfare's gravity per tick: flood water adds weight in proportion. */
    private static final double DISPLACEMENT = 1300.0;
@@ -72,6 +75,12 @@ public class T22Entity extends WarSteelTank implements NavalHull, ShipFlooding.H
    }
 
    private int torpedoMount;
+   private boolean soundsStarted;
+   private float turnRate;
+   /** Per tick, how far the rate of turn moves towards what the helm asks for. */
+   private static final float TURN_EASE = 0.06F;
+   private int floodSoundCooldown;
+   private int creakCooldown = 100;
 
    /** The torpedo mounts fire in turn. */
    public int nextTorpedoMount() {
@@ -105,6 +114,7 @@ public class T22Entity extends WarSteelTank implements NavalHull, ShipFlooding.H
       builder.define(TRIM, 0.0F);
       builder.define(LIST, 0.0F);
       builder.define(WEIGHT, 0.0F);
+      builder.define(MACHINERY, 1.0F);
    }
 
    @Override
@@ -118,14 +128,56 @@ public class T22Entity extends WarSteelTank implements NavalHull, ShipFlooding.H
 
    // ------------------------------------------------------------------------------------------ tick
 
+   /** Development only (-Dwarsteel.dev=true): tick timing and a throttle for automated tests. */
+   private static final boolean DEV = Boolean.getBoolean("warsteel.dev");
+   public float devThrottle;
+   public float devRudder;
+   private long devNanos;
+   private int devTicks;
+
    @Override
    public void baseTick() {
       this.frame = null;
+      long t0 = DEV ? System.nanoTime() : 0L;
+      float yawBefore = this.getYRot();
+      if (DEV && this.devThrottle != 0.0F) {
+         this.setPower(this.devThrottle);
+         this.setDeltaRot(this.devRudder);
+      }
       super.baseTick();
+      if (DEV) {
+         this.devNanos += System.nanoTime() - t0;
+         if (++this.devTicks == 100) {
+            org.slf4j.LoggerFactory.getLogger("warsteel/shipdev").info("{} tick {} us (avg of 100), server mspt {}, pos {} {} {} yaw {} speed {}", this.level().isClientSide ? "client" : "server",
+               this.devNanos / 100000, this.level().getServer() != null ? String.format("%.2f", this.level().getServer().getAverageTickTimeNanos() / 1.0E6) : "-", String.format("%.1f", this.getX()), String.format("%.2f", this.getY()), String.format("%.1f", this.getZ()),
+               String.format("%.1f", this.getYRot()), String.format("%.3f", this.getDeltaMovement().horizontalDistance()));
+            this.devNanos = 0L;
+            this.devTicks = 0;
+         }
+      }
       this.frame = null;
       boolean server = !this.level().isClientSide;
       if (server) {
          this.serverShipTick();
+      } else if (!this.soundsStarted) {
+         this.soundsStarted = true;
+         rev.rev.warsteel.client.sound.ShipSounds.start(this);
+      }
+
+      // The steam whistle, on the key Superb Warfare's trucks use for their horn.
+      if (this.decoyInputDown()) {
+         this.horn();
+      }
+
+      // A 1,300 t hull doesn't start or stop turning at once: ease the rate of turn Superb Warfare's
+      // ship engine asks for, so she swings into a turn and keeps swinging a little after the rudder
+      // is centred, instead of snapping.
+      float wanted = Mth.wrapDegrees(this.getYRot() - yawBefore);
+      if (this.isControlledByLocalInstance() && Math.abs(wanted) < 20.0F) {   // where she's simulated; not a teleport
+         this.turnRate += (wanted - this.turnRate) * TURN_EASE;
+         this.setYRot(yawBefore + this.turnRate);
+      } else {
+         this.turnRate = 0.0F;
       }
 
       // Superb Warfare's buoyancy grows with the water over the keel, measured across the whole
@@ -162,36 +214,39 @@ public class T22Entity extends WarSteelTank implements NavalHull, ShipFlooding.H
 
 
    private double speedCap() {
-      double cap = 0.9;
-      if (!this.level().isClientSide) {
-         TankState st = this.damageState();
-         DamageModel m = st.model();
-         if (m != null) {
-            int boilers = 0;
-            int boilersUp = 0;
-            int turbines = 0;
-            int turbinesUp = 0;
-            for (ModuleDef d : m.modules()) {
-               if (d.type() == ModuleType.ENGINE) {
-                  boilers++;
-                  boilersUp += st.destroyed(d.index()) ? 0 : 1;
-               } else if (d.type() == ModuleType.TRANSMISSION) {
-                  turbines++;
-                  turbinesUp += st.destroyed(d.index()) ? 0 : 1;
-               }
-            }
+      return 0.9 * this.getEntityData().get(MACHINERY) * Math.max(0.15, 1.0 - 0.75 * this.floodRatio());
+   }
 
-            if (boilers > 0) {
-               cap *= (double)boilersUp / boilers;
-            }
+   /** Boilers each give a share of the steam, the turbine sets each half the shaft power. */
+   private float machineryShare() {
+      TankState st = this.damageState();
+      DamageModel m = st.model();
+      if (m == null) {
+         return 1.0F;
+      }
 
-            if (turbines > 0) {
-               cap *= (double)turbinesUp / turbines;
-            }
+      int boilers = 0;
+      int boilersUp = 0;
+      int turbines = 0;
+      int turbinesUp = 0;
+      for (ModuleDef d : m.modules()) {
+         if (d.type() == ModuleType.ENGINE) {
+            boilers++;
+            boilersUp += st.destroyed(d.index()) ? 0 : 1;
+         } else if (d.type() == ModuleType.TRANSMISSION) {
+            turbines++;
+            turbinesUp += st.destroyed(d.index()) ? 0 : 1;
          }
       }
 
-      return cap * Math.max(0.15, 1.0 - 0.75 * this.floodRatio());
+      float share = 1.0F;
+      if (boilers > 0) {
+         share *= (float)boilersUp / boilers;
+      }
+      if (turbines > 0) {
+         share *= (float)turbinesUp / turbines;
+      }
+      return share;
    }
 
    private void serverShipTick() {
@@ -228,11 +283,30 @@ public class T22Entity extends WarSteelTank implements NavalHull, ShipFlooding.H
          }
 
          this.getEntityData().set(FLOOD, ratio);
+         this.getEntityData().set(MACHINERY, this.machineryShare());
          this.getEntityData().set(WEIGHT, (float)this.flooding.weightRatio());
          this.getEntityData().set(TRIM, (float)Mth.clamp(trimTarget, -45.0, 45.0));
          this.getEntityData().set(LIST, (float)Mth.clamp(listTarget, -110.0, 110.0));
          if (ratio > 1.0F) {
             this.setPower(0.0F);
+         }
+
+         if (in > 0.05 && (this.floodSoundCooldown -= 5) <= 0 && !this.flooding.holes.isEmpty()) {
+            // The sea pouring in: from one of the holes under water, louder the more comes in.
+            ShipFlooding.Hole h = this.flooding.holes.get(this.random.nextInt(this.flooding.holes.size()));
+            Vec3 at = this.toWorld(h.x(), h.y(), h.z());
+            level.playSound(null, at.x, at.y, at.z, rev.rev.warsteel.init.ModSounds.T22_FLOOD.get(), net.minecraft.sounds.SoundSource.NEUTRAL,
+               (float)Math.min(4.0, 1.2 + in * 0.02), 0.85F + this.random.nextFloat() * 0.3F);
+            this.floodSoundCooldown = 50;
+         }
+
+         // Plating and frames straining under the weight of water, more often as she settles.
+         float strain = Math.abs(this.trim) + Math.abs(this.list) + ratio * 20.0F;
+         if (strain > 4.0F && !this.isWreck() && (this.creakCooldown -= 5) <= 0) {
+            Vec3 at = this.toWorld(0.0, 4.0, (this.random.nextDouble() - 0.5) * 70.0);
+            level.playSound(null, at.x, at.y, at.z, rev.rev.warsteel.init.ModSounds.T22_CREAK.get(), net.minecraft.sounds.SoundSource.NEUTRAL,
+               (float)Math.min(4.0, 1.5 + strain * 0.08), 0.8F + this.random.nextFloat() * 0.3F);
+            this.creakCooldown = 40 + this.random.nextInt(Math.max(20, (int)(240 - strain * 6)));
          }
 
          if (in > 0.05) {
@@ -252,6 +326,7 @@ public class T22Entity extends WarSteelTank implements NavalHull, ShipFlooding.H
          this.ejectPassengers();
          if (++this.sunkTicks > 200 && !this.isWreck()) {
             super.setHealth(0.0F);
+            this.groan();
          }
       } else {
          this.sunkTicks = Math.max(0, this.sunkTicks - 1);
@@ -264,8 +339,14 @@ public class T22Entity extends WarSteelTank implements NavalHull, ShipFlooding.H
    }
 
    /** Magazine detonation or the crew lost: her back is broken and she floods fast. */
+   private void groan() {
+      this.level().playSound(null, this.getX(), this.getY() + 4.0, this.getZ(), rev.rev.warsteel.init.ModSounds.T22_GROAN.get(),
+         net.minecraft.sounds.SoundSource.NEUTRAL, 5.0F, 0.9F + this.random.nextFloat() * 0.2F);
+   }
+
    private void breakBack() {
       this.flooding.scuttled = true;
+      this.groan();
       TankState st = this.damageState();
       DamageModel m = st.model();
       double z = 0.0;
@@ -296,6 +377,133 @@ public class T22Entity extends WarSteelTank implements NavalHull, ShipFlooding.H
       }
 
       super.setHealth(health);
+   }
+
+   // ------------------------------------------------------------------------------------------ water
+
+   /** Stations along the keel (Vehicle frame z) where the water is measured. */
+   private static final double[] KEEL_STATIONS = {-44.0, -30.0, -15.0, 0.0, 15.0, 30.0, 44.0};
+
+   /**
+    * How deep the hull is in the water, from a few stations along the keel. Minecraft (and Superb
+    * Warfare, for a vehicle with a collision box) would scan every block inside her bounding box
+    * - 15 m by up to 97 m square - several times a tick, which made one ship cost a third of a
+    * server tick. Currents don't move a 1,300 t ship, so they're skipped.
+    */
+   @Override
+   public void updateFluidHeightAndDoFluidPushing() {
+      if (this.touchingUnloadedChunk()) {
+         return;
+      }
+
+      double minY = this.getBoundingBox().minY;
+      int top = Mth.ceil(this.getBoundingBox().maxY);
+      BlockPos.MutableBlockPos at = new BlockPos.MutableBlockPos();
+      net.neoforged.neoforge.fluids.FluidType type = null;
+      double height = 0.0;
+      for (double z : KEEL_STATIONS) {
+         Vec3 keel = this.toWorld(0.0, 0.05, z);
+         at.set(Mth.floor(keel.x), Mth.floor(minY), Mth.floor(keel.z));
+         while (at.getY() < top) {
+            net.minecraft.world.level.material.FluidState fluid = this.level().getFluidState(at);
+            if (fluid.isEmpty()) {
+               break;
+            }
+
+            double surface = at.getY() + fluid.getHeight(this.level(), at);
+            if (surface - minY > height) {
+               height = surface - minY;
+               type = fluid.getFluidType();
+            }
+            at.move(0, 1, 0);
+         }
+      }
+
+      if (type != null && height > 0.0) {
+         this.setFluidTypeHeight(type, height);
+      }
+   }
+
+   /**
+    * Superb Warfare collides the hull's collision box with every block in its world bounding box -
+    * at a diagonal heading some 70 by 70 by 8 blocks - every tick it moves. In open water there's
+    * nothing to hit, so first sample the hull's outline at the keel and the waterline where she's
+    * going; only if one of those points is in something solid (shore, pier, seabed) does the full
+    * collision run. A wreck at rest on the bottom stays put.
+    */
+   @Override
+   public void move(net.minecraft.world.entity.MoverType type, Vec3 movement) {
+      if (this.isWreck() && this.onGround() && movement.horizontalDistanceSqr() < 1.0E-4) {
+         this.setDeltaMovement(Vec3.ZERO);
+         return;
+      }
+
+      if (type != net.minecraft.world.entity.MoverType.SELF || !this.clearWater(movement)) {
+         super.move(type, movement);
+         return;
+      }
+
+      this.setPos(this.getX() + movement.x, this.getY() + movement.y, this.getZ() + movement.z);
+      this.horizontalCollision = false;
+      this.verticalCollision = false;
+      this.verticalCollisionBelow = false;
+      this.minorHorizontalCollision = false;
+      this.setOnGround(false);
+   }
+
+   /** Hull half-breadth at the waterline (m) along her length, stern to bow (Vehicle frame z). */
+   private static double halfBreadth(double z) {
+      if (z > 28.0) {
+         return Math.max(0.6, 4.9 - (z - 28.0) * 0.21);
+      }
+      if (z < -36.0) {
+         return Math.max(2.2, 4.9 - (-36.0 - z) * 0.22);
+      }
+      return 4.9;
+   }
+
+   private boolean clearWater(Vec3 movement) {
+      BlockPos.MutableBlockPos at = new BlockPos.MutableBlockPos();
+      for (double z = -48.0; z <= 48.6; z += 3.0) {   // a piling can't slip between stations
+         double hb = halfBreadth(z) + 0.4;
+         for (double x : new double[]{-hb, -hb * 0.5, 0.0, hb * 0.5, hb}) {
+            for (double y : new double[]{-0.2, 2.6}) {
+               Vec3 p = this.toWorld(x, y, z).add(movement);
+               at.set(Mth.floor(p.x), Mth.floor(p.y), Mth.floor(p.z));
+               if (!this.level().getBlockState(at).getCollisionShape(this.level(), at).isEmpty()) {
+                  return false;
+               }
+            }
+         }
+      }
+
+      Vec3 bow = this.toWorld(0.0, 2.6, 49.5).add(movement);
+      at.set(Mth.floor(bow.x), Mth.floor(bow.y), Mth.floor(bow.z));
+      return this.level().getBlockState(at).getCollisionShape(this.level(), at).isEmpty();
+   }
+
+   /** Superb Warfare scans the collision box block by block here; the keel stations above are enough. */
+   @Override
+   public boolean isInFluidType(java.util.function.BiPredicate<net.neoforged.neoforge.fluids.FluidType, Double> predicate) {
+      return this.isInFluidType(predicate, false);
+   }
+
+   /**
+    * Off over the side nearest the seat (t-22.json); if a pier or the shore is in the way there,
+    * the other side; if both are blocked, up onto whichever is clear one block higher.
+    */
+   @Override
+   public Vec3 getDismountLocationForIndex(net.minecraft.world.entity.LivingEntity passenger, int index) {
+      Vec3 first = super.getDismountLocationForIndex(passenger, index);
+      Vector4d l = new Matrix4d(this.vehicleFrame()).invert().transform(new Vector4d(first.x, first.y, first.z, 1.0));
+      Vec3 other = this.toWorld(-l.x, l.y, l.z);
+      for (Vec3 at : new Vec3[]{first, other, first.add(0, 1.2, 0), other.add(0, 1.2, 0)}) {
+         if (this.level().noCollision(passenger, passenger.getDimensions(passenger.getPose()).makeBoundingBox(at))) {
+            return at;
+         }
+      }
+
+      return first;
    }
 
    // ------------------------------------------------------------------------------------------ damage

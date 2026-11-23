@@ -15,6 +15,8 @@ Moving parts become bones:
   flak_1..4 / flak_1..4_gun   single 2 cm Flak on the bridge wings
   torp_1 / torp_2             triple torpedo tube mounts
   prop_l / prop_r, rudder_l / rudder_r, radar
+Deck fittings (T-22_Props) are simplified only by merging coplanar faces (the hull is kept whole), and fittings
+under 30 cm2 are dropped: collapse decimation turned thin fittings into stray sheets metres across.
 Railings (SideFence) are dropped: they tile one texture hundreds of times and are too thin to see.
 Each part is decimated (see RATIO) and all textures are packed into one 2048 atlas (see ATLAS).
 """
@@ -36,7 +38,7 @@ ATLAS = {
     'Mat_T-22_Rudder': (0, 3, 1), 'Mat_T-22_Propellor': (1, 3, 1), 'CABLE': (2, 3, 1),
 }
 # Decimation ratio by part (fraction of triangles kept).
-RATIO = {'T-22_Props': 0.22, 'T-22_Hull': 0.7, 'T-22_TorpedoTubes': 0.35, 'T-22_Main_turret': 0.45, 'T-22_Main_barrel': 0.35,
+RATIO = {'T-22_Props': 'planar', 'T-22_Hull': 1.0, 'T-22_TorpedoTubes': 0.35, 'T-22_Main_turret': 0.45, 'T-22_Main_barrel': 0.35,
          'Flakvierling _Turret': 0.4, 'Flakvierling _Barrel': 0.35, 'Flakzwilling2_turret': 0.45, 'Flakzwilling2_barrel': 0.45,
          'Flak_turret': 0.4, 'Flak_barrel': 0.4, 'T-22_Radar_2': 0.4, 'T-22_Radar_1': 0.6, 'T-22_Vessel': 0.5}
 
@@ -75,7 +77,14 @@ for n, o in objs.items():
     o.select_set(True)
     o.data = o.data.copy()          # instanced meshes: make each object's mesh its own
     r = ratio_for(n)
-    if r < 0.999:
+    if r == 'planar':
+        # Collapse decimation mangles thin fittings (it turned flags and deck gear into stray sheets
+        # metres across); merging coplanar faces never changes the shape.
+        d = o.modifiers.new('dec', 'DECIMATE')
+        d.decimate_type = 'DISSOLVE'
+        d.angle_limit = math.radians(4.0)
+        d.delimit = {'UV', 'MATERIAL', 'SEAM', 'SHARP'}   # never merge across a texture seam
+    elif r < 0.999:
         d = o.modifiers.new('dec', 'DECIMATE')
         d.decimate_type = 'COLLAPSE'
         d.ratio = r
@@ -101,6 +110,8 @@ def poly_mesh(names, cable=False):
         col, row, span = ATLAS.get(key, ATLAS['CABLE'])
         base = len(positions)
         for p in me.polygons:
+            if key == 'Mat_T-22_Props' and p.area < 0.003:
+                continue   # bolts, handles and the like: smaller than a pixel at any sensible distance
             raw = [tuple(uvl[li].uv) if uvl else (0.5, 0.5) for li in p.loop_indices]
             if key == 'CABLE':
                 raw = [(0.5, 0.5)] * len(raw)

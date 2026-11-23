@@ -268,7 +268,7 @@ Without Nations at War installed, vehicles come only from the creative tab or co
 ## T-22 torpedo boat (Flottentorpedoboot 1939)
 
 A Superb Warfare ship (`warsteel:t-22`), 97 m long, 3.3 m draught, about 33 knots flat out.
-The model is cut down to about 16,000 triangles (from 46,000).
+The model is cut down to about 22,000 triangles (from 46,000).
 
 ### Crew and weapons
 
@@ -298,6 +298,17 @@ G7a torpedoes:
 - Each carries 340 kg of TNT equivalent.
 - Under water they tear holes tens of square metres across.
 - The tubes alternate between the two mounts, and need `warsteel:torpedo_g7a` as ammunition.
+
+### Handling, boarding and sounds
+
+- She answers the helm slowly: she swings into a turn and carries on swinging a little after the
+  rudder is centred. Lost boilers or turbines cut her top speed.
+- Board her anywhere along her length. Getting off puts you over the side next to your post
+  (or the other side if a pier is in the way); the deck isn't solid to walk on.
+- The steam whistle is on Superb Warfare's decoy key (the trucks' horn key).
+- Sounds: turbines rise with the engine order, boilers and fans hum whenever she has steam, the bow
+  wave grows with speed. Flooding roars in through the holes, the hull creaks as she settles, and
+  groans as she breaks or goes under. Torpedoes leave the tubes with a blast of air and a splash.
 
 ### Damage, flooding and sinking
 

@@ -227,5 +227,81 @@
         "stream": false
       }
     ]
+  },
+  "t22_turbine": {
+    "sounds": [
+      {
+        "name": "warsteel:t22/t22_turbine"
+      }
+    ],
+    "subtitle": "subtitles.warsteel.t22_turbine"
+  },
+  "t22_machinery": {
+    "sounds": [
+      {
+        "name": "warsteel:t22/t22_machinery"
+      }
+    ],
+    "subtitle": "subtitles.warsteel.t22_machinery"
+  },
+  "t22_wash": {
+    "sounds": [
+      {
+        "name": "warsteel:t22/t22_wash"
+      }
+    ],
+    "subtitle": "subtitles.warsteel.t22_wash"
+  },
+  "t22_whistle": {
+    "sounds": [
+      {
+        "name": "warsteel:t22/t22_whistle"
+      }
+    ],
+    "subtitle": "subtitles.warsteel.t22_whistle"
+  },
+  "t22_torpedo": {
+    "sounds": [
+      {
+        "name": "warsteel:t22/t22_torpedo"
+      }
+    ],
+    "subtitle": "subtitles.warsteel.t22_torpedo"
+  },
+  "t22_flood": {
+    "sounds": [
+      {
+        "name": "warsteel:t22/t22_flood_1"
+      },
+      {
+        "name": "warsteel:t22/t22_flood_2"
+      },
+      {
+        "name": "warsteel:t22/t22_flood_3"
+      }
+    ],
+    "subtitle": "subtitles.warsteel.t22_flood"
+  },
+  "t22_creak": {
+    "sounds": [
+      {
+        "name": "warsteel:t22/t22_creak_1"
+      },
+      {
+        "name": "warsteel:t22/t22_creak_2"
+      },
+      {
+        "name": "warsteel:t22/t22_creak_3"
+      }
+    ],
+    "subtitle": "subtitles.warsteel.t22_creak"
+  },
+  "t22_groan": {
+    "sounds": [
+      {
+        "name": "warsteel:t22/t22_groan"
+      }
+    ],
+    "subtitle": "subtitles.warsteel.t22_groan"
   }
 }
